@@ -10,7 +10,7 @@ class Observer {
 public:
     Vec3 position;
 
-    Vec3 lookToWindow(Vec3 position, Vec3 view, World world) {
+    Vec3 lookToWindow(Vec3 position, Vec3 d, World world) {
         Object *closestObject = nullptr;
         double closestT = std::numeric_limits<double>::infinity();
         std::vector<Object*> objects = world.objects;
@@ -18,9 +18,9 @@ public:
 
         for(int i = 0; i < objectsSize; i++) {
             Object *object = objects.at(i);
-            std::vector<double> t = object->intersection(position, view);
+            std::vector<double> t = object->intersection(position, d);
             
-            if(t.size() == 0) continue;
+            if(t.empty()) continue;
             
             if(object->type == "sphere") {
                 double t1 = t.at(0);
@@ -45,6 +45,47 @@ public:
                     closestObject = object;
                 }
             }
+
+            if(object->type == "cilinder") {
+                double t1 = t.at(0);
+                if(t1 > 0 && t1 < closestT) {
+                    closestT = t1;
+                    closestObject = object;
+                }
+
+                double t2 = t.at(1);
+                if(t2 > 0 && t2 < closestT) {
+                    closestT = t2;
+                    closestObject = object;
+                }
+
+                double t3 = t.at(2);
+                if(t3 > 0 && t3 < closestT) {
+                    closestT = t3;
+                    closestObject = object;
+                }
+
+                double t4 = t.at(3);
+                if(t4 > 0 && t4 < closestT) {
+                    closestT = t4;
+                    closestObject = object;
+                }
+ 
+            }
+
+            if(object->type == "cone") {
+                double t1 = t.at(0);
+                if(t1 > 0 && t1 < closestT) {
+                    closestT = t1;
+                    closestObject = object;
+                }
+
+                double t2 = t.at(1);
+                if(t2 > 0 && t2 < closestT) {
+                    closestT = t2;
+                    closestObject = object;
+                }
+            }
             
         }
 
@@ -54,10 +95,9 @@ public:
             return bgColor;
         }
 
-        Vec3 intersectionPoint = position + (view * closestT);
-        Vec3 direction = view - position;
+        Vec3 intersectionPoint = position + (d * closestT);
         Vec3 lighting = closestObject->computeLighting(intersectionPoint,
-        direction, world.lights, objects);
+        d, world.lights, objects);
         Vec3 objectColor = closestObject->color;
 
         return objectColor % lighting;
@@ -75,7 +115,8 @@ public:
                 x = -window.width/2 + dx/2 + dx * column;
 
                 Vec3 view(x, y, -window.distanceFromObserver);
-                Vec3 color = lookToWindow(position, view, world);
+                Vec3 d = view - position;
+                Vec3 color = lookToWindow(position, d/d.getLength(), world);
 
                 if(color.x > 255) {
                     color.x = 255;

@@ -21,7 +21,7 @@ public:
         return t;
     }
 
-    Vec3 getNormal(Vec3 intersectionPoint) {
+    Vec3 getNormal(Vec3 intersectionPoint, Vec3 observer) {
         return normal;
     }
 

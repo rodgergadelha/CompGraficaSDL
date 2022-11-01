@@ -12,43 +12,44 @@ public:
     double shininess;
     std::string type;
 
-    virtual std::vector<double> intersection(Vec3 observer, Vec3 view) = 0;
+    virtual std::vector<double> intersection(Vec3 observer, Vec3 d) = 0;
 
-    virtual Vec3 getNormal(Vec3 intersectionPoint) = 0;
+    virtual Vec3 getNormal(Vec3 intersectionPoint, Vec3 d) = 0;
 
-    bool checkShadow(Vec3 position, Vec3 view, std::vector<Object*> objects) {
+    bool checkShadow(Vec3 position, Vec3 pf_sub_pi, std::vector<Object*> objects) {
         double closestTShadow = std::numeric_limits<double>::infinity();
         Object* closestObjectShadow = nullptr;
+        Vec3 l = pf_sub_pi / pf_sub_pi.getLength();
         
         for(auto object : objects) {
-            std::vector<double> t = object->intersection(position, view);
+            std::vector<double> t = object->intersection(position, l);
 
             if(t.size() == 0 || object->type == "plane") continue;
 
             double t1 = t.at(0);
             double t2 = t.at(1);
 
-            if(t1 > 0.001 && t1 < closestTShadow) {
+            if(t1 > 0.0001 && t1 < closestTShadow) {
                 closestTShadow = t1;
                 closestObjectShadow = object;
             }
 
-            if(t2 > 0.001 && t2 < closestTShadow) {
+            if(t2 > 0.0001 && t2 < closestTShadow) {
                 closestTShadow = t2;
                 closestObjectShadow = object;
             }
             
         }
 
-        return closestObjectShadow != nullptr;
+        return closestTShadow < pf_sub_pi.getLength();
     }
 
     Vec3 computeLighting(Vec3 intersectionPoint,
-                        Vec3 direction,
+                        Vec3 d,
                         std::vector<Light> lights,
                         std::vector<Object*> objects) {
-        Vec3 normal = getNormal(intersectionPoint);
-        Vec3 v = direction / -direction.getLength();
+        Vec3 normal = getNormal(intersectionPoint, d);
+        Vec3 v = d / -d.getLength();
         Vec3 totalLighting;
         int lightsSize = lights.size();
 
@@ -61,10 +62,11 @@ public:
                 continue;
             }
 
-            if(checkShadow(intersectionPoint, light.position, objects)) continue;
-
             Vec3 pf_sub_pi = light.position - intersectionPoint; 
             Vec3 l = pf_sub_pi / pf_sub_pi.getLength();
+
+            if(checkShadow(intersectionPoint, pf_sub_pi, objects)) continue;
+
             Vec3 r = (normal * (2 * (normal ^ l))) - l;
 
             double fd = std::max(0.0, normal ^ l);
