@@ -16,17 +16,16 @@ public:
         return (baseCenter + n*height);
     }
 
-    std::vector<double> intersection(Vec3 observer, Vec3 d) {
+    double intersection(Vec3 observer, Vec3 d) {
         Vec3 vertex = getVertex();
         Vec3 v = vertex - observer;
-        std::vector<double> t;
 
         double coefA = (d ^ n)*(d ^ n) - (d ^ d)*cos(theta)*cos(theta);
         double coefB = 2 * ((v ^ d)*cos(theta)*cos(theta) - (v ^ n)*(d ^ n));
         double coefC = (v ^ n)*(v ^ n) - (v ^ v)*cos(theta)*cos(theta);
         double delta = (coefB * coefB) - (4 * coefA * coefC);
 
-        if(delta < 0) return t;
+        if(delta < 0) return -1;
 
         double t1 = (-coefB + sqrt(delta))/(2*coefA);
         double t2 = (-coefB - sqrt(delta))/(2*coefA);
@@ -34,20 +33,23 @@ public:
         Vec3 intersectionPoint1 = observer + d*t1;
         Vec3 intersectionPoint2 = observer + d*t2;
 
-        t.push_back(std::numeric_limits<double>::infinity());
-        t.push_back(std::numeric_limits<double>::infinity());
-        
+        double closestT = std::numeric_limits<double>::infinity();
+
         if (((v - intersectionPoint1)^n) < height
-        && ((v - intersectionPoint1)^n) > 0) {
-            t.at(0) = t1;
+        && ((v - intersectionPoint1)^n) > 0
+        && (t1 > 0 && t1 < closestT)) {
+            closestT = t1;
         }
         
         if (((v - intersectionPoint2)^n) < height
-        && ((v - intersectionPoint2)^n) > 0) {
-            t.at(1) = t2;
+        && ((v - intersectionPoint2)^n) > 0
+        & (t2 > 0 && t2 < closestT)) {
+            closestT = t2;
         }
 
-        return t;
+        
+
+        return closestT;
     }
 
     std::vector<Vec3> getTMatrixNormal(Vec3 d) {

@@ -9,16 +9,17 @@ class Plane : public Object{
 public:
     Vec3 pPi, normal;
 
-    std::vector<double> intersection(Vec3 observer, Vec3 view) {
+    double intersection(Vec3 observer, Vec3 view) {
         std::vector<double> t;
         Vec3 w = observer - pPi;
         Vec3 direction = view - observer;
-        if((direction ^ normal) == 0) return t;
+
+        if((direction ^ normal) == 0) return -1;
+        
         double ti = -(w ^ normal)/(direction ^ normal);
+        if(ti > 0) return ti;
 
-        if(ti > 0) t.push_back(ti);
-
-        return t;
+        return -1;
     }
 
     Vec3 getNormal(Vec3 intersectionPoint, Vec3 observer) {

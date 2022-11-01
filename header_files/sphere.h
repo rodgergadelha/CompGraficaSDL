@@ -12,7 +12,7 @@ public:
     Vec3 center;
     double radius;
 
-    std::vector<double> intersection(Vec3 observer, Vec3 d) {
+    double intersection(Vec3 observer, Vec3 d) {
         Vec3 w = observer - center;
         std::vector<double> t;
 
@@ -23,14 +23,16 @@ public:
         double coefC = (w ^ w) - (radius * radius);
         double delta = coefB*coefB - 4*coefA*coefC;
 
-        if(delta < 0) return t;
+        if(delta < 0) return -1;
 
         double t1 = (-coefB + sqrt(delta))/(2*coefA);
         double t2 = (-coefB - sqrt(delta))/(2*coefA);
-        t.push_back(t1);
-        t.push_back(t2);
+        double closestT = std::numeric_limits<double>::infinity();
+        
+        if(t1 > 0 && t1 < closestT) closestT = t1;
+        if(t2 > 0 && t2 < closestT) closestT = t2;
 
-        return t;
+        return closestT;
     }
 
     Vec3 getNormal(Vec3 intersectionPoint, Vec3 d) {

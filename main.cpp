@@ -56,8 +56,9 @@ int main(int argv, char** args) {
 
     Cone cone;
     cone.type = "cone";
-    cone.baseCenter.setCoordinates(cilinder.topPlane.pPi.x,
-    cilinder.topPlane.pPi.y, cilinder.topPlane.pPi.z);
+    //cone.baseCenter.setCoordinates(cilinder.topPlane.pPi.x,
+    //cilinder.topPlane.pPi.y, cilinder.topPlane.pPi.z);
+    cone.baseCenter.setCoordinates(0, 0, -100);
     cone.baseRadius = 3*sphere.radius;
     cone.height = cone.baseRadius/3;
     cone.n.setCoordinates(-1/sqrt(3), 1/sqrt(3), -1/sqrt(3));

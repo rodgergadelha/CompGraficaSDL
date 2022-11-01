@@ -18,77 +18,13 @@ public:
 
         for(int i = 0; i < objectsSize; i++) {
             Object *object = objects.at(i);
-            std::vector<double> t = object->intersection(position, d);
+            double t = object->intersection(position, d);
             
-            if(t.empty()) continue;
-            
-            if(object->type == "sphere") {
-                double t1 = t.at(0);
-                double t2 = t.at(1);
-
-                if(t1 > 0 && t1 < closestT) {
-                    closestT = t1;
-                    closestObject = object;
-                }
-
-                if(t2 > 0 && t2 < closestT) {
-                    closestT = t2;
-                    closestObject = object;
-                }
+            if(t > 0 && t < closestT) {
+                closestT = t;
+                closestObject = object;
             }
-
-            if(object->type == "plane") {
-                double ti = t.at(0);
-
-                if(ti < closestT) {
-                    closestT = ti;
-                    closestObject = object;
-                }
-            }
-
-            if(object->type == "cilinder") {
-                double t1 = t.at(0);
-                if(t1 > 0 && t1 < closestT) {
-                    closestT = t1;
-                    closestObject = object;
-                }
-
-                double t2 = t.at(1);
-                if(t2 > 0 && t2 < closestT) {
-                    closestT = t2;
-                    closestObject = object;
-                }
-
-                double t3 = t.at(2);
-                if(t3 > 0 && t3 < closestT) {
-                    closestT = t3;
-                    closestObject = object;
-                }
-
-                double t4 = t.at(3);
-                if(t4 > 0 && t4 < closestT) {
-                    closestT = t4;
-                    closestObject = object;
-                }
- 
-            }
-
-            if(object->type == "cone") {
-                double t1 = t.at(0);
-                if(t1 > 0 && t1 < closestT) {
-                    closestT = t1;
-                    closestObject = object;
-                }
-
-                double t2 = t.at(1);
-                if(t2 > 0 && t2 < closestT) {
-                    closestT = t2;
-                    closestObject = object;
-                }
-            }
-            
         }
-
 
         if(closestObject == nullptr) {
             Vec3 bgColor(100, 100, 100);

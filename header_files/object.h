@@ -12,7 +12,7 @@ public:
     double shininess;
     std::string type;
 
-    virtual std::vector<double> intersection(Vec3 observer, Vec3 d) = 0;
+    virtual double intersection(Vec3 observer, Vec3 d) = 0;
 
     virtual Vec3 getNormal(Vec3 intersectionPoint, Vec3 d) = 0;
 
@@ -22,23 +22,14 @@ public:
         Vec3 l = pf_sub_pi / pf_sub_pi.getLength();
         
         for(auto object : objects) {
-            std::vector<double> t = object->intersection(position, l);
+            double t = object->intersection(position, l);
 
-            if(t.size() == 0 || object->type == "plane") continue;
+            if(t <= 0.0001 || object->type == "plane") continue;
 
-            double t1 = t.at(0);
-            double t2 = t.at(1);
-
-            if(t1 > 0.0001 && t1 < closestTShadow) {
-                closestTShadow = t1;
+            if(t < closestTShadow) {
+                closestTShadow = t;
                 closestObjectShadow = object;
             }
-
-            if(t2 > 0.0001 && t2 < closestTShadow) {
-                closestTShadow = t2;
-                closestObjectShadow = object;
-            }
-            
         }
 
         return closestTShadow < pf_sub_pi.getLength();

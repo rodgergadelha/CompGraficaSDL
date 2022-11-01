@@ -12,17 +12,16 @@ public:
     Plane basePlane, topPlane;
     double height, baseRadius;
 
-    std::vector<double> intersection(Vec3 observer, Vec3 d) {
+    double intersection(Vec3 observer, Vec3 d) {
         Vec3 v = (observer - baseCenter) - u*((observer - baseCenter) ^ u);
         Vec3 w = d - u*(d ^ u);
-        std::vector<double> t;
 
         double coefA = w ^ w;
         double coefB = 2 * (v ^ w);
         double coefC = (v ^ v) - (baseRadius * baseRadius);
         double delta = (coefB * coefB) - (4 * coefA * coefC);
 
-        if(delta < 0) return t;
+        if(delta < 0) return -1;
 
         double t1 = (-coefB + sqrt(delta))/(2*coefA);
         double t2 = (-coefB - sqrt(delta))/(2*coefA);
@@ -30,34 +29,39 @@ public:
         Vec3 intersectionPoint1 = observer + d*t1;
         Vec3 intersectionPoint2 = observer + d*t2;
 
-        t.push_back(std::numeric_limits<double>::infinity());
-        t.push_back(std::numeric_limits<double>::infinity());
-        t.push_back(std::numeric_limits<double>::infinity());
-        t.push_back(std::numeric_limits<double>::infinity());
+        double closestT = std::numeric_limits<double>::infinity();
         
         if (((intersectionPoint1 - baseCenter)^u) <= height
-        && ((intersectionPoint1 - baseCenter)^u) >= 0) {
-            t.at(0) = t1;
+        && ((intersectionPoint1 - baseCenter)^u) >= 0
+        && (t1 > 0 && t1 < closestT)) {
+            closestT = t1;
         }
         
         if (((intersectionPoint2 - baseCenter)^u) <= height
-        && ((intersectionPoint2 - baseCenter)^u) >= 0) {
-            t.at(1) = t2;
+        && ((intersectionPoint2 - baseCenter)^u) >= 0
+        && (t2 > 0 && t2 < closestT)) {
+            closestT = t2;
         }
 
-        std::vector<double> tBasePlane = basePlane.intersection(observer, d);
-        if(tBasePlane.size() > 0) {
-                Vec3 piBasePlane = observer + d * tBasePlane.at(0);
-            if((piBasePlane - baseCenter).getLength() <= baseRadius) t.at(2) = tBasePlane.at(0);
+        double tBasePlane = basePlane.intersection(observer, d);
+        if(tBasePlane > 0) {
+            Vec3 piBasePlane = observer + d * tBasePlane;
+            
+            if((piBasePlane - baseCenter).getLength() <= baseRadius
+            && (tBasePlane < closestT))
+                closestT = tBasePlane;
         }
 
-        std::vector<double> tTopPlane = topPlane.intersection(observer, d);
-        if(tTopPlane.size() > 0) {
-            Vec3 piTopPlane = observer + d * tTopPlane.at(0);
-            if((piTopPlane - baseCenter).getLength() <= baseRadius) t.at(3) = tTopPlane.at(0);
+        double tTopPlane = topPlane.intersection(observer, d);
+        if(tTopPlane > 0) {
+            Vec3 piTopPlane = observer + d * tTopPlane;
+            
+            if((piTopPlane - baseCenter).getLength() <= baseRadius
+            && (tTopPlane < closestT))
+                closestT = tTopPlane;
         }
 
-        return t;
+        return closestT;
     }
 
     std::vector<Vec3> getTMatrixNormal(Vec3 direction) {
