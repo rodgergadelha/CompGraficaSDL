@@ -1,10 +1,10 @@
+#ifndef OBSERVER_H
+#define OBSERVER_H
+
 #include "world.h"
 #include "screen.h"
 #include "sphere.h"
 #include <vector>
-
-#ifndef OBSERVER_H
-#define OBSERVER_H
 
 class Observer {
 public:

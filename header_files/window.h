@@ -1,7 +1,7 @@
-#include "vec3.h"
-
 #ifndef WINDOW_H
 #define WINDOW_H
+
+#include "vec3.h"
 
 class Window {
 public:

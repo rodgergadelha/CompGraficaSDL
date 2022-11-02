@@ -1,10 +1,10 @@
+#ifndef OBJECT_H
+#define OBJECT_H
+
 #include "vec3.h"
 #include "light.h"
 #include <string>
 #include <vector>
-
-#ifndef OBJECT_H
-#define OBJECT_H
 
 class Object {
 public:

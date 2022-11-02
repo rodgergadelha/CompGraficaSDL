@@ -1,11 +1,10 @@
+#ifndef SCREEN_H
+#define SCREEN_H
+
 #include <SDL2/SDL.h>
 #include <vector>
 #include "vec3.h"
 #include <iostream>
-
-
-#ifndef SCREEN_H
-#define SCREEN_H
 
 class Screen {
 public:
