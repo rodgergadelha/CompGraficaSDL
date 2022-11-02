@@ -16,6 +16,14 @@ public:
 
     virtual Vec3 getNormal(Vec3 intersectionPoint, Vec3 d) = 0;
 
+    virtual void translate(double tx, double ty, double tz) = 0;
+
+    virtual void rotateX(double angle) = 0;
+
+    virtual void rotateY(double angle) = 0;
+
+    virtual void rotateZ(double angle) = 0;
+
     bool checkShadow(Vec3 position, Vec3 pf_sub_pi, std::vector<Object*> objects) {
         double closestTShadow = std::numeric_limits<double>::infinity();
         Object* closestObjectShadow = nullptr;
@@ -24,15 +32,15 @@ public:
         for(auto object : objects) {
             double t = object->intersection(position, l);
 
-            if(t <= 0.0001 || object->type == "plane") continue;
+            if(object == this || t <= 0.001 || object->type == "plane") continue;
 
-            if(t < closestTShadow) {
+            if(t < closestTShadow && t < pf_sub_pi.getLength()) {
                 closestTShadow = t;
                 closestObjectShadow = object;
             }
         }
 
-        return closestTShadow < pf_sub_pi.getLength();
+        return closestObjectShadow != nullptr;
     }
 
     Vec3 computeLighting(Vec3 intersectionPoint,
