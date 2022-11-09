@@ -19,21 +19,21 @@ public:
         double closestT = std::numeric_limits<double>::infinity();
 
         for(auto face : faces) {
-            //if((face.getNormal() ^ direction) > 0) continue;
+            Vec3 n = face.getNormal();
 
             double t = face.intersection(observer, direction);
 
             if(t > 0 && t < closestT) {
                 closestT = t;
                 Vec3 n = face.getNormal();
-                normal.setCoordinates(n.x, n.y, n.z);
+                this->normal.setCoordinates(n.x, n.y, n.z);
             }
         }
-        
+
         return closestT;
     }
 
-    Vec3 getNormal(Vec3 intersectionPoint, Vec3 d) { return normal; }
+    Vec3 getNormal(Vec3 intersectionPoint, Vec3 d) { return this->normal; }
 
 };
 

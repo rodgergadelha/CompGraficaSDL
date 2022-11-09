@@ -142,11 +142,10 @@ int main(int argv, char** args) {
     plane2.ka.setCoordinates(0.8, 0.8, 0.8);
     plane2.shininess = 1;
 
-    Cube cube(30);
-    cube.center.setCoordinates(0, 0, -100);
+    Cube cube(40, *new Vec3(0, 40, -100));
     cube.color.setCoordinates(255, 0, 0);
     cube.kd.setCoordinates(0.9, 0.9, 0.9);
-    cube.ke.setCoordinates(0, 0, 0);
+    cube.ke.setCoordinates(0.5, 0.5, 0.5);
     cube.ka.setCoordinates(0.8, 0.8, 0.8);
     cube.shininess = 10;
 
