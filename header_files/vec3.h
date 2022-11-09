@@ -54,6 +54,12 @@ class Vec3 {
             return result;
         }
 
+        // Produto vetorial
+        Vec3 cross(Vec3 v) {
+            Vec3 result((y * v.z) - (z * v.y), (z * v.x) - (x * v.z), (x * v.y) - (y * v.x));
+            return result;
+        }
+
         // static methods
         static Vec3 matrixToVec3(Matrix m) {
             Vec3 result(m.getElementAt(0,0), m.getElementAt(1,0), m.getElementAt(2,0), m.getElementAt(3,0));

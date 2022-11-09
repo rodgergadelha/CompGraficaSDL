@@ -16,13 +16,13 @@ public:
 
     virtual Vec3 getNormal(Vec3 intersectionPoint, Vec3 d) = 0;
 
-    virtual void translate(double tx, double ty, double tz) = 0;
+    // virtual void translate(double tx, double ty, double tz) = 0;
 
-    virtual void rotateX(double angle) = 0;
+    // virtual void rotateX(double angle) = 0;
 
-    virtual void rotateY(double angle) = 0;
+    // virtual void rotateY(double angle) = 0;
 
-    virtual void rotateZ(double angle) = 0;
+    // virtual void rotateZ(double angle) = 0;
 
     bool checkShadow(Vec3 position, Vec3 pf_sub_pi, std::vector<Object*> objects) {
         double closestTShadow = std::numeric_limits<double>::infinity();

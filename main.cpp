@@ -3,6 +3,7 @@
 #include "header_files/plane.h"
 #include "header_files/cilinder.h"
 #include "header_files/cone.h"
+#include "header_files/cube.h"
 
 int main(int argv, char** args) {
     Screen screen(500, 500);
@@ -141,14 +142,23 @@ int main(int argv, char** args) {
     plane2.ka.setCoordinates(0.8, 0.8, 0.8);
     plane2.shininess = 1;
 
+    Cube cube(30);
+    cube.center.setCoordinates(0, 0, -100);
+    cube.color.setCoordinates(255, 0, 0);
+    cube.kd.setCoordinates(0.9, 0.9, 0.9);
+    cube.ke.setCoordinates(0, 0, 0);
+    cube.ka.setCoordinates(0.8, 0.8, 0.8);
+    cube.shininess = 10;
+
     world.window = window;
-    world.objects.push_back(&cone);
-    world.objects.push_back(&hat);
-    world.objects.push_back(&hatTop);
-    world.objects.push_back(&sphere);
-    world.objects.push_back(&sphere2);
-    world.objects.push_back(&eye1);
-    world.objects.push_back(&eye2);
+    // world.objects.push_back(&cone);
+    // world.objects.push_back(&hat);
+    // world.objects.push_back(&hatTop);
+    // world.objects.push_back(&sphere);
+    // world.objects.push_back(&sphere2);
+    // world.objects.push_back(&eye1);
+    // world.objects.push_back(&eye2);
+    world.objects.push_back(&cube);
     world.objects.push_back(&plane);
     world.objects.push_back(&plane2);
     world.lights.push_back(pontualLight);
