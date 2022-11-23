@@ -11,7 +11,7 @@
 
 class MeshObject : public Object {
 public:
-    Vec3 center, normal;
+    Vec3 normal;
     std::vector<Vec3*> vertices;
     std::vector<Face*> faces;
 
@@ -35,7 +35,7 @@ public:
 
     Vec3 getNormal(Vec3 intersectionPoint, Vec3 d) { return this->normal; }
 
-    void translate(double tx, double ty, double tz) {
+     void translate(double tx, double ty, double tz) override {
         Matrix t = Matrix::identity(4, 4);
         t.setElementAt(0, 3, tx);
         t.setElementAt(1, 3, ty);
@@ -52,7 +52,7 @@ public:
         this->center.setCoordinates(translatedCenter.getElementAt(0,0), translatedCenter.getElementAt(1,0), translatedCenter.getElementAt(2,0));
     }
 
-    void rotateX(double angle) {
+    void rotateX(double angle) override {
         double radianAngle = angle * (M_PI/180);
         Matrix r = Matrix::identity(4, 4);
         r.setElementAt(1, 1, cos(radianAngle));
@@ -71,7 +71,7 @@ public:
         this->center = Vec3(rotatedCenter.getElementAt(0,0), rotatedCenter.getElementAt(1,0), rotatedCenter.getElementAt(2,0));
     }
 
-    void rotateY(double angle) {
+    void rotateY(double angle) override {
         double radianAngle = angle * (M_PI/180);
         Matrix r = Matrix::identity(4, 4);
         r.setElementAt(0, 0, cos(radianAngle));
@@ -91,7 +91,7 @@ public:
     
     }
 
-    void rotateZ(double angle) {
+    void rotateZ(double angle) override {
         double radianAngle = angle * (M_PI/180);
         Matrix r = Matrix::identity(4, 4);
         r.setElementAt(0, 0, cos(radianAngle));
@@ -109,6 +109,31 @@ public:
         Matrix rotatedCenter = r * centerMatrix;
         this->center.setCoordinates(rotatedCenter.getElementAt(0,0), rotatedCenter.getElementAt(1,0), rotatedCenter.getElementAt(2,0));
     
+    }
+
+    void transform(Matrix m) override {
+        for(Vec3 *&v : this->vertices) {
+            Matrix vertexMatrix = Vec3::vec3ToMatrix(*v);
+            Matrix transformedVertex = m * vertexMatrix;
+            v->setCoordinates(transformedVertex.getElementAt(0,0),
+                            transformedVertex.getElementAt(1,0),
+                            transformedVertex.getElementAt(2,0));
+        }
+        
+        Matrix centerMatrix = Vec3::vec3ToMatrix(this->center);
+        Matrix transformedCenter = m * centerMatrix;
+        this->center.setCoordinates(transformedCenter.getElementAt(0,0),
+                                    transformedCenter.getElementAt(1,0),
+                                    transformedCenter.getElementAt(2,0));
+
+        Matrix normalMatrix = Vec3::vec3ToMatrix(this->normal);
+        normalMatrix.setElementAt(3, 0, 0);
+        Matrix transformedNormal = m * normalMatrix;
+        this->normal.setCoordinates(transformedNormal.getElementAt(0,0),
+                                    transformedNormal.getElementAt(1,0),
+                                    transformedNormal.getElementAt(2,0));
+        Vec3 normalUnit = this->normal/this->normal.getLength();
+        this->normal.setCoordinates(normalUnit.x, normalUnit.y, normalUnit.z);
     }
 
 };

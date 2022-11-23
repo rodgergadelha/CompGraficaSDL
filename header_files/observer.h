@@ -4,6 +4,7 @@
 #include "world.h"
 #include "screen.h"
 #include "sphere.h"
+#include "matrix.h"
 #include <vector>
 
 class Observer {
@@ -34,7 +35,7 @@ public:
         Vec3 intersectionPoint = position + (d * closestT);
         Vec3 lighting = closestObject->computeLighting(intersectionPoint,
         d, world.lights, objects);
-        Vec3 objectColor = closestObject->color;
+        Vec3 objectColor = closestObject->getColor();
 
         return objectColor % lighting;
     }
@@ -71,6 +72,8 @@ public:
             }
         }
     }
+
+    
 
 };
 

@@ -9,7 +9,6 @@
 
 class Sphere : public Object {
 public:
-    Vec3 center;
     double radius;
 
     double intersection(Vec3 observer, Vec3 d) {
@@ -39,54 +38,12 @@ public:
         return (intersectionPoint - center) / radius;
     }
 
-    void translate(double tx, double ty, double tz) {
-        Matrix t = Matrix::identity(4, 4);
-        t.setElementAt(0, 3, tx);
-        t.setElementAt(1, 3, ty);
-        t.setElementAt(2, 3, tz);
-        
-        Matrix centerMatrix = Vec3::vec3ToMatrix(center);
-        Matrix translatedCenter = t * centerMatrix;
-        this->center.setCoordinates(translatedCenter.getElementAt(0,0), translatedCenter.getElementAt(1,0), translatedCenter.getElementAt(2,0));
-    }
-
-    void rotateX(double angle) {
-        double radianAngle = angle * (M_PI/180);
-        Matrix r = Matrix::identity(4, 4);
-        r.setElementAt(1, 1, cos(radianAngle));
-        r.setElementAt(1, 2, -sin(radianAngle));
-        r.setElementAt(2, 1, sin(radianAngle));
-        r.setElementAt(2, 2, cos(radianAngle));
-        
-        Matrix centerMatrix = Vec3::vec3ToMatrix(center);
-        Matrix rotatedCenter = r * centerMatrix;
-        this->center.setCoordinates(rotatedCenter.getElementAt(0,0), rotatedCenter.getElementAt(1,0), rotatedCenter.getElementAt(2,0));
-    }
-
-    void rotateY(double angle) {
-        double radianAngle = angle * (M_PI/180);
-        Matrix r = Matrix::identity(4, 4);
-        r.setElementAt(0, 0, cos(radianAngle));
-        r.setElementAt(0, 2, sin(radianAngle));
-        r.setElementAt(1, 0, -sin(radianAngle));
-        r.setElementAt(1, 2, cos(radianAngle));
-        
-        Matrix centerMatrix = Vec3::vec3ToMatrix(center);
-        Matrix rotatedCenter = r * centerMatrix;
-        this->center.setCoordinates(rotatedCenter.getElementAt(0,0), rotatedCenter.getElementAt(1,0), rotatedCenter.getElementAt(2,0));
-    }
-
-    void rotateZ(double angle) {
-        double radianAngle = angle * (M_PI/180);
-        Matrix r = Matrix::identity(4, 4);
-        r.setElementAt(0, 0, cos(radianAngle));
-        r.setElementAt(0, 1, -sin(radianAngle));
-        r.setElementAt(1, 0, sin(radianAngle));
-        r.setElementAt(1, 1, cos(radianAngle));
-        
-        Matrix centerMatrix = Vec3::vec3ToMatrix(center);
-        Matrix rotatedCenter = r * centerMatrix;
-        this->center.setCoordinates(rotatedCenter.getElementAt(0,0), rotatedCenter.getElementAt(1,0), rotatedCenter.getElementAt(2,0));
+    void transform(Matrix m) {
+        Matrix centerMatrix = Vec3::vec3ToMatrix(this->center);
+        Matrix transformedCenter = m * centerMatrix;
+        this->center.setCoordinates(transformedCenter.getElementAt(0,0),
+                                    transformedCenter.getElementAt(1,0),
+                                    transformedCenter.getElementAt(2,0));
     }
 
 };

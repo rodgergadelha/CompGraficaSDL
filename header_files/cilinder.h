@@ -9,12 +9,12 @@
 
 class Cilinder : public Object {
 public:
-    Vec3 baseCenter, u;
+    Vec3 u;
     Plane basePlane, topPlane;
     double height, baseRadius;
 
     double intersection(Vec3 observer, Vec3 d) {
-        Vec3 v = (observer - baseCenter) - u*((observer - baseCenter) ^ u);
+        Vec3 v = (observer - center) - u*((observer - center) ^ u);
         Vec3 w = d - u*(d ^ u);
 
         double coefA = w ^ w;
@@ -32,14 +32,14 @@ public:
 
         double closestT = std::numeric_limits<double>::infinity();
         
-        if (((intersectionPoint1 - baseCenter)^u) < height
-        && ((intersectionPoint1 - baseCenter)^u) > 0
+        if (((intersectionPoint1 - center)^u) < height
+        && ((intersectionPoint1 - center)^u) > 0
         && (t1 > 0 && t1 < closestT)) {
             closestT = t1;
         }
         
-        if (((intersectionPoint2 - baseCenter)^u) < height
-        && ((intersectionPoint2 - baseCenter)^u) > 0
+        if (((intersectionPoint2 - center)^u) < height
+        && ((intersectionPoint2 - center)^u) > 0
         && (t2 > 0 && t2 < closestT)) {
             closestT = t2;
         }
@@ -48,7 +48,7 @@ public:
         if(tBasePlane > 0) {
             Vec3 piBasePlane = observer + d * tBasePlane;
             
-            if((piBasePlane - baseCenter).getLength() <= baseRadius
+            if((piBasePlane - center).getLength() <= baseRadius
             && (tBasePlane < closestT))
                 closestT = tBasePlane;
         }
@@ -57,7 +57,7 @@ public:
         if(tTopPlane > 0) {
             Vec3 piTopPlane = observer + d * tTopPlane;
             
-            if((piTopPlane - baseCenter).getLength() <= baseRadius
+            if((piTopPlane - center).getLength() <= baseRadius
             && (tTopPlane < closestT))
                 closestT = tTopPlane;
         }
@@ -88,7 +88,7 @@ public:
         if(((intersectionPoint - basePlane.pPi) ^ u) < 0.0001) return basePlane.normal;
 
         std::vector <Vec3> tMatrix = getTMatrixNormal(u);
-        Vec3 ipMinusBc = intersectionPoint - baseCenter;
+        Vec3 ipMinusBc = intersectionPoint - center;
         Vec3 bigNormal = Vec3((tMatrix.at(0).x * ipMinusBc.x) + (tMatrix.at(1).x * ipMinusBc.y) + (tMatrix.at(2).x * ipMinusBc.z),
         (tMatrix.at(0).y * ipMinusBc.x) + (tMatrix.at(1).y * ipMinusBc.y) + (tMatrix.at(2).y * ipMinusBc.z),
         (tMatrix.at(0).z * ipMinusBc.x) + (tMatrix.at(1).z * ipMinusBc.y) + (tMatrix.at(2).z * ipMinusBc.z));
@@ -96,54 +96,21 @@ public:
         return bigNormal / bigNormal.getLength();
     }
 
-    void translate(double tx, double ty, double tz) {
-        Matrix t = Matrix::identity(4, 4);
-        t.setElementAt(0, 3, tx);
-        t.setElementAt(1, 3, ty);
-        t.setElementAt(2, 3, tz);
-        
-        Matrix centerMatrix = Vec3::vec3ToMatrix(baseCenter);
-        Matrix translatedCenter = t * centerMatrix;
-        this->baseCenter.setCoordinates(translatedCenter.getElementAt(0,0), translatedCenter.getElementAt(1,0), translatedCenter.getElementAt(2,0));
-    }
+    void transform(Matrix m) {
+        Matrix centerMatrix = Vec3::vec3ToMatrix(this->center);
+        Matrix transformedCenter = m * centerMatrix;
+        this->center.setCoordinates(transformedCenter.getElementAt(0,0),
+                                    transformedCenter.getElementAt(1,0),
+                                    transformedCenter.getElementAt(2,0));
 
-    void rotateX(double angle) {
-        double radianAngle = angle * (M_PI/180);
-        Matrix r = Matrix::identity(4, 4);
-        r.setElementAt(1, 1, cos(radianAngle));
-        r.setElementAt(1, 2, -sin(radianAngle));
-        r.setElementAt(2, 1, sin(radianAngle));
-        r.setElementAt(2, 2, cos(radianAngle));
-        
-        Matrix centerMatrix = Vec3::vec3ToMatrix(baseCenter);
-        Matrix rotatedCenter = r * centerMatrix;
-        this->baseCenter.setCoordinates(rotatedCenter.getElementAt(0,0), rotatedCenter.getElementAt(1,0), rotatedCenter.getElementAt(2,0));
-    }
-
-    void rotateY(double angle) {
-        double radianAngle = angle * (M_PI/180);
-        Matrix r = Matrix::identity(4, 4);
-        r.setElementAt(0, 0, cos(radianAngle));
-        r.setElementAt(0, 2, sin(radianAngle));
-        r.setElementAt(1, 0, -sin(radianAngle));
-        r.setElementAt(1, 2, cos(radianAngle));
-        
-        Matrix centerMatrix = Vec3::vec3ToMatrix(baseCenter);
-        Matrix rotatedCenter = r * centerMatrix;
-        this->baseCenter.setCoordinates(rotatedCenter.getElementAt(0,0), rotatedCenter.getElementAt(1,0), rotatedCenter.getElementAt(2,0));
-    }
-
-    void rotateZ(double angle) {
-        double radianAngle = angle * (M_PI/180);
-        Matrix r = Matrix::identity(4, 4);
-        r.setElementAt(0, 0, cos(radianAngle));
-        r.setElementAt(0, 1, -sin(radianAngle));
-        r.setElementAt(1, 0, sin(radianAngle));
-        r.setElementAt(1, 1, cos(radianAngle));
-        
-        Matrix centerMatrix = Vec3::vec3ToMatrix(baseCenter);
-        Matrix rotatedCenter = r * centerMatrix;
-        this->baseCenter.setCoordinates(rotatedCenter.getElementAt(0,0), rotatedCenter.getElementAt(1,0), rotatedCenter.getElementAt(2,0));
+        Matrix normalMatrix = Vec3::vec3ToMatrix(this->u);
+        normalMatrix.setElementAt(3, 0, 0);
+        Matrix transformedNormal = m * normalMatrix;
+        this->u.setCoordinates(transformedNormal.getElementAt(0,0),
+                                    transformedNormal.getElementAt(1,0),
+                                    transformedNormal.getElementAt(2,0));
+        Vec3 normalUnit = this->u/this->u.getLength();
+        this->u.setCoordinates(normalUnit.x, normalUnit.y, normalUnit.z);
     }
 
 };

@@ -9,17 +9,32 @@ public:
     std::vector<std::vector<double>> elements;
     int rows, columns;
 
-    Matrix(int rows, int columns) {
-        for(int i = 0; i < rows; i++) {
-            std::vector<double> new_row;
-            elements.push_back(new_row);
-            for(int j = 0; j < columns; j++) {
-                elements.at(i).push_back(0);
+    Matrix(int rows, int columns) : rows(rows), columns(columns) {
+        this->elements.resize(rows, std::vector<double>(columns));
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < columns; j++)
+            {
+                this->elements[i][j] = 0;
             }
         }
-        this->rows = rows;
-        this->columns = columns;
     }
+
+    Matrix(int rows, int columns, std::vector<double> elements_vector) :  rows(rows), columns(columns){
+
+        this->elements.resize(rows, std::vector<double>(columns));
+        
+        int elements_vector_size = elements_vector.size();
+
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < columns; j++)
+            {
+                if(i*rows + j >= elements_vector_size) this->elements[i][j] = 0; 
+                else this->elements[i][j] = elements_vector[i*rows + j];
+            }
+        }
+    } 
 
     void setElementAt(int row, int column, double element) {
         elements.at(row).at(column) = element;

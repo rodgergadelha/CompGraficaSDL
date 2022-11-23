@@ -10,7 +10,27 @@ class World {
 public:
     Window window;
     std::vector<Object*> objects;
-    std::vector<Light> lights;
+    std::vector<Light*> lights;
+
+    void applyWorldToCamera(Vec3 eye, Vec3 lookAt, Vec3 viewUp) {
+        Vec3 kc = (eye - lookAt)/(eye - lookAt).getLength();
+        Vec3 i = (viewUp - eye).cross(kc);
+        Vec3 ic = i/i.getLength();
+        Vec3 jc = kc.cross(ic);
+        Matrix wtc(4, 4, std::vector<double> {ic.x, ic.y, ic.z, -(ic ^ eye),
+                                            jc.x, jc.y, jc.z, -(jc ^ eye),
+                                            kc.x, kc.y, kc.z, -(kc ^ eye),
+                                            0, 0, 0, 1});
+        
+        for(auto object : this->objects) {
+            object->transform(wtc);
+        }
+
+        for(auto light : this->lights) {
+            light->transform(wtc);
+        }
+
+    }
 };
 
 #endif

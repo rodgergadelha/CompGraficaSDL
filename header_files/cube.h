@@ -19,14 +19,14 @@ public:
 
     void update_cube() {
         this->vertices = {  
-            new Vec3(center.x - size/2, center.y - size/2, center.z + size/2),
-            new Vec3(center.x + size/2, center.y - size/2, center.z + size/2),
-            new Vec3(center.x + size/2, center.y + size/2, center.z + size/2),
-            new Vec3(center.x - size/2, center.y + size/2, center.z + size/2),
-            new Vec3(center.x - size/2, center.y + size/2, center.z - size/2),
-            new Vec3(center.x - size/2, center.y - size/2, center.z - size/2),
-            new Vec3(center.x + size/2, center.y - size/2, center.z - size/2),
-            new Vec3(center.x + size/2, center.y + size/2, center.z - size/2)
+            new Vec3(center.x - size/2, center.y - size/2, center.z + size/2, 0),
+            new Vec3(center.x + size/2, center.y - size/2, center.z + size/2, 0),
+            new Vec3(center.x + size/2, center.y + size/2, center.z + size/2, 0),
+            new Vec3(center.x - size/2, center.y + size/2, center.z + size/2, 0),
+            new Vec3(center.x - size/2, center.y + size/2, center.z - size/2, 0),
+            new Vec3(center.x - size/2, center.y - size/2, center.z - size/2, 0),
+            new Vec3(center.x + size/2, center.y - size/2, center.z - size/2, 0),
+            new Vec3(center.x + size/2, center.y + size/2, center.z - size/2, 0)
         };
 
         this->faces = {
