@@ -29,7 +29,7 @@ public:
         return (iE + iD);
     }
 
-    void transform(Matrix m) override {
+    void transform(Matrix m) {
         Matrix normalMatrix = Vec3::vec3ToMatrix(this->direction);
         normalMatrix.setElementAt(3, 0, 0);
         Matrix transformedNormal = m * normalMatrix;

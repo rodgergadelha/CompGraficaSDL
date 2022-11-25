@@ -125,15 +125,6 @@ public:
         this->center.setCoordinates(transformedCenter.getElementAt(0,0),
                                     transformedCenter.getElementAt(1,0),
                                     transformedCenter.getElementAt(2,0));
-
-        Matrix normalMatrix = Vec3::vec3ToMatrix(this->normal);
-        normalMatrix.setElementAt(3, 0, 0);
-        Matrix transformedNormal = m * normalMatrix;
-        this->normal.setCoordinates(transformedNormal.getElementAt(0,0),
-                                    transformedNormal.getElementAt(1,0),
-                                    transformedNormal.getElementAt(2,0));
-        Vec3 normalUnit = this->normal/this->normal.getLength();
-        this->normal.setCoordinates(normalUnit.x, normalUnit.y, normalUnit.z);
     }
 
 };

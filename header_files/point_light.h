@@ -25,6 +25,14 @@ public:
         return (iE + iD);
     }
 
+    void transform(Matrix m) {
+        Matrix positionMatrix = Vec3::vec3ToMatrix(this->position);
+        Matrix transformedPosition = m * positionMatrix;
+        this->position.setCoordinates(transformedPosition.getElementAt(0,0),
+                                    transformedPosition.getElementAt(1,0),
+                                    transformedPosition.getElementAt(2,0));
+    }
+
 };
 
 #endif

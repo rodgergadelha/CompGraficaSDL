@@ -6,12 +6,13 @@
 #include "sphere.h"
 #include "matrix.h"
 #include <vector>
+#include <tuple>
 
 class Observer {
 public:
     Vec3 position;
 
-    Vec3 lookToWindow(Vec3 position, Vec3 d, World world) {
+    std::tuple<Object*, Vec3> lookToWindow(Vec3 position, Vec3 d, World world, int row, int column) {
         Object *closestObject = nullptr;
         double closestT = std::numeric_limits<double>::infinity();
         std::vector<Object*> objects = world.objects;
@@ -29,18 +30,18 @@ public:
 
         if(closestObject == nullptr) {
             Vec3 bgColor(100, 100, 100);
-            return bgColor;
+            return std::make_tuple(closestObject, bgColor);;
         }
 
         Vec3 intersectionPoint = position + (d * closestT);
         Vec3 lighting = closestObject->computeLighting(intersectionPoint,
         d, world.lights, objects);
-        Vec3 objectColor = closestObject->getColor();
+        Vec3 objectColor = closestObject->getColor(row, column, intersectionPoint);
 
-        return objectColor % lighting;
+        return std::make_tuple(closestObject, objectColor % lighting);
     }
 
-    void paintScreen(World world, Screen *screen) {
+    void paintScreen(World world, Screen *screen, bool isOrtho) {
         double x, y;
         Window window = world.window;
         double dx = window.width/screen->width;
@@ -51,9 +52,13 @@ public:
             for(int column = 0; column < screen->width; column++) {
                 x = -window.width/2 + dx/2 + dx * column;
 
+                if(isOrtho) position = Vec3(x, y, 0);
+
                 Vec3 view(x, y, -window.distanceFromObserver);
                 Vec3 d = view - position;
-                Vec3 color = lookToWindow(position, d/d.getLength(), world);
+                std::tuple<Object*, Vec3> objectAndColor = lookToWindow(position, d/d.getLength(), world, row, column);
+                Object* object = get<0>(objectAndColor);
+                Vec3 color = get<1>(objectAndColor);
 
                 if(color.x > 255) {
                     color.x = 255;
@@ -67,7 +72,7 @@ public:
                     color.z = 255;
                 }
 
-                screen->pixel(color, column, row);
+                screen->pixel(object, color, column, row);
 
             }
         }

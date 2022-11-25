@@ -20,13 +20,14 @@ public:
     double shininess;
     std::string type;
     std::vector<unsigned char> image;
+    int image_w, image_h;
 
     virtual double intersection(Vec3 observer, Vec3 d) = 0;
 
-    virtual Vec3 getTextureColor() {return Vec3(0, 0, 0);}
+    virtual Vec3 getTextureColor(int row, int column, Vec3 intersectionPoint) {return Vec3(0, 0, 0);}
 
-    virtual Vec3 getColor() {
-        if(this->image.size() > 0) return getTextureColor();
+    virtual Vec3 getColor(int row, int column, Vec3 intersectionPoint) {
+        if(this->image.size() > 0) return getTextureColor(row, column, intersectionPoint);
         return this->color;
     }
 
@@ -107,19 +108,75 @@ public:
         transform(r);
     }
 
+    virtual void scale(double sx, double sy, double sz) {
+        Matrix s(4, 4, std::vector<double> {sx, 0, 0, 0,
+                                            0, sy, 0, 0,
+                                            0, 0, sz, 0,
+                                            0, 0, 0, 1});
+        transform(s);
+    }
+
+    virtual void shearingYX(double angle) {
+        Matrix s(4, 4, std::vector<double> {1, tan(angle), 0, 0,
+                                            0, 1, 0, 0,
+                                            0, 0, 1, 0,
+                                            0, 0, 0, 1});
+        transform(s);
+    }
+
+    virtual void shearingXY(double angle) {
+        Matrix s(4, 4, std::vector<double> {1, 0, 0, 0,
+                                            tan(angle), 1, 0, 0,
+                                            0, 0, 1, 0,
+                                            0, 0, 0, 1});
+        transform(s);
+    }
+
+    virtual void shearingYZ(double angle) {
+        Matrix s(4, 4, std::vector<double> {1, 0, 0, 0,
+                                            0, 1, 0, 0,
+                                            0, tan(angle), 1, 0,
+                                            0, 0, 0, 1});
+        transform(s);
+    }
+
+    virtual void shearingZY(double angle) {
+        Matrix s(4, 4, std::vector<double> {1, 0, 0, 0,
+                                            0, 1, tan(angle), 0,
+                                            0, 0, 1, 0,
+                                            0, 0, 0, 1});
+        transform(s);
+    }
+
+    virtual void shearingXZ(double angle) {
+        Matrix s(4, 4, std::vector<double> {1, 0, 0, 0,
+                                            0, 1, 0, 0,
+                                            tan(angle), 0, 1, 0,
+                                            0, 0, 0, 1});
+        transform(s);
+    }
+
+    virtual void shearingZX(double angle) {
+        Matrix s(4, 4, std::vector<double> {1, 0, tan(angle), 0,
+                                            0, 1, 0, 0,
+                                            0, 0, 1, 0,
+                                            0, 0, 0, 1});
+        transform(s);
+    }
+
     virtual void transform(Matrix m) = 0;
 
     void loadImage(const std::string& filename) {
-        int x, y, n;
-        unsigned char* data = stbi_load(filename.c_str(), &x, &y, &n, 3);
+        int n;
+        unsigned char* data = stbi_load(filename.c_str(), &this->image_w, &this->image_h, &n, 3);
         
         if (data != nullptr) {
-            this->image = std::vector<unsigned char>(data, data + x * y * 3);
+            this->image = std::vector<unsigned char>(data, data + this->image_w * this->image_h * 3);
         }
         
         stbi_image_free(data);
 
-        if (data == nullptr) std::cout << "Falha ao carregar imagem.";
+        if (data == nullptr) std::cout << "Falha ao carregar imagem.\n";
     }
 
 };

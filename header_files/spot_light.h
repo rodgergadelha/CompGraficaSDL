@@ -13,7 +13,7 @@ public:
 
     SpotLight(Vec3 position, Vec3 spotPoint, double spotExponent, double cutoff) {
         this->position = position;
-        this->cutoff = cutoff;
+        this->cutoff = cutoff * M_PI/180;
         this->spotDirection = spotPoint - position;
         this->spotExponent = spotExponent;
     }
@@ -40,7 +40,7 @@ public:
         return (iE + iD) * pow(cosSpotDir, spotExponent);
     }
 
-    void transform(Matrix m) override {
+    void transform(Matrix m) {
         Matrix positionMatrix = Vec3::vec3ToMatrix(this->position);
         Matrix transformedPosition = m * positionMatrix;
         this->position.setCoordinates(transformedPosition.getElementAt(0,0),
@@ -48,6 +48,7 @@ public:
                                     transformedPosition.getElementAt(2,0));
 
         Matrix normalMatrix = Vec3::vec3ToMatrix(this->spotDirection);
+        normalMatrix.setElementAt(3, 0, 0);
         Matrix transformedNormal = m * normalMatrix;
         this->spotDirection.setCoordinates(transformedNormal.getElementAt(0,0),
                                     transformedNormal.getElementAt(1,0),

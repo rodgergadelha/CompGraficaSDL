@@ -44,8 +44,18 @@ public:
 
     }
 
-    Vec3 getTextureColor() override {
-        return Vec3();
+    Vec3 getTextureColor(int row, int column, Vec3 intersectionPoint) override {
+        int u = column % this->image_h;
+        int v = row % this->image_w;
+
+        const size_t RGB = 3;
+        size_t index = RGB * (v * this->image_w + u);
+
+        Vec3 rgbValues(static_cast<int>(this->image[index + 0]),
+                        static_cast<int>(this->image[index + 1]),
+                        static_cast<int>(this->image[index + 2]));
+
+        return rgbValues;
     }
 };
 

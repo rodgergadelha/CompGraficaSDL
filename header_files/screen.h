@@ -4,6 +4,9 @@
 #include <SDL2/SDL.h>
 #include <vector>
 #include "vec3.h"
+#include "world.h"
+#include "object.h"
+#include "light.h"
 #include <iostream>
 
 class Screen {
@@ -13,7 +16,9 @@ public:
     SDL_Renderer* renderer;
     std::vector<SDL_FPoint> points;
     std::vector<Vec3> colors;
+    std::vector<std::vector<Object*>> canvas_objects;
     int width, height;
+    int mouseX, mouseY;
 
     Screen(int width, int height) {
         this->width = width;
@@ -21,11 +26,13 @@ public:
         SDL_Init(SDL_INIT_VIDEO);
         SDL_CreateWindowAndRenderer(width, height, 0, &window, &renderer);
         SDL_RenderSetScale(renderer, 1, 1);
+        canvas_objects.resize(height, std::vector<Object*>(width));
     }
 
-    void pixel(Vec3 color, float x, float y) {
+    void pixel(Object* object, Vec3 color, float x, float y) {
         points.emplace_back(x, y);
         colors.push_back(color);
+        canvas_objects[x][y] = object;
     }
 
     void show() {
@@ -47,13 +54,35 @@ public:
         colors.clear();
     }
 
-    void input() {
+    void updateWindow() {
+        SDL_UpdateWindowSurface(window);
+    }
+
+    Object* picking(int row, int column) {
+        return canvas_objects[row][column];
+    }
+
+    bool input(World* world, bool isOrtho) {
         while(SDL_PollEvent(&e)) {
             if(e.type == SDL_QUIT) {
                 SDL_Quit();
                 exit(0);
             }
+
+            if(e.type == SDL_MOUSEBUTTONDOWN) {
+                SDL_GetMouseState(&mouseX, &mouseY);
+                Object* o = picking(mouseX, mouseY);
+                
+                if(o == nullptr) {std::cout << "Nenhum objeto selecionado."; return false;}
+                
+                o->translate(0, 0, -5);
+                std::cout << o->type << "\n";
+                
+                return true;
+            }
         }
+
+        return false;
     }
 
 };

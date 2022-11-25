@@ -4,6 +4,7 @@
 #include "header_files/cilinder.h"
 #include "header_files/cone.h"
 #include "header_files/cube.h"
+#include "header_files/icosahedron.h"
 #include "header_files/point_light.h"
 #include "header_files/ambient_light.h"
 #include "header_files/directional_light.h"
@@ -18,7 +19,7 @@ int main(int argv, char** args) {
     window.width = 60;
     window.heigth = 60;
     window.distanceFromObserver = 30;
-    window.center.setCoordinates(0, 0, -window.distanceFromObserver, 0);
+    window.center.setCoordinates(0, 0, -window.distanceFromObserver);
 
     PointLight pl;
     pl.position.setCoordinates(0, 80, -30);
@@ -27,16 +28,19 @@ int main(int argv, char** args) {
     AmbientLight al;
     al.intensity.setCoordinates(0.3, 0.3, 0.3);
 
-    DirectionalLight dl(Vec3(0, 1, 0));
+    DirectionalLight dl(Vec3(1, 1, -1));
     dl.intensity.setCoordinates(0.7, 0.7, 0.7);
 
-    SpotLight sl(Vec3(0, 40, 0), Vec3(0, 0, -50), 5, 0.5235987756);
+    SpotLight sl(Vec3(0, 30, 0), Vec3(0, 0, -50), 5, 30);
     sl.intensity.setCoordinates(0.7, 0.7, 0.7);
+
+    SpotLight sl2(Vec3(0, 40, 0), Vec3(0, 60, -50), 5, 30);
+    sl2.intensity.setCoordinates(0.7, 0.7, 0.7);
 
     Sphere sphere;
     sphere.type = "sphere";
-    sphere.radius = 25;
-    sphere.center.setCoordinates(0, -20, -70);
+    sphere.radius = 20;
+    sphere.center.setCoordinates(0, 5, -70);
     sphere.color.setCoordinates(255, 255, 255);
     sphere.kd.setCoordinates(0.9, 0.9, 0.9);
     sphere.ke.setCoordinates(0.4, 0.4, 0.4);
@@ -75,63 +79,72 @@ int main(int argv, char** args) {
     cone.basePlane.pPi.setCoordinates(cone.center.x, cone.center.y, cone.center.z);
     cone.basePlane.normal.setCoordinates(-cone.n.x, -cone.n.y, -cone.n.z);
 
-//     Plano 1: Chão
-// >> Ponto P_pi = (0, -150cm, 0)
-// >> Vetor unitário normal ao plano: n = (0, 1., 0.)
-// >> Kd = Ke = Ka = Textura de madeira
+    Plane floor;
+    floor.type = "plane";
+    floor.pPi.setCoordinates(0, -40, 0);
+    floor.normal.setCoordinates(0, 1, 0);
+    floor.color.setCoordinates(255, 255, 255);
+    floor.kd.setCoordinates(0.9, 0.9, 0.9);
+    floor.ke.setCoordinates(0, 0, 0);
+    floor.ka.setCoordinates(0.9, 0.9, 0.9);
+    floor.shininess = 1;
+    floor.loadImage("textures/wood.jpg");
 
+    Plane back_wall;
+    back_wall.type = "plane";
+    back_wall.pPi.setCoordinates(0, 0, -200);
+    back_wall.normal.setCoordinates(0, 0, 1);
+    back_wall.color.setCoordinates(48, 162, 255);
+    back_wall.kd.setCoordinates(0.9, 0.9, 0.9);
+    back_wall.ke.setCoordinates(0, 0, 0);
+    back_wall.ka.setCoordinates(0.8, 0.8, 0.8);
+    back_wall.shininess = 1;
 
-    Plane plane;
-    plane.type = "plane";
-    plane.pPi.setCoordinates(0, -60, 0);
-    plane.normal.setCoordinates(0, 1, 0);
-    plane.color.setCoordinates(255, 255, 255);
-    plane.kd.setCoordinates(0.9, 0.9, 0.9);
-    plane.ke.setCoordinates(0, 0, 0);
-    plane.ka.setCoordinates(0.9, 0.9, 0.9);
-    plane.shininess = 1;
-
-    Plane plane2;
-    plane2.type = "plane";
-    plane2.pPi.setCoordinates(0, 0, -200);
-    plane2.normal.setCoordinates(0, 0, 1);
-    plane2.color.setCoordinates(48, 162, 255);
-    plane2.kd.setCoordinates(0.9, 0.9, 0.9);
-    plane2.ke.setCoordinates(0, 0, 0);
-    plane2.ka.setCoordinates(0.8, 0.8, 0.8);
-    plane2.shininess = 1;
-
-    Cube cube(30, Vec3(0, 0, 0));
+    Cube cube(5, Vec3(0, 0, 0));
     cube.color.setCoordinates(255, 0, 0);
     cube.kd.setCoordinates(0.9, 0.9, 0.9);
     cube.ke.setCoordinates(0.6, 0.6, 0.6);
     cube.ka.setCoordinates(0.8, 0.8, 0.8);
     cube.shininess = 15;
-    cube.rotateX(30);
+    //cube.rotateY(45);
+    //cube.translate(0, 0, -50);
+    cube.scale(4, 4, 4);
     cube.translate(0, 0, -50);
+
+    Icosahedron ico(30, Vec3(0, 0, -50));
+    ico.type = "icosahedron";
+    ico.color.setCoordinates(255, 0, 0);
+    ico.kd.setCoordinates(0.9, 0.9, 0.9);
+    ico.ke.setCoordinates(0.6, 0.6, 0.6);
+    ico.ka.setCoordinates(0.8, 0.8, 0.8);
+    ico.shininess = 20;
 
     world.window = window;
     //world.objects.push_back(&cone);
-    // world.objects.push_back(&hat);
-    // world.objects.push_back(&hatTop);
     //world.objects.push_back(&sphere);
-    // world.objects.push_back(&sphere2);
-    // world.objects.push_back(&eye1);
-    // world.objects.push_back(&eye2);
-    world.objects.push_back(&cube);
-    world.objects.push_back(&plane);
-    world.objects.push_back(&plane2);
+    world.objects.push_back(&ico);
+    world.objects.push_back(&floor);
+    world.objects.push_back(&back_wall);
     world.lights.push_back(&sl);
+    //world.lights.push_back(&pl);
     world.lights.push_back(&al);
 
+    bool isOrtho = false;
+
     Observer observer;
-    observer.position.setCoordinates(0, 0, 0, 0);
-    world.applyWorldToCamera(Vec3(0, 40, 0), Vec3(0, 0, -50), Vec3(0, 50, 0));
-    observer.paintScreen(world, &screen);
+    observer.position.setCoordinates(0, 0, 0);
+    Vec3 eye(0, 25, 0);
+    world.applyWorldToCamera(eye, Vec3(0, 0, -50), Vec3(eye.x, eye.y + 10, eye.z));
+    observer.paintScreen(world, &screen, isOrtho);
+    
 
     while(true) {
         screen.show();
-        screen.input();
+        if(screen.input(&world, isOrtho)) {
+            screen.clear();
+            screen.updateWindow();
+            observer.paintScreen(world, &screen, isOrtho);
+        }
     }
 
     return 0;

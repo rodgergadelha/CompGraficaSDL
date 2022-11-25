@@ -8,6 +8,13 @@ class Vec3 {
     public:
         double x, y, z, a;
 
+        Vec3(const Vec3& v) {
+            this->x = v.x;
+            this->y = v.y;
+            this->z = v.z;
+            this->a = v.a;
+        }
+
         Vec3(double x = 0, double y = 0, double z = 0, double a = 1) {
             setCoordinates(x, y, z, a);
         }

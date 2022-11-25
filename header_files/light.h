@@ -17,13 +17,7 @@ public:
 
     virtual Vec3 getL(Vec3 intersectionPoint) {return this->position - intersectionPoint;}
 
-    virtual void transform(Matrix m) {
-        Matrix positionMatrix = Vec3::vec3ToMatrix(this->position);
-        Matrix transformedPosition = m * positionMatrix;
-        this->position.setCoordinates(transformedPosition.getElementAt(0,0),
-                                    transformedPosition.getElementAt(1,0),
-                                    transformedPosition.getElementAt(2,0));
-    }
+    virtual void transform(Matrix m) = 0;
 };
 
 #endif

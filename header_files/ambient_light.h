@@ -15,7 +15,7 @@ public:
         return this->intensity % object->ka;
     }
 
-    void transform(Matrix m) override {return;}
+    void transform(Matrix m) {return;}
 };
 
 #endif
