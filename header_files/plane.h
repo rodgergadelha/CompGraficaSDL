@@ -11,6 +11,10 @@ class Plane : public Object{
 public:
     Vec3 pPi, normal;
 
+    Plane() {
+        this->type = "plane";
+    }
+
     double intersection(Vec3 observer, Vec3 d) {
         Vec3 w = observer - pPi;
 
@@ -45,8 +49,10 @@ public:
     }
 
     Vec3 getTextureColor(int row, int column, Vec3 intersectionPoint) override {
-        int u = column % this->image_h;
-        int v = row % this->image_w;
+        int u = this->image_w/2 + (int)intersectionPoint.x % this->image_h;
+        int v = this->image_h/2 + (int)intersectionPoint.z % this->image_w;
+
+        //std::cout << u << ", " << v << "\n";
 
         const size_t RGB = 3;
         size_t index = RGB * (v * this->image_w + u);

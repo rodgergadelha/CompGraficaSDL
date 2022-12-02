@@ -14,23 +14,29 @@ public:
     Vec3 normal;
     std::vector<Vec3*> vertices;
     std::vector<Face*> faces;
+    Face* intersectedFace;
 
     double intersection(Vec3 observer, Vec3 direction) {
         double closestT = std::numeric_limits<double>::infinity();
 
         for(auto face : faces) {
-            Vec3 n = face->getNormal();
+            if((face->getNormal() ^ direction) > 0) continue;
 
             double t = face->intersection(observer, direction);
 
             if(t > 0 && t < closestT) {
                 closestT = t;
+                this->intersectedFace = face;
                 Vec3 n = face->getNormal();
                 this->normal.setCoordinates(n.x, n.y, n.z);
             }
         }
 
         return closestT;
+    }
+
+    Vec3 getColor(int row, int column, Vec3 intersectionPoint) override {
+        return intersectedFace->getColor(row, column, intersectionPoint);
     }
 
     Vec3 getNormal(Vec3 intersectionPoint, Vec3 d) { return this->normal; }
@@ -125,6 +131,15 @@ public:
         this->center.setCoordinates(transformedCenter.getElementAt(0,0),
                                     transformedCenter.getElementAt(1,0),
                                     transformedCenter.getElementAt(2,0));
+        
+        // Matrix normalMatrix = Vec3::vec3ToMatrix(this->normal);
+        // normalMatrix.setElementAt(3, 0, 0);
+        // Matrix transformedNormal = m * normalMatrix;
+        // this->normal.setCoordinates(transformedNormal.getElementAt(0,0),
+        //                             transformedNormal.getElementAt(1,0),
+        //                             transformedNormal.getElementAt(2,0));
+        // Vec3 normalUnit = this->normal/this->normal.getLength();
+        // this->normal.setCoordinates(normalUnit.x, normalUnit.y, normalUnit.z);
     }
 
 };

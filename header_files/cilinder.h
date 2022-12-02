@@ -13,6 +13,10 @@ public:
     Plane basePlane, topPlane;
     double height, baseRadius;
 
+    Cilinder() {
+        this->type = "cilinder";
+    }
+
     double intersection(Vec3 observer, Vec3 d) {
         Vec3 v = (observer - center) - u*((observer - center) ^ u);
         Vec3 w = d - u*(d ^ u);

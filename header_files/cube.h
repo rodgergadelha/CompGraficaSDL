@@ -12,6 +12,7 @@ public:
     double size;
 
     Cube(double size, Vec3 center) {
+        this->type = "cube";
         this->size = size;
         this->center = center;
         this->vertices = {  

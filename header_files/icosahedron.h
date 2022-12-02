@@ -12,6 +12,7 @@ public:
     double size;
 
     Icosahedron(double size, Vec3 center) {
+        this->type = "icosahedron";
         this->center = center;
         this->size = size;
         double c = (1 + sqrt(5)) / 4;
@@ -55,6 +56,11 @@ public:
 
         this->scale(size, size, size);
         this->translate(center.x, center.y, center.z);
+
+        for(int i = 0; i < this->faces.size(); i++) {
+            Face* f = this->faces[i];
+            f->color.setCoordinates(std::rand() % 256, std::rand() % 256, std::rand() % 256);
+        }
     }
 };
 

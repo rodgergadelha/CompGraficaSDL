@@ -11,6 +11,8 @@
 #include "header_files/spot_light.h"
 
 int main(int argv, char** args) {
+    std::srand((unsigned) time(NULL));
+
     Screen screen(500, 500);
     
     World world;
@@ -28,8 +30,11 @@ int main(int argv, char** args) {
     AmbientLight al;
     al.intensity.setCoordinates(0.3, 0.3, 0.3);
 
-    DirectionalLight dl(Vec3(1, 1, -1));
+    DirectionalLight dl(Vec3(0, 1, 0));
     dl.intensity.setCoordinates(0.7, 0.7, 0.7);
+
+    DirectionalLight dl2(Vec3(-1, 0, 0));
+    dl2.intensity.setCoordinates(0.7, 0.7, 0.7);
 
     SpotLight sl(Vec3(0, 30, 0), Vec3(0, 0, -50), 5, 30);
     sl.intensity.setCoordinates(0.7, 0.7, 0.7);
@@ -38,7 +43,6 @@ int main(int argv, char** args) {
     sl2.intensity.setCoordinates(0.7, 0.7, 0.7);
 
     Sphere sphere;
-    sphere.type = "sphere";
     sphere.radius = 20;
     sphere.center.setCoordinates(0, 5, -70);
     sphere.color.setCoordinates(255, 255, 255);
@@ -47,8 +51,8 @@ int main(int argv, char** args) {
     sphere.ka.setCoordinates(0.9, 0.9, 0.9);
     sphere.shininess = 10;
 
+
     Cilinder cilinder;
-    cilinder.type = "cilinder";
     cilinder.center.setCoordinates(0, -50, -100);
     cilinder.height = 60;
     cilinder.baseRadius = 3;
@@ -65,7 +69,6 @@ int main(int argv, char** args) {
     cilinder.topPlane.normal = cilinder.u*cilinder.height;
 
     Cone cone;
-    cone.type = "cone";
     cone.center.setCoordinates(sphere.center.x, sphere.center.y - 2, sphere.center.z + sphere.radius);
     cone.baseRadius = 2.5;
     cone.height = 5;
@@ -80,7 +83,6 @@ int main(int argv, char** args) {
     cone.basePlane.normal.setCoordinates(-cone.n.x, -cone.n.y, -cone.n.z);
 
     Plane floor;
-    floor.type = "plane";
     floor.pPi.setCoordinates(0, -40, 0);
     floor.normal.setCoordinates(0, 1, 0);
     floor.color.setCoordinates(255, 255, 255);
@@ -91,7 +93,6 @@ int main(int argv, char** args) {
     floor.loadImage("textures/wood.jpg");
 
     Plane back_wall;
-    back_wall.type = "plane";
     back_wall.pPi.setCoordinates(0, 0, -200);
     back_wall.normal.setCoordinates(0, 0, 1);
     back_wall.color.setCoordinates(48, 162, 255);
@@ -111,8 +112,7 @@ int main(int argv, char** args) {
     cube.scale(4, 4, 4);
     cube.translate(0, 0, -50);
 
-    Icosahedron ico(30, Vec3(0, 0, -50));
-    ico.type = "icosahedron";
+    Icosahedron ico(15, Vec3(0, 0, -50));
     ico.color.setCoordinates(255, 0, 0);
     ico.kd.setCoordinates(0.9, 0.9, 0.9);
     ico.ke.setCoordinates(0.6, 0.6, 0.6);
@@ -121,25 +121,27 @@ int main(int argv, char** args) {
 
     world.window = window;
     //world.objects.push_back(&cone);
-    //world.objects.push_back(&sphere);
-    world.objects.push_back(&ico);
+    world.objects.push_back(&sphere);
+    //world.objects.push_back(&ico);
     world.objects.push_back(&floor);
     world.objects.push_back(&back_wall);
+    //world.lights.push_back(&dl);
+    //world.lights.push_back(&dl2);
     world.lights.push_back(&sl);
-    //world.lights.push_back(&pl);
     world.lights.push_back(&al);
 
     bool isOrtho = false;
 
     Observer observer;
     observer.position.setCoordinates(0, 0, 0);
-    Vec3 eye(0, 25, 0);
+    Vec3 eye(-10, 5, -15);
     world.applyWorldToCamera(eye, Vec3(0, 0, -50), Vec3(eye.x, eye.y + 10, eye.z));
     observer.paintScreen(world, &screen, isOrtho);
     
 
     while(true) {
         screen.show();
+        
         if(screen.input(&world, isOrtho)) {
             screen.clear();
             screen.updateWindow();

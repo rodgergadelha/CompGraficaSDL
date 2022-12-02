@@ -75,11 +75,35 @@ public:
                 
                 if(o == nullptr) {std::cout << "Nenhum objeto selecionado."; return false;}
                 
-                o->translate(0, 0, -5);
                 std::cout << o->type << "\n";
-                
+
+                double x, y, z;
+                std::cout << "R: ";
+                std::cin >> x;
+                std::cout << "G: ";
+                std::cin >> y;
+                std::cout << "B: ";
+                std::cin >> z;
+
+                o->color.setCoordinates(x, y, z);
+
+                // double x, y, z;
+                // std::cout << "eye.x: ";
+                // std::cin >> x;
+                // std::cout << "eye.y: ";
+                // std::cin >> y;
+                // std::cout << "eye.z: ";
+                // std::cin >> z;
+
+                // Vec3 eye(x, y, z);
+                // world->applyCameraToWorld();
+                // world->applyWorldToCamera(eye, Vec3(0, 0, -50), Vec3(eye.x, eye.y + 10, eye.z));
+
                 return true;
+
             }
+
+            
         }
 
         return false;

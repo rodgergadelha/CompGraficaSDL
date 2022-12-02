@@ -13,6 +13,10 @@ public:
     Plane basePlane;
     double height, baseRadius;
 
+    Cone() {
+        this->type = "cone";
+    }
+
     Vec3 getVertex() {
         return (center + n*height);
     }
