@@ -24,10 +24,10 @@ public:
 
     virtual double intersection(Vec3 observer, Vec3 d) = 0;
 
-    virtual Vec3 getTextureColor(int row, int column, Vec3 intersectionPoint) {return Vec3(0, 0, 0);}
+    virtual Vec3 getTextureColor(Vec3 intersectionPoint) {return Vec3(0, 0, 0);}
 
-    virtual Vec3 getColor(int row, int column, Vec3 intersectionPoint) {
-        if(this->image.size() > 0) return getTextureColor(row, column, intersectionPoint);
+    virtual Vec3 getColor(Vec3 intersectionPoint) {
+        if(this->image.size() > 0) return getTextureColor(intersectionPoint);
         return this->color;
     }
 
@@ -172,11 +172,11 @@ public:
         
         if (data != nullptr) {
             this->image = std::vector<unsigned char>(data, data + this->image_w * this->image_h * 3);
+        } else {
+            std::cout << "Falha ao carregar imagem.\n";
         }
         
         stbi_image_free(data);
-
-        if (data == nullptr) std::cout << "Falha ao carregar imagem.\n";
     }
 
 };

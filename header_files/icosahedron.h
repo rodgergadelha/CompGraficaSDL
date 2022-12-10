@@ -59,7 +59,8 @@ public:
 
         for(int i = 0; i < this->faces.size(); i++) {
             Face* f = this->faces[i];
-            f->color.setCoordinates(std::rand() % 256, std::rand() % 256, std::rand() % 256);
+            if(i % 2 == 0) f->loadImage("textures/minecraft.png");
+            else f->loadImage("textures/wood.jpg");
         }
     }
 };

@@ -35,8 +35,8 @@ public:
         return closestT;
     }
 
-    Vec3 getColor(int row, int column, Vec3 intersectionPoint) override {
-        return intersectedFace->getColor(row, column, intersectionPoint);
+    Vec3 getColor(Vec3 intersectionPoint) override {
+        return intersectedFace->getColor(intersectionPoint);
     }
 
     Vec3 getNormal(Vec3 intersectionPoint, Vec3 d) { return this->normal; }

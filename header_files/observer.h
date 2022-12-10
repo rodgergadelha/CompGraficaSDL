@@ -12,7 +12,7 @@ class Observer {
 public:
     Vec3 position;
 
-    std::tuple<Object*, Vec3> lookToWindow(Vec3 position, Vec3 d, World world, int row, int column) {
+    std::tuple<Object*, Vec3> lookToWindow(Vec3 position, Vec3 d, World world) {
         Object *closestObject = nullptr;
         double closestT = std::numeric_limits<double>::infinity();
         std::vector<Object*> objects = world.objects;
@@ -36,12 +36,12 @@ public:
         Vec3 intersectionPoint = position + (d * closestT);
         Vec3 lighting = closestObject->computeLighting(intersectionPoint,
         d, world.lights, objects);
-        Vec3 objectColor = closestObject->getColor(row, column, intersectionPoint);
+        Vec3 objectColor = closestObject->getColor(world.applyWt(intersectionPoint, false));
 
         return std::make_tuple(closestObject, objectColor % lighting);
     }
 
-    void paintScreen(World world, Screen *screen, bool isOrtho) {
+    void paintScreen(World world, Screen *screen) {
         double x, y;
         Window window = world.window;
         double dx = window.width/screen->width;
@@ -52,11 +52,11 @@ public:
             for(int column = 0; column < screen->width; column++) {
                 x = -window.width/2 + dx/2 + dx * column;
 
-                if(isOrtho) position = Vec3(x, y, 0);
+                if(world.isOrtho) position = Vec3(x, y, 0);
 
                 Vec3 view(x, y, -window.distanceFromObserver);
                 Vec3 d = view - position;
-                std::tuple<Object*, Vec3> objectAndColor = lookToWindow(position, d/d.getLength(), world, row, column);
+                std::tuple<Object*, Vec3> objectAndColor = lookToWindow(position, d/d.getLength(), world);
                 Object* object = get<0>(objectAndColor);
                 Vec3 color = get<1>(objectAndColor);
 

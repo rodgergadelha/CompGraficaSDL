@@ -11,7 +11,7 @@
 
 class Face {
 public:
-    Vec3 *p1, *p2, *p3, color;
+    Vec3 *p1, *p2, *p3, color, worldNormal;
     std::vector<unsigned char> image;
     int image_w, image_h;
 
@@ -20,6 +20,7 @@ public:
         this->p2 = p2;
         this->p3 = p3;
         this->color = color;
+        this->worldNormal = this->getNormal(); 
     }
 
     void loadImage(const std::string& filename) {
@@ -28,17 +29,25 @@ public:
         
         if (data != nullptr) {
             this->image = std::vector<unsigned char>(data, data + this->image_w * this->image_h * 3);
+        } else {
+            std::cout << "Falha ao carregar imagem.\n";
         }
         
         stbi_image_free(data);
-
-        if (data == nullptr) std::cout << "Falha ao carregar imagem.\n";
     }
 
-    Vec3 getTextureColor(int row, int column, Vec3 intersectionPoint) {
-        int u = column % this->image_h;
-        int v = row % this->image_w;
-
+    Vec3 getTextureColor(Vec3 intersectionPoint) {
+        Vec3 u0(this->worldNormal.y, -this->worldNormal.x, 0);
+        if(u0.x == 0 && u0.y == 0) u0.setCoordinates(this->worldNormal.z, 0, 0);
+        u0 = u0 / u0.getLength();
+        Vec3 v0 = this->worldNormal.cross(u0);
+        v0 = v0 / v0.getLength();
+        double u1 = u0 ^ intersectionPoint;
+        double v1 = v0 ^ intersectionPoint;
+       
+        int u = abs(fmod(u1 + this->image_w/2, this->image_w));
+        int v = this->image_h - abs(fmod(v1 + this->image_h, this->image_h));
+        
         const size_t RGB = 3;
         size_t index = RGB * (v * this->image_w + u);
 
@@ -49,8 +58,8 @@ public:
         return rgbValues;
     }
 
-    Vec3 getColor(int row, int column, Vec3 intersectionPoint) {
-        if(this->image.size() > 0) return this->getTextureColor(row, column, intersectionPoint);
+    Vec3 getColor(Vec3 intersectionPoint) {
+        if(this->image.size() > 0) return this->getTextureColor(intersectionPoint);
         return this->color;
     }
 

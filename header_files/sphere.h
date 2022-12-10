@@ -50,7 +50,7 @@ public:
                                     transformedCenter.getElementAt(2,0));
     }
 
-    Vec3 getTextureColor(int row, int column, Vec3 intersectionPoint) override {
+    Vec3 getTextureColor(Vec3 intersectionPoint) override {
         double theta = atan2(intersectionPoint.x, intersectionPoint.z);
         double phi = acos(intersectionPoint.y * (M_PI / 180) / this->radius);
         double initialU = theta / (2 * M_PI);
