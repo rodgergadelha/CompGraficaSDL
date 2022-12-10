@@ -10,8 +10,6 @@
 
 class Observer {
 public:
-    Vec3 position;
-
     std::tuple<Object*, Vec3> lookToWindow(Vec3 position, Vec3 d, World world) {
         Object *closestObject = nullptr;
         double closestT = std::numeric_limits<double>::infinity();
@@ -46,6 +44,7 @@ public:
         Window window = world.window;
         double dx = window.width/screen->width;
         double dy = window.heigth/screen->height;
+        Vec3 position;
 
         for(int row = 0; row < screen->height; row++) {
             y = window.heigth/2 - dy/2 - dy * row;
@@ -60,20 +59,11 @@ public:
                 Object* object = get<0>(objectAndColor);
                 Vec3 color = get<1>(objectAndColor);
 
-                if(color.x > 255) {
-                    color.x = 255;
-                }
-
-                if(color.y > 255) {
-                    color.y = 255;
-                }
-
-                if(color.z > 255) {
-                    color.z = 255;
-                }
+                if(color.x > 255) color.x = 255;
+                if(color.y > 255) color.y = 255;
+                if(color.z > 255) color.z = 255;
 
                 screen->pixel(object, color, column, row);
-
             }
         }
     }

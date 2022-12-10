@@ -126,7 +126,7 @@ int main(int argv, char** args) {
     cube.scale(4, 4, 4);
     cube.translate(0, 0, -50);
 
-    Icosahedron ico(45, Vec3(50, 50, -100));
+    Icosahedron ico(45, Vec3(40, 60, -100));
     ico.color.setCoordinates(255, 0, 0);
     ico.kd.setCoordinates(0.9, 0.9, 0.9);
     ico.ke.setCoordinates(0.6, 0.6, 0.6);

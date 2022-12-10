@@ -111,6 +111,8 @@ public:
                                     transformedNormal.getElementAt(2,0));
         Vec3 normalUnit = this->n/this->n.getLength();
         this->n.setCoordinates(normalUnit.x, normalUnit.y, normalUnit.z);
+
+        this->basePlane.transform(m);
     }
 
 };
