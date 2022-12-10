@@ -148,7 +148,6 @@ int main(int argv, char** args) {
     world.isOrtho = false;
 
     Observer observer;
-    observer.position.setCoordinates(0, 0, 0);
     Vec3 eye(30, 50, 0);
     world.applyWorldToCamera(eye, Vec3(50, 50, -50), Vec3(eye.x, eye.y + 10, eye.z));
     observer.paintScreen(world, &screen);
