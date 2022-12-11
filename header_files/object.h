@@ -67,11 +67,12 @@ public:
     }
 
     virtual void translate(double tx, double ty, double tz) {
-        Matrix t = Matrix::identity(4, 4);
-        t.setElementAt(0, 3, tx);
-        t.setElementAt(1, 3, ty);
-        t.setElementAt(2, 3, tz);
-        
+        Matrix t = Matrix(4, 4, std::vector<double> {
+            1, 0, 0, tx,
+            0, 1, 0, ty,
+            0, 0, 1, tz,
+            0, 0, 0, 1
+        });
         transform(t);
     }
 

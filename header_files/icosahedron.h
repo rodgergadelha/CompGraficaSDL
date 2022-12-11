@@ -9,13 +9,12 @@
 
 class Icosahedron : public MeshObject {
 public:
-    double size;
 
     Icosahedron(double size, Vec3 center) {
         this->type = "icosahedron";
-        this->center = center;
-        this->size = size;
+        this->center = Vec3(0, 0, 0);
         double c = (1 + sqrt(5)) / 4;
+        this->size = size * c;
 
         this->vertices = {
             new Vec3(0.5, 0.0, c),
@@ -56,12 +55,13 @@ public:
 
         this->scale(size, size, size);
         this->translate(center.x, center.y, center.z);
+        this->cluster.center.setCoordinates(center.x, center.y, center.z);
+        this->cluster.radius = size * c * 2;
 
-        for(int i = 0; i < this->faces.size(); i++) {
-            Face* f = this->faces[i];
-            if(i % 2 == 0) f->loadImage("textures/minecraft.png");
-            else f->loadImage("textures/wood.jpg");
-        }
+        // for(int i = 0; i < this->faces.size(); i++) {
+        //     Face* f = this->faces[i];
+        //     f->loadImage("textures/minecraft.png");
+        // }
     }
 };
 

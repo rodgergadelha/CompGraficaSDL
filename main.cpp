@@ -9,6 +9,8 @@
 #include "header_files/ambient_light.h"
 #include "header_files/directional_light.h"
 #include "header_files/spot_light.h"
+#include "header_files/table.h"
+
 
 int main(int argv, char** args) {
     std::srand((unsigned) time(NULL));
@@ -43,17 +45,16 @@ int main(int argv, char** args) {
     sl2.intensity.setCoordinates(0.7, 0.7, 0.7);
 
     Sphere sphere;
-    sphere.radius = 20;
-    sphere.center.setCoordinates(0, 5, -70);
+    sphere.radius = 45;
+    sphere.center.setCoordinates(40, 60, -100);
     sphere.color.setCoordinates(255, 255, 255);
     sphere.kd.setCoordinates(0.9, 0.9, 0.9);
     sphere.ke.setCoordinates(0.4, 0.4, 0.4);
     sphere.ka.setCoordinates(0.9, 0.9, 0.9);
     sphere.shininess = 10;
 
-
     Cilinder cilinder;
-    cilinder.center.setCoordinates(0, -50, -100);
+    cilinder.center.setCoordinates(40, 60, -100);
     cilinder.height = 60;
     cilinder.baseRadius = 3;
     Vec3 axis(0,1,0);
@@ -115,16 +116,14 @@ int main(int argv, char** args) {
     right_wall.shininess = 1;
     right_wall.loadImage("textures/cpp_image.png");
 
-    Cube cube(5, Vec3(0, 0, 0));
+    Cube cube(35, Vec3(0, 0, 0));
     cube.color.setCoordinates(255, 0, 0);
     cube.kd.setCoordinates(0.9, 0.9, 0.9);
     cube.ke.setCoordinates(0.6, 0.6, 0.6);
     cube.ka.setCoordinates(0.8, 0.8, 0.8);
-    cube.shininess = 15;
-    //cube.rotateY(45);
-    //cube.translate(0, 0, -50);
-    cube.scale(4, 4, 4);
-    cube.translate(0, 0, -50);
+    cube.shininess = 10;
+    cube.scale(2, 2, 2);
+    cube.translate(40, 60, -100);
 
     Icosahedron ico(45, Vec3(40, 60, -100));
     ico.color.setCoordinates(255, 0, 0);
@@ -133,12 +132,18 @@ int main(int argv, char** args) {
     ico.ka.setCoordinates(0.8, 0.8, 0.8);
     ico.shininess = 20;
 
+    Table table(Vec3(0, 0, -100), 80, 50);
+    table.kd.setCoordinates(0.9, 0.9, 0.9);
+    table.ke.setCoordinates(0.6, 0.6, 0.6);
+    table.ka.setCoordinates(0.8, 0.8, 0.8);
+    table.shininess = 10;
+
     world.window = window;
-    //world.objects.push_back(&cone);
+    //world.objects.push_back(&cilinder);
     //world.objects.push_back(&sphere);
-    world.objects.push_back(&ico);
-    world.objects.push_back(&floor);
-    world.objects.push_back(&right_wall);
+    world.objects.push_back(&table);
+    //world.objects.push_back(&floor);
+    //world.objects.push_back(&right_wall);
     //world.objects.push_back(&back_wall);
     //world.lights.push_back(&dl);
     //world.lights.push_back(&dl2);
@@ -148,8 +153,8 @@ int main(int argv, char** args) {
     world.isOrtho = false;
 
     Observer observer;
-    Vec3 eye(30, 50, 0);
-    world.applyWorldToCamera(eye, Vec3(50, 50, -50), Vec3(eye.x, eye.y + 10, eye.z));
+    Vec3 eye(30, 20, 0);
+    world.applyWorldToCamera(eye, Vec3(0, 0, -100), Vec3(eye.x, eye.y + 10, eye.z));
     observer.paintScreen(world, &screen);
     
 

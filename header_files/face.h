@@ -36,17 +36,31 @@ public:
         stbi_image_free(data);
     }
 
+    Vec3 baricentricPoint(Vec3 point) {
+        Vec3 normal = worldNormal;
+        Vec3 r1 = *p2 - *p1;
+        Vec3 r2 = *p3 - *p1;
+        double area = ((r1.cross(r2)) ^ normal);
+        double c1 = (((*p1 - point).cross(*p2 - point)) ^ normal)/area;
+        double c2 = (((*p3 - point).cross(*p1 - point)) ^ normal)/area;
+        double c3 = (((*p2 - point).cross(*p3 - point)) ^ normal)/area;
+
+        return Vec3(c1, c2, c3);
+    }
+
     Vec3 getTextureColor(Vec3 intersectionPoint) {
         Vec3 u0(this->worldNormal.y, -this->worldNormal.x, 0);
         if(u0.x == 0 && u0.y == 0) u0.setCoordinates(this->worldNormal.z, 0, 0);
         u0 = u0 / u0.getLength();
         Vec3 v0 = this->worldNormal.cross(u0);
         v0 = v0 / v0.getLength();
-        double u1 = u0 ^ intersectionPoint;
-        double v1 = v0 ^ intersectionPoint;
+        double u1 = (u0 ^ baricentricPoint(intersectionPoint));
+        double v1 = (v0 ^ baricentricPoint(intersectionPoint));
        
         int u = abs(fmod(u1 + this->image_w/2, this->image_w));
         int v = this->image_h - abs(fmod(v1 + this->image_h, this->image_h));
+
+        //std::cout << u << ", " << v << "\n";
         
         const size_t RGB = 3;
         size_t index = RGB * (v * this->image_w + u);

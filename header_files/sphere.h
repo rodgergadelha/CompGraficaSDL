@@ -38,11 +38,22 @@ public:
         return closestT;
     }
 
-    Vec3 getNormal(Vec3 intersectionPoint, Vec3 d) {
+    Vec3 getNormal(Vec3 intersectionPoint, Vec3 d) override {
         return (intersectionPoint - center) / radius;
     }
 
-    void transform(Matrix m) {
+    void scale(double sx, double sy, double sz) override {
+        Matrix s(4, 4, std::vector<double> {sx, 0, 0, 0,
+                                            0, sy, 0, 0,
+                                            0, 0, sz, 0,
+                                            0, 0, 0, 1});
+        transform(s);
+        
+        double maxSize = std::max(sx, std::max(sy, sz));
+        this->radius = this->radius * maxSize; 
+    }
+
+    void transform(Matrix m) override {
         Matrix centerMatrix = Vec3::vec3ToMatrix(this->center);
         Matrix transformedCenter = m * centerMatrix;
         this->center.setCoordinates(transformedCenter.getElementAt(0,0),
