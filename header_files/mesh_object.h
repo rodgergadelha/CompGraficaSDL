@@ -157,6 +157,27 @@ public:
         this->cluster.center.setCoordinates(this->center.x, this->center.y, this->center.z);
     }
 
+    void loadImageAllFaces(std::string filename) {
+        for(auto face : faces) {
+            face->loadImage(filename);
+        }
+    }
+
+    void loadImageFace(int index, std::string filename) {
+        faces[index]->loadImage(filename);
+    }
+
+    void setAllFacesColors(Vec3 color) {
+        for(auto face : faces) {
+            face->color.setCoordinates(color.x, color.y, color.z);
+        }
+    }
+
+    void setFaceColor(int index, Vec3 color) {
+        faces[index]->color.setCoordinates(color.x, color.y, color.z);
+    }
+
+
 };
 
 #endif

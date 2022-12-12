@@ -28,7 +28,7 @@ public:
 
         if(closestObject == nullptr) {
             Vec3 bgColor(100, 100, 100);
-            return std::make_tuple(closestObject, bgColor);;
+            return std::make_tuple(closestObject, bgColor);
         }
 
         Vec3 intersectionPoint = position + (d * closestT);

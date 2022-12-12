@@ -57,11 +57,6 @@ public:
         this->translate(center.x, center.y, center.z);
         this->cluster.center.setCoordinates(center.x, center.y, center.z);
         this->cluster.radius = size * c * 2;
-
-        // for(int i = 0; i < this->faces.size(); i++) {
-        //     Face* f = this->faces[i];
-        //     f->loadImage("textures/minecraft.png");
-        // }
     }
 };
 

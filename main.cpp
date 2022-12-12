@@ -10,7 +10,7 @@
 #include "header_files/directional_light.h"
 #include "header_files/spot_light.h"
 #include "header_files/table.h"
-
+#include "header_files/chair.h"
 
 int main(int argv, char** args) {
     std::srand((unsigned) time(NULL));
@@ -132,16 +132,20 @@ int main(int argv, char** args) {
     ico.ka.setCoordinates(0.8, 0.8, 0.8);
     ico.shininess = 20;
 
-    Table table(Vec3(0, 0, -100), 80, 50);
+    Table table(Vec3(0, 0, -100), 80, 50, 1, 30, 1);
     table.kd.setCoordinates(0.9, 0.9, 0.9);
     table.ke.setCoordinates(0.6, 0.6, 0.6);
     table.ka.setCoordinates(0.8, 0.8, 0.8);
     table.shininess = 10;
 
+    Chair chair(Vec3(0, 0, 0), Vec3(255, 0, 0), 30, 30, 30, 30, 1, 20, 1, 5);
+    chair.translate(0, 0, -50);
+
     world.window = window;
     //world.objects.push_back(&cilinder);
     //world.objects.push_back(&sphere);
-    world.objects.push_back(&table);
+    //world.objects.push_back(&table);
+    world.objects.push_back(&chair);
     //world.objects.push_back(&floor);
     //world.objects.push_back(&right_wall);
     //world.objects.push_back(&back_wall);
@@ -153,7 +157,7 @@ int main(int argv, char** args) {
     world.isOrtho = false;
 
     Observer observer;
-    Vec3 eye(30, 20, 0);
+    Vec3 eye(30, 10, 0);
     world.applyWorldToCamera(eye, Vec3(0, 0, -100), Vec3(eye.x, eye.y + 10, eye.z));
     observer.paintScreen(world, &screen);
     

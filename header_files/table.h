@@ -12,33 +12,29 @@ public:
     Vec3 normal;
     Cube *cover, *leg1, *leg2, *leg3, *leg4;
     Cube *intersectedComponent;
-    double w, h;
 
-    Table(Vec3 center, double w, double h) {
-        this->w = w;
-        this->h = h;
+    Table(Vec3 center, double cover_w, double cover_h, double leg_w, double leg_h, double leg_d) {
         this->type = "table";
         
         this->cover = new Cube(1, Vec3(0, 0, 0));
-        cover->scale(w, 1, h);
+        cover->scale(cover_w, 1, cover_h);
         cover->translate(center.x, center.y, center.z);
 
         this->leg1 = new Cube(1, Vec3(0, 0, 0));
-        leg1->scale(1, h, 1);
-        leg1->translate(center.x + w/2 - 2, center.y - h/2, center.z - h/2 + 2);
-        
+        leg1->scale(leg_w, leg_h, leg_d);
+        leg1->translate(center.x + cover_w/2 - 2, center.y - leg_h/2, center.z - cover_h/2 + 2);
 
         this->leg2 = new Cube(1, Vec3(0, 0, 0));
-        leg2->scale(1, h, 1);
-        leg2->translate(center.x - w/2 + 2, center.y - h/2, center.z - h/2 + 2);
+        leg2->scale(leg_w, leg_h, leg_d);
+        leg2->translate(center.x - cover_w/2 + 2, center.y - leg_h/2, center.z - cover_h/2 + 2);
 
         this->leg3 = new Cube(1, Vec3(0, 0, 0));
-        leg3->scale(1, h, 1);
-        leg3->translate(center.x + w/2 - 2, center.y - h/2, center.z + h/2 - 2);
+        leg3->scale(leg_w, leg_h, leg_d);
+        leg3->translate(center.x + cover_w/2 - 2, center.y - leg_h/2, center.z + cover_h/2 - 2);
 
         this->leg4 = new Cube(1, Vec3(0, 0, 0));
-        leg4->scale(1, h, 1);
-        leg4->translate(center.x - w/2 + 2, center.y - h/2, center.z + h/2 - 2);
+        leg4->scale(leg_w, leg_h, leg_d);
+        leg4->translate(center.x - cover_w/2 + 2, center.y - leg_h/2, center.z + cover_h/2 - 2);
     }
 
     double intersection(Vec3 observer, Vec3 d) {
@@ -47,7 +43,7 @@ public:
 
         for(auto component : components) {
             double t = component->intersection(observer, d);
-
+            
             if(t > 0 && t < closestT) {
                 closestT = t;
                 this->intersectedComponent = component;
