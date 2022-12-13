@@ -13,6 +13,7 @@
 #include "header_files/chair.h"
 #include "header_files/lamp.h"
 #include "header_files/closet.h"
+#include "header_files/christmas_tree.h"
 
 int main(int argv, char** args) {
     std::srand((unsigned) time(NULL));
@@ -137,25 +138,27 @@ int main(int argv, char** args) {
     table.kd.setCoordinates(0.9, 0.9, 0.9);
     table.ke.setCoordinates(0.6, 0.6, 0.6);
     table.ka.setCoordinates(0.8, 0.8, 0.8);
-    table.shininess = 10;
+    table.setShininess(10);
 
     Chair chair(Vec3(0, 10, -50), Vec3(255, 0, 0), 20, 20, 20, 20, 1, 20, 1, 8);
-    chair.backrest->loadImageAllFaces("textures/wood.jpg");
-    chair.seat->loadImageAllFaces("textures/wood.jpg");
+    (static_cast<MeshObject*>(chair.components[0]))->loadImageAllFaces("textures/wood.jpg");
+    (static_cast<MeshObject*>(chair.components[1]))->loadImageAllFaces("textures/wood.jpg");
 
-    Closet closet(Vec3(0, 0, -50), Vec3(255, 0, 0), 20, 40, 10, 1, 2);
-    closet.closet->loadImageAllFaces("textures/mini_cpp.png");
+    Closet closet(Vec3(0, 0, -50), Vec3(255, 0, 0), 10, 40, 10, 1, 2);
+    (static_cast<MeshObject*>(closet.components[0]))->loadImageAllFaces("textures/mini_cpp.png");
 
-    // Lamp lamp(Vec3(0, 0, 0), &world, 20, 7, 3.5);
-    // lamp.rotateY(15);
-    // lamp.translate(0, 0, -50);
-    // lamp.setK(Vec3(0.2, 0.2, 0.2), "kd");
+    ChristmasTree ct(Vec3(0, 0,-50), 0.8, 15, 8, 20, 0.75);
+
+    Lamp lamp(Vec3(0, 0, 0), &world, 20, 7, 3.5);
+    lamp.rotateY(15);
+    lamp.translate(0, 0, -50);
+    lamp.setK(Vec3(0.2, 0.2, 0.2), "kd");
 
     world.window = window;
     //world.objects.push_back(&cilinder);
     //world.objects.push_back(&sphere);
     //world.objects.push_back(&table);
-    world.objects.push_back(&closet);
+    world.objects.push_back(&table);
     //world.objects.push_back(&floor);
     //world.objects.push_back(&right_wall);
     //world.objects.push_back(&back_wall);
@@ -167,7 +170,7 @@ int main(int argv, char** args) {
     world.isOrtho = false;
 
     Observer observer;
-    Vec3 eye(-10, 10, -10);
+    Vec3 eye(-10, 10, -15);
     world.applyWorldToCamera(eye, Vec3(0, 0, -50), Vec3(eye.x, eye.y + 10, eye.z));
     observer.paintScreen(world, &screen);
     

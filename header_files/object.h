@@ -192,6 +192,10 @@ public:
         else if(k_type == "ke") this->ke.setCoordinates(k.x, k.y, k.z);
     }
 
+    virtual void setShininess(double s) {
+        this->shininess = s;
+    }
+
 };
 
 #endif

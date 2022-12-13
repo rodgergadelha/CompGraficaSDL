@@ -5,20 +5,16 @@
 #include "matrix.h"
 #include "cube.h"
 #include "cilinder.h"
-#include "object.h"
+#include "complex_object.h"
 #include <vector>
 #include <iostream>
 
-class Chair : public Object {
+class Chair : public ComplexObject {
 public:
-    Vec3 normal;
-    Cube *seat, *backrest;
-    Cilinder *seat_leg1, *seat_leg2, *seat_leg3, *seat_leg4, *backrest_leg1, *backrest_leg2;
-    Object *intersectedComponent;
 
     Chair(Vec3 center, Vec3 color, double seat_w, double seat_h, double backrest_w, double backrest_h,
     double seat_leg_radius, double seat_leg_h, double backrest_leg_radius, double backrest_leg_h) {
-        
+
         this->type = "chair";
         this->color = color;
         this->kd.setCoordinates(0.9, 0.9, 0.9);
@@ -26,22 +22,22 @@ public:
         this->ka.setCoordinates(0.8, 0.8, 0.8);
         this->shininess = 10;
         
-        this->seat = new Cube(1, Vec3(0, 0, 0));
+        Cube *seat = new Cube(1, Vec3(0, 0, 0));
         seat->scale(seat_w, 1, seat_h);
         seat->translate(center.x, center.y, center.z);
         seat->setAllFacesColors(color);
 
-        this->backrest = new Cube(1, Vec3(0, 0, 0));
+        Cube *backrest = new Cube(1, Vec3(0, 0, 0));
         backrest->scale(backrest_w, backrest_h, 3);
         backrest->translate(center.x, center.y + backrest_leg_h + backrest_h/2, center.z - seat_h/2 + 2);
         backrest->setAllFacesColors(color);
 
-        this->seat_leg1 = new Cilinder();
-        this->seat_leg2 = new Cilinder();
-        this->seat_leg3 = new Cilinder();
-        this->seat_leg4 = new Cilinder();
-        this->backrest_leg1 = new Cilinder();
-        this->backrest_leg2 = new Cilinder();
+        Cilinder *seat_leg1 = new Cilinder();
+        Cilinder *seat_leg2 = new Cilinder();
+        Cilinder *seat_leg3 = new Cilinder();
+        Cilinder *seat_leg4 = new Cilinder();
+        Cilinder *backrest_leg1 = new Cilinder();
+        Cilinder *backrest_leg2 = new Cilinder();
         
         seat_leg1->center.setCoordinates(center.x + seat_w/2 - 2, center.y - seat_leg_h, center.z - seat_h/2 + 2);
         seat_leg2->center.setCoordinates(center.x - seat_w/2 + 2, center.y - seat_leg_h, center.z - seat_h/2 + 2);
@@ -74,75 +70,8 @@ public:
             leg->topPlane.pPi = leg->center + (leg->u)*(leg->height);
             leg->topPlane.normal = (leg->u)*(leg->height);
         }
-    }
 
-    double intersection(Vec3 observer, Vec3 d) {
-        std::vector<Object*> components {seat, backrest, seat_leg1, seat_leg2, seat_leg3, 
-        seat_leg4, backrest_leg1, backrest_leg2};
-
-        double closestT = std::numeric_limits<double>::infinity();
-
-        for(auto component : components) {
-            double t = component->intersection(observer, d);
-            
-            if(t > 0 && t < closestT) {
-                closestT = t;
-                this->intersectedComponent = component;
-            }
-        }
-
-        return closestT;
-    }
-
-    Vec3 getColor(Vec3 intersectionPoint) override {
-        return intersectedComponent->getColor(intersectionPoint);
-    }
-
-    Vec3 getNormal(Vec3 intersectionPoint, Vec3 d) override {
-        return intersectedComponent->getNormal(intersectionPoint, d);
-    }
-
-    void transform(Matrix m, bool rotateAxis = true) override {
-        seat->transform(m);
-        backrest->transform(m);
-        seat_leg1->transform(m);
-        seat_leg2->transform(m);
-        seat_leg3->transform(m);
-        seat_leg4->transform(m);
-        backrest_leg1->transform(m);
-        backrest_leg2->transform(m);
-    }
-    
-
-    bool checkShadow(Vec3 position, Light* light, std::vector<Object*> objects) override {
-        double closestTShadow = std::numeric_limits<double>::infinity();
-        Object* closestObjectShadow = nullptr;
-        Vec3 pf_sub_pi = light->getL(position);
-        Vec3 l = pf_sub_pi / pf_sub_pi.getLength();
-        Object *oldIntersectedComponent;
-        
-        for(auto object : objects) {
-            oldIntersectedComponent = &(*intersectedComponent);
-            double t = object->intersection(position, l);
-            this->intersectedComponent = &(*oldIntersectedComponent);
-
-            if(object == this || t <= 0.001 || object->type == "plane") continue;
-
-            if(t < closestTShadow && (t < pf_sub_pi.getLength() || light->getType() == "directional")) {
-                closestTShadow = t;
-                closestObjectShadow = object;
-            }
-        }
-
-        return closestObjectShadow != nullptr;
-    }
-
-
-    void setK(Vec3 k, std::string k_type) override {
-        std::vector<Object*> components {seat, backrest, seat_leg1, seat_leg2, seat_leg3, seat_leg4, backrest_leg1, backrest_leg2};
-        for(auto component : components) {
-            component->setK(k, k_type);
-        }
+        this->components = std::vector<Object*> {seat, backrest, seat_leg1, seat_leg2, seat_leg3, seat_leg4, backrest_leg1, backrest_leg2};
     }
 };
 
