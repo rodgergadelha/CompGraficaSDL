@@ -33,7 +33,7 @@ public:
 
     virtual Vec3 getNormal(Vec3 intersectionPoint, Vec3 d) = 0;
 
-    bool checkShadow(Vec3 position, Light* light, std::vector<Object*> objects) {
+    virtual bool checkShadow(Vec3 position, Light* light, std::vector<Object*> objects) {
         double closestTShadow = std::numeric_limits<double>::infinity();
         Object* closestObjectShadow = nullptr;
         Vec3 pf_sub_pi = light->getL(position);
@@ -92,8 +92,8 @@ public:
         Matrix r = Matrix::identity(4, 4);
         r.setElementAt(0, 0, cos(radianAngle));
         r.setElementAt(0, 2, sin(radianAngle));
-        r.setElementAt(1, 0, -sin(radianAngle));
-        r.setElementAt(1, 2, cos(radianAngle));
+        r.setElementAt(2, 0, -sin(radianAngle));
+        r.setElementAt(2, 2, cos(radianAngle));
         
         transform(r);
     }
@@ -118,7 +118,8 @@ public:
     }
 
     virtual void shearingYX(double angle) {
-        Matrix s(4, 4, std::vector<double> {1, tan(angle), 0, 0,
+        double radianAngle = angle * (M_PI/180);
+        Matrix s(4, 4, std::vector<double> {1, tan(radianAngle), 0, 0,
                                             0, 1, 0, 0,
                                             0, 0, 1, 0,
                                             0, 0, 0, 1});
@@ -126,46 +127,51 @@ public:
     }
 
     virtual void shearingXY(double angle) {
+        double radianAngle = angle * (M_PI/180);
         Matrix s(4, 4, std::vector<double> {1, 0, 0, 0,
-                                            tan(angle), 1, 0, 0,
+                                            tan(radianAngle), 1, 0, 0,
                                             0, 0, 1, 0,
                                             0, 0, 0, 1});
         transform(s);
     }
 
     virtual void shearingYZ(double angle) {
+        double radianAngle = angle * (M_PI/180);
         Matrix s(4, 4, std::vector<double> {1, 0, 0, 0,
                                             0, 1, 0, 0,
-                                            0, tan(angle), 1, 0,
+                                            0, tan(radianAngle), 1, 0,
                                             0, 0, 0, 1});
         transform(s);
     }
 
     virtual void shearingZY(double angle) {
+        double radianAngle = angle * (M_PI/180);
         Matrix s(4, 4, std::vector<double> {1, 0, 0, 0,
-                                            0, 1, tan(angle), 0,
+                                            0, 1, tan(radianAngle), 0,
                                             0, 0, 1, 0,
                                             0, 0, 0, 1});
         transform(s);
     }
 
     virtual void shearingXZ(double angle) {
+        double radianAngle = angle * (M_PI/180);
         Matrix s(4, 4, std::vector<double> {1, 0, 0, 0,
                                             0, 1, 0, 0,
-                                            tan(angle), 0, 1, 0,
+                                            tan(radianAngle), 0, 1, 0,
                                             0, 0, 0, 1});
         transform(s);
     }
 
     virtual void shearingZX(double angle) {
-        Matrix s(4, 4, std::vector<double> {1, 0, tan(angle), 0,
+        double radianAngle = angle * (M_PI/180);
+        Matrix s(4, 4, std::vector<double> {1, 0, tan(radianAngle), 0,
                                             0, 1, 0, 0,
                                             0, 0, 1, 0,
                                             0, 0, 0, 1});
         transform(s);
     }
 
-    virtual void transform(Matrix m) = 0;
+    virtual void transform(Matrix m, bool rotateAxis = true) = 0;
 
     void loadImage(const std::string& filename) {
         int n;
@@ -178,6 +184,12 @@ public:
         }
         
         stbi_image_free(data);
+    }
+
+    virtual void setK(Vec3 k, std::string k_type) {
+        if(k_type == "ka") this->ka.setCoordinates(k.x, k.y, k.z);
+        else if(k_type == "kd") this->kd.setCoordinates(k.x, k.y, k.z);
+        else if(k_type == "ke") this->ke.setCoordinates(k.x, k.y, k.z);
     }
 
 };

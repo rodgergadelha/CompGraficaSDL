@@ -11,6 +11,8 @@
 #include "header_files/spot_light.h"
 #include "header_files/table.h"
 #include "header_files/chair.h"
+#include "header_files/lamp.h"
+#include "header_files/closet.h"
 
 int main(int argv, char** args) {
     std::srand((unsigned) time(NULL));
@@ -54,7 +56,7 @@ int main(int argv, char** args) {
     sphere.shininess = 10;
 
     Cilinder cilinder;
-    cilinder.center.setCoordinates(40, 60, -100);
+    cilinder.center.setCoordinates(0, 0, 0);
     cilinder.height = 60;
     cilinder.baseRadius = 3;
     Vec3 axis(0,1,0);
@@ -68,13 +70,14 @@ int main(int argv, char** args) {
     cilinder.basePlane.normal = cilinder.u*(-1);
     cilinder.topPlane.pPi = cilinder.center + cilinder.u*cilinder.height;
     cilinder.topPlane.normal = cilinder.u*cilinder.height;
+    cilinder.shearingXY(60);
+    cilinder.translate(0, -cilinder.height/2, -80);
 
     Cone cone;
-    cone.center.setCoordinates(sphere.center.x, sphere.center.y - 2, sphere.center.z + sphere.radius);
-    cone.baseRadius = 2.5;
-    cone.height = 5;
-    Vec3 coneAxis(0,0,1);
-    cone.n.setCoordinates(0, 0, 1);
+    cone.center.setCoordinates(0, 0, 0);
+    cone.baseRadius = 5;
+    cone.height = 15;
+    cone.n.setCoordinates(0, 0, -1);
     cone.color.setCoordinates(250, 115, 57);
     cone.kd.setCoordinates(0.8, 0.8, 0.5);
     cone.ke.setCoordinates(0.8, 0.5, 0.5);
@@ -84,7 +87,7 @@ int main(int argv, char** args) {
     cone.basePlane.normal.setCoordinates(-cone.n.x, -cone.n.y, -cone.n.z);
 
     Plane floor;
-    floor.pPi.setCoordinates(0, -40, 0);
+    floor.pPi.setCoordinates(0, 0, 0);
     floor.normal.setCoordinates(0, 1, 0);
     floor.worldNormal.setCoordinates(0, 1, 0);
     floor.color.setCoordinates(255, 255, 255);
@@ -92,7 +95,7 @@ int main(int argv, char** args) {
     floor.ke.setCoordinates(0, 0, 0);
     floor.ka.setCoordinates(0.9, 0.9, 0.9);
     floor.shininess = 1;
-    floor.loadImage("textures/wood.jpg");
+    //floor.loadImage("textures/wood.jpg");
 
     Plane back_wall;
     back_wall.pPi.setCoordinates(0, 0, -200);
@@ -116,14 +119,12 @@ int main(int argv, char** args) {
     right_wall.shininess = 1;
     right_wall.loadImage("textures/cpp_image.png");
 
-    Cube cube(35, Vec3(0, 0, 0));
+    Cube cube(28, Vec3(0, 0, -100));
     cube.color.setCoordinates(255, 0, 0);
     cube.kd.setCoordinates(0.9, 0.9, 0.9);
     cube.ke.setCoordinates(0.6, 0.6, 0.6);
     cube.ka.setCoordinates(0.8, 0.8, 0.8);
     cube.shininess = 10;
-    cube.scale(2, 2, 2);
-    cube.translate(40, 60, -100);
 
     Icosahedron ico(45, Vec3(40, 60, -100));
     ico.color.setCoordinates(255, 0, 0);
@@ -138,14 +139,23 @@ int main(int argv, char** args) {
     table.ka.setCoordinates(0.8, 0.8, 0.8);
     table.shininess = 10;
 
-    Chair chair(Vec3(0, 0, 0), Vec3(255, 0, 0), 30, 30, 30, 30, 1, 20, 1, 5);
-    chair.translate(0, 0, -50);
+    Chair chair(Vec3(0, 10, -50), Vec3(255, 0, 0), 20, 20, 20, 20, 1, 20, 1, 8);
+    chair.backrest->loadImageAllFaces("textures/wood.jpg");
+    chair.seat->loadImageAllFaces("textures/wood.jpg");
+
+    Closet closet(Vec3(0, 0, -50), Vec3(255, 0, 0), 20, 40, 10, 1, 2);
+    closet.closet->loadImageAllFaces("textures/mini_cpp.png");
+
+    // Lamp lamp(Vec3(0, 0, 0), &world, 20, 7, 3.5);
+    // lamp.rotateY(15);
+    // lamp.translate(0, 0, -50);
+    // lamp.setK(Vec3(0.2, 0.2, 0.2), "kd");
 
     world.window = window;
     //world.objects.push_back(&cilinder);
     //world.objects.push_back(&sphere);
     //world.objects.push_back(&table);
-    world.objects.push_back(&chair);
+    world.objects.push_back(&closet);
     //world.objects.push_back(&floor);
     //world.objects.push_back(&right_wall);
     //world.objects.push_back(&back_wall);
@@ -157,8 +167,8 @@ int main(int argv, char** args) {
     world.isOrtho = false;
 
     Observer observer;
-    Vec3 eye(30, 10, 0);
-    world.applyWorldToCamera(eye, Vec3(0, 0, -100), Vec3(eye.x, eye.y + 10, eye.z));
+    Vec3 eye(-10, 10, -10);
+    world.applyWorldToCamera(eye, Vec3(0, 0, -50), Vec3(eye.x, eye.y + 10, eye.z));
     observer.paintScreen(world, &screen);
     
 

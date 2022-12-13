@@ -102,7 +102,7 @@ public:
         return intersectedComponent->getNormal(intersectionPoint, d);
     }
 
-    void transform(Matrix m) override {
+    void transform(Matrix m, bool rotateAxis = true) override {
         seat->transform(m);
         backrest->transform(m);
         seat_leg1->transform(m);
@@ -113,6 +113,37 @@ public:
         backrest_leg2->transform(m);
     }
     
+
+    bool checkShadow(Vec3 position, Light* light, std::vector<Object*> objects) override {
+        double closestTShadow = std::numeric_limits<double>::infinity();
+        Object* closestObjectShadow = nullptr;
+        Vec3 pf_sub_pi = light->getL(position);
+        Vec3 l = pf_sub_pi / pf_sub_pi.getLength();
+        Object *oldIntersectedComponent;
+        
+        for(auto object : objects) {
+            oldIntersectedComponent = &(*intersectedComponent);
+            double t = object->intersection(position, l);
+            this->intersectedComponent = &(*oldIntersectedComponent);
+
+            if(object == this || t <= 0.001 || object->type == "plane") continue;
+
+            if(t < closestTShadow && (t < pf_sub_pi.getLength() || light->getType() == "directional")) {
+                closestTShadow = t;
+                closestObjectShadow = object;
+            }
+        }
+
+        return closestObjectShadow != nullptr;
+    }
+
+
+    void setK(Vec3 k, std::string k_type) override {
+        std::vector<Object*> components {seat, backrest, seat_leg1, seat_leg2, seat_leg3, seat_leg4, backrest_leg1, backrest_leg2};
+        for(auto component : components) {
+            component->setK(k, k_type);
+        }
+    }
 };
 
 #endif

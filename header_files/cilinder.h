@@ -100,13 +100,14 @@ public:
         return bigNormal / bigNormal.getLength();
     }
 
-    void transform(Matrix m) {
+    void transform(Matrix m, bool rotateAxis = true) {
         Matrix centerMatrix = Vec3::vec3ToMatrix(this->center);
         Matrix transformedCenter = m * centerMatrix;
         this->center.setCoordinates(transformedCenter.getElementAt(0,0),
                                     transformedCenter.getElementAt(1,0),
                                     transformedCenter.getElementAt(2,0));
 
+        
         Matrix normalMatrix = Vec3::vec3ToMatrix(this->u);
         normalMatrix.setElementAt(3, 0, 0);
         Matrix transformedNormal = m * normalMatrix;
@@ -116,8 +117,10 @@ public:
         Vec3 normalUnit = this->u/this->u.getLength();
         this->u.setCoordinates(normalUnit.x, normalUnit.y, normalUnit.z);
 
-        this->basePlane.transform(m);
-        this->topPlane.transform(m);
+        this->basePlane.pPi = this->center*1;
+        this->basePlane.normal = this->u*(-1);
+        this->topPlane.pPi = this->center + this->u*this->height;
+        this->topPlane.normal = this->u*this->height;    
     }
 
 };

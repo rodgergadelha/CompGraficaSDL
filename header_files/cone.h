@@ -12,9 +12,16 @@ public:
     Vec3 n, vertex;
     Plane basePlane;
     double height, baseRadius;
+    bool hasBase;
 
     Cone() {
         this->type = "cone";
+        this->hasBase = true;
+    }
+
+    Cone(bool hasBase) {
+        this->type = "cone";
+        this->hasBase = hasBase;
     }
 
     Vec3 getVertex() {
@@ -53,13 +60,15 @@ public:
             closestT = t2;
         }
 
-        double tBasePlane = basePlane.intersection(observer, d);
-        if(tBasePlane > 0) {
-            Vec3 piBasePlane = observer + d * tBasePlane;
-            
-            if((piBasePlane - center).getLength() <= baseRadius
-            && (tBasePlane < closestT))
-                closestT = tBasePlane;
+        if(hasBase) {
+            double tBasePlane = basePlane.intersection(observer, d);
+            if(tBasePlane > 0) {
+                Vec3 piBasePlane = observer + d * tBasePlane;
+                
+                if((piBasePlane - center).getLength() <= baseRadius
+                && (tBasePlane < closestT))
+                    closestT = tBasePlane;
+            }
         }
 
         return closestT;
@@ -96,13 +105,47 @@ public:
         return bigNormal / bigNormal.getLength();
     }
 
-    void transform(Matrix m) {
+    void rotateX(double angle) override {
+        double radianAngle = angle * (M_PI/180);
+        Matrix r = Matrix::identity(4, 4);
+        r.setElementAt(1, 1, cos(radianAngle));
+        r.setElementAt(1, 2, -sin(radianAngle));
+        r.setElementAt(2, 1, sin(radianAngle));
+        r.setElementAt(2, 2, cos(radianAngle));
+
+        transform(r, false);
+    }
+
+    void rotateY(double angle) override {
+        double radianAngle = angle * (M_PI/180);
+        Matrix r = Matrix::identity(4, 4);
+        r.setElementAt(0, 0, cos(radianAngle));
+        r.setElementAt(0, 2, sin(radianAngle));
+        r.setElementAt(2, 0, -sin(radianAngle));
+        r.setElementAt(2, 2, cos(radianAngle));
+
+        transform(r, false);
+    }
+
+    void rotateZ(double angle) override {
+        double radianAngle = angle * (M_PI/180);
+        Matrix r = Matrix::identity(4, 4);
+        r.setElementAt(0, 0, cos(radianAngle));
+        r.setElementAt(0, 1, -sin(radianAngle));
+        r.setElementAt(1, 0, sin(radianAngle));
+        r.setElementAt(1, 1, cos(radianAngle));
+
+        transform(r, false);
+    }
+
+    void transform(Matrix m, bool rotateAxis = true) override {
         Matrix centerMatrix = Vec3::vec3ToMatrix(this->center);
         Matrix transformedCenter = m * centerMatrix;
         this->center.setCoordinates(transformedCenter.getElementAt(0,0),
                                     transformedCenter.getElementAt(1,0),
                                     transformedCenter.getElementAt(2,0));
 
+        
         Matrix normalMatrix = Vec3::vec3ToMatrix(this->n);
         normalMatrix.setElementAt(3, 0, 0);
         Matrix transformedNormal = m * normalMatrix;
@@ -112,7 +155,8 @@ public:
         Vec3 normalUnit = this->n/this->n.getLength();
         this->n.setCoordinates(normalUnit.x, normalUnit.y, normalUnit.z);
 
-        this->basePlane.transform(m);
+        this->basePlane.pPi.setCoordinates(this->center.x, this->center.y, this->center.z);
+        this->basePlane.normal.setCoordinates(-this->n.x, -this->n.y, -this->n.z);
     }
 
 };

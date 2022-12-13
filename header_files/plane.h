@@ -30,7 +30,7 @@ public:
         return this->normal;
     }
 
-    void transform(Matrix m) override {
+    void transform(Matrix m, bool rotateAxis = true) override {
         Matrix pPiMatrix = Vec3::vec3ToMatrix(this->pPi);
         Matrix transformedpPi = m * pPiMatrix;
         this->pPi.setCoordinates(transformedpPi.getElementAt(0,0),

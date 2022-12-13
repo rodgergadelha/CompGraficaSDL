@@ -139,7 +139,67 @@ public:
         this->cluster.radius = this->cluster.radius * maxSize; 
     }
 
-    void transform(Matrix m) override {
+    void shearingYX(double angle) override {
+        double radianAngle = angle * (M_PI/180);
+        Matrix s(4, 4, std::vector<double> {1, tan(radianAngle), 0, 0,
+                                            0, 1, 0, 0,
+                                            0, 0, 1, 0,
+                                            0, 0, 0, 1});
+        transform(s);
+        this->cluster.radius = this->cluster.radius + (tan(radianAngle) * size);
+    }
+
+    void shearingXY(double angle) override {
+        double radianAngle = angle * (M_PI/180);
+        Matrix s(4, 4, std::vector<double> {1, 0, 0, 0,
+                                            tan(radianAngle), 1, 0, 0,
+                                            0, 0, 1, 0,
+                                            0, 0, 0, 1});
+        transform(s);
+        this->cluster.radius = this->cluster.radius + (tan(radianAngle) * size);
+    }
+
+    void shearingYZ(double angle) override {
+        double radianAngle = angle * (M_PI/180);
+        Matrix s(4, 4, std::vector<double> {1, 0, 0, 0,
+                                            0, 1, 0, 0,
+                                            0, tan(radianAngle), 1, 0,
+                                            0, 0, 0, 1});
+        transform(s);
+        this->cluster.radius = this->cluster.radius + (tan(radianAngle) * size);
+    }
+
+    void shearingZY(double angle) override {
+        double radianAngle = angle * (M_PI/180);
+        Matrix s(4, 4, std::vector<double> {1, 0, 0, 0,
+                                            0, 1, tan(radianAngle), 0,
+                                            0, 0, 1, 0,
+                                            0, 0, 0, 1});
+        transform(s);
+        this->cluster.radius = this->cluster.radius + (tan(radianAngle) * size);
+    }
+
+    void shearingXZ(double angle) override {
+        double radianAngle = angle * (M_PI/180);
+        Matrix s(4, 4, std::vector<double> {1, 0, 0, 0,
+                                            0, 1, 0, 0,
+                                            tan(radianAngle), 0, 1, 0,
+                                            0, 0, 0, 1});
+        transform(s);
+        this->cluster.radius = this->cluster.radius + (tan(radianAngle) * size);
+    }
+
+    void shearingZX(double angle) override {
+        double radianAngle = angle * (M_PI/180);
+        Matrix s(4, 4, std::vector<double> {1, 0, tan(radianAngle), 0,
+                                            0, 1, 0, 0,
+                                            0, 0, 1, 0,
+                                            0, 0, 0, 1});
+        transform(s);
+        this->cluster.radius = this->cluster.radius + (tan(radianAngle) * size);
+    }
+
+    void transform(Matrix m,  bool rotateAxis = true) override {
         for(Vec3 *&v : this->vertices) {
             Matrix vertexMatrix = Vec3::vec3ToMatrix(*v);
             Matrix transformedVertex = m * vertexMatrix;

@@ -321,7 +321,7 @@ public:
                     std::cout << "ka.z: "; 
                     std::cin >> z;
 
-                    o->ka.setCoordinates(x, y, z);
+                    o->setK(Vec3(x, y, z), "ka");
                 }
                 else if(resp == "2") {
                     std::cout << "ke.x: "; 
@@ -331,7 +331,7 @@ public:
                     std::cout << "ke.z: "; 
                     std::cin >> z;
 
-                    o->ke.setCoordinates(x, y, z);
+                    o->setK(Vec3(x, y, z), "ke");
                 }
                 else if(resp == "3") {
                     std::cout << "kd.x: "; 
@@ -341,7 +341,7 @@ public:
                     std::cout << "kd.z: "; 
                     std::cin >> z;
 
-                    o->kd.setCoordinates(x, y, z);
+                    o->setK(Vec3(x, y, z), "kd");
                 }else{
                     
                 this->update = false;
