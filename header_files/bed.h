@@ -75,7 +75,7 @@ public:
             leg->basePlane.pPi = leg->center*1;
             leg->basePlane.normal = leg->u*(-1);
             leg->topPlane.pPi = leg->center + (leg->u)*(leg->height);
-            leg->topPlane.normal = (leg->u)*(leg->height);
+            leg->topPlane.normal = (leg->u)*(leg->height) / ((leg->u)*(leg->height)).getLength();
         }
 
         this->components = std::vector<Object*> {bed, head_board, leg1, leg2, leg3, leg4, pillow, left_back_cilinder, right_back_cilinder};

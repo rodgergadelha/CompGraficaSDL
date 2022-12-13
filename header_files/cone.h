@@ -75,6 +75,8 @@ public:
     }
 
     Vec3 getNormal(Vec3 intersectionPoint, Vec3 d) {
+        if(hasBase && ((intersectionPoint - basePlane.pPi) ^ n) < 0.001) return basePlane.normal;
+
         Vec3 w = getVertex() - intersectionPoint;
         Vec3 n0 = w.cross(this->n);
         Vec3 normal = n0.cross(w);

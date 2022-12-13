@@ -47,57 +47,37 @@ public:
         && (t2 > 0 && t2 < closestT)) {
             closestT = t2;
         }
-
+        
         double tBasePlane = basePlane.intersection(observer, d);
         if(tBasePlane > 0) {
             Vec3 piBasePlane = observer + d * tBasePlane;
             
             if((piBasePlane - center).getLength() <= baseRadius
-            && (tBasePlane < closestT))
+            && (tBasePlane < closestT)){
                 closestT = tBasePlane;
+            }
         }
 
         double tTopPlane = topPlane.intersection(observer, d);
         if(tTopPlane > 0) {
             Vec3 piTopPlane = observer + d * tTopPlane;
             
-            if((piTopPlane - center).getLength() <= baseRadius
-            && (tTopPlane < closestT))
+            if((piTopPlane - (center + (u * height))).getLength() <= baseRadius
+            && (tTopPlane < closestT)) {
                 closestT = tTopPlane;
+            }
         }
 
         return closestT;
     }
 
-    std::vector<Vec3> getTMatrixNormal(Vec3 d) {
-        Vec3 col1 = Vec3(1 - d.x * d.x,
-                        -d.y * d.x,
-                        -d.z * d.x);
-        Vec3 col2 = Vec3(-d.x * d.y,
-                        1 - d.y * d.y,
-                        -d.z * d.y);
-        Vec3 col3 = Vec3(-d.x * d.z,
-                        -d.y * d.z,
-                        1 - d.z * d.z);
-        
-        std::vector<Vec3> tMatrix;
-        tMatrix.push_back(col1);
-        tMatrix.push_back(col2);
-        tMatrix.push_back(col3);
-
-        return tMatrix;
-    }
-
     Vec3 getNormal(Vec3 intersectionPoint, Vec3 d) {
-        if(((intersectionPoint - basePlane.pPi) ^ u) < 0.0001) return basePlane.normal;
-
-        std::vector <Vec3> tMatrix = getTMatrixNormal(u);
-        Vec3 ipMinusBc = intersectionPoint - center;
-        Vec3 bigNormal = Vec3((tMatrix.at(0).x * ipMinusBc.x) + (tMatrix.at(1).x * ipMinusBc.y) + (tMatrix.at(2).x * ipMinusBc.z),
-        (tMatrix.at(0).y * ipMinusBc.x) + (tMatrix.at(1).y * ipMinusBc.y) + (tMatrix.at(2).y * ipMinusBc.z),
-        (tMatrix.at(0).z * ipMinusBc.x) + (tMatrix.at(1).z * ipMinusBc.y) + (tMatrix.at(2).z * ipMinusBc.z));
-
-        return bigNormal / bigNormal.getLength();
+        if(((intersectionPoint - basePlane.pPi) ^ u) < 0.001) return basePlane.normal;
+        if(((intersectionPoint - topPlane.pPi) ^ (u * (-1))) < 0.001) return topPlane.normal / topPlane.normal.getLength();
+       
+        Vec3 a = intersectionPoint - this->center;
+        Vec3 b = a - (this->u * (a ^ this->u));
+        return b / b.getLength();
     }
 
     void transform(Matrix m, bool rotateAxis = true) override {
@@ -121,6 +101,22 @@ public:
         this->basePlane.normal = this->u*(-1);
         this->topPlane.pPi = this->center + this->u*this->height;
         this->topPlane.normal = this->u*this->height;    
+    }
+
+    Vec3 getTextureColor(Vec3 intersectionPoint) override {
+        double u1 = 0;
+        double v1 = 0;
+        int u = abs(fmod(u1 - this->image_w/2, this->image_w));
+        int v = this->image_h - abs(fmod(v1 + this->image_h/2, this->image_h));
+        
+        const size_t RGB = 3;
+        size_t index = RGB * (v * this->image_w + u);
+
+        Vec3 rgbValues(static_cast<int>(this->image[index + 0]),
+                        static_cast<int>(this->image[index + 1]),
+                        static_cast<int>(this->image[index + 2]));
+
+        return rgbValues;
     }
 
 };

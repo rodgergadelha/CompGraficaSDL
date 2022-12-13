@@ -60,7 +60,7 @@ int main(int argv, char** args) {
 
     Cilinder cilinder;
     cilinder.center.setCoordinates(0, 0, -50);
-    cilinder.height = 60;
+    cilinder.height = 20;
     cilinder.baseRadius = 3;
     Vec3 axis(0,1,0);
     cilinder.u = axis/axis.getLength();
@@ -72,7 +72,7 @@ int main(int argv, char** args) {
     cilinder.basePlane.pPi = cilinder.center*1;
     cilinder.basePlane.normal = cilinder.u*(-1);
     cilinder.topPlane.pPi = cilinder.center + cilinder.u*cilinder.height;
-    cilinder.topPlane.normal = cilinder.u*cilinder.height;
+    cilinder.topPlane.normal = (cilinder.topPlane.pPi - cilinder.center) / (cilinder.topPlane.pPi - cilinder.center).getLength();
 
     Cone cone;
     cone.center.setCoordinates(0, 0, -50);
@@ -160,7 +160,7 @@ int main(int argv, char** args) {
     //world.objects.push_back(&cilinder);
     //world.objects.push_back(&sphere);
     //world.objects.push_back(&table);
-    world.objects.push_back(&bed);
+    world.objects.push_back(&cilinder);
     //world.objects.push_back(&floor);
     //world.objects.push_back(&right_wall);
     //world.objects.push_back(&back_wall);
