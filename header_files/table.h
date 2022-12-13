@@ -13,6 +13,7 @@ public:
    
     Table(Vec3 center, double cover_w, double cover_h, double leg_w, double leg_h, double leg_d) {
         this->type = "table";
+        this->center = center;
         
         Cube *cover = new Cube(1, Vec3(0, 0, 0));
         cover->scale(cover_w, 1, cover_h);

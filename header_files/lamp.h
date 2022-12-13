@@ -14,6 +14,7 @@
 
 class Lamp : public ComplexObject {
 public:
+    SpotLight *light;
    
     Lamp(Vec3 center, World *world, double height, double baseRadius, double headRadius) {
         this->type = "lamp";
@@ -21,6 +22,7 @@ public:
         this->ke.setCoordinates(0.6, 0.6, 0.6);
         this->ka.setCoordinates(0.8, 0.8, 0.8);
         this->shininess = 10;
+        this->center = center;
 
         Cilinder *base = new Cilinder();
         base->center.setCoordinates(center.x, center.y, center.z);
@@ -102,11 +104,19 @@ public:
         head->ka = this->ka;
         head->shininess = this->shininess;
 
-        SpotLight *light = new SpotLight(head_base->center, headCenter, 5, 25);
+        this->light = new SpotLight(head_base->center, headCenter, 5, 25);
         light->intensity.setCoordinates(0.7, 0.7, 0.7);
-        world->lights.push_back(light);
+        world->lights.push_back(this->light);
 
-        this->components = std::vector<Object*> {head, stem1, stem2, base, stem_base, head_base};
+        this->components = std::vector<Object*> {base, head, stem1, stem2, stem_base, head_base};
+    }
+
+    void transform(Matrix m, bool rotateAxis = true) override {
+        for(auto component : components) {
+            component->transform(m);
+        }
+        this->light->transform(m);
+        this->center = components[0]->center;
     }
     
 };

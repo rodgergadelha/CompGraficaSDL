@@ -15,6 +15,7 @@
 #include "header_files/closet.h"
 #include "header_files/christmas_tree.h"
 #include "header_files/master_shield.h"
+#include "header_files/bed.h"
 
 int main(int argv, char** args) {
     std::srand((unsigned) time(NULL));
@@ -49,8 +50,8 @@ int main(int argv, char** args) {
     sl2.intensity.setCoordinates(0.7, 0.7, 0.7);
 
     Sphere sphere;
-    sphere.radius = 45;
-    sphere.center.setCoordinates(40, 60, -100);
+    sphere.radius = 30;
+    sphere.center.setCoordinates(0, 0, -50);
     sphere.color.setCoordinates(255, 255, 255);
     sphere.kd.setCoordinates(0.9, 0.9, 0.9);
     sphere.ke.setCoordinates(0.4, 0.4, 0.4);
@@ -58,7 +59,7 @@ int main(int argv, char** args) {
     sphere.shininess = 10;
 
     Cilinder cilinder;
-    cilinder.center.setCoordinates(0, 0, 0);
+    cilinder.center.setCoordinates(0, 0, -50);
     cilinder.height = 60;
     cilinder.baseRadius = 3;
     Vec3 axis(0,1,0);
@@ -72,14 +73,12 @@ int main(int argv, char** args) {
     cilinder.basePlane.normal = cilinder.u*(-1);
     cilinder.topPlane.pPi = cilinder.center + cilinder.u*cilinder.height;
     cilinder.topPlane.normal = cilinder.u*cilinder.height;
-    cilinder.shearingXY(60);
-    cilinder.translate(0, -cilinder.height/2, -80);
 
     Cone cone;
-    cone.center.setCoordinates(0, 0, 0);
+    cone.center.setCoordinates(0, 0, -50);
     cone.baseRadius = 5;
     cone.height = 15;
-    cone.n.setCoordinates(0, 0, -1);
+    cone.n.setCoordinates(0, 1, 0);
     cone.color.setCoordinates(250, 115, 57);
     cone.kd.setCoordinates(0.8, 0.8, 0.5);
     cone.ke.setCoordinates(0.8, 0.5, 0.5);
@@ -121,7 +120,7 @@ int main(int argv, char** args) {
     right_wall.shininess = 1;
     right_wall.loadImage("textures/cpp_image.png");
 
-    Cube cube(28, Vec3(0, 0, -100));
+    Cube cube(5, Vec3(0, 0, -50));
     cube.color.setCoordinates(255, 0, 0);
     cube.kd.setCoordinates(0.9, 0.9, 0.9);
     cube.ke.setCoordinates(0.6, 0.6, 0.6);
@@ -150,18 +149,18 @@ int main(int argv, char** args) {
 
     ChristmasTree ct(Vec3(0, 0,-50), 0.8, 15, 8, 20, 0.75);
 
-    // Lamp lamp(Vec3(0, 0, 0), &world, 20, 7, 3.5);
-    // lamp.rotateY(15);
-    // lamp.translate(0, 0, -50);
-    // lamp.setK(Vec3(0.2, 0.2, 0.2), "kd");
+    Lamp lamp(Vec3(0, 0, 0), &world, 20, 7, 3.5);
+    lamp.translate(0, 0, -80);
 
     MasterShield ms(Vec3(0, 0, -50), 5, 5);
+
+    Bed bed(Vec3(0, 0, -50), 10, 5, 25, 0.5, 0.5);
 
     world.window = window;
     //world.objects.push_back(&cilinder);
     //world.objects.push_back(&sphere);
     //world.objects.push_back(&table);
-    world.objects.push_back(&ms);
+    world.objects.push_back(&bed);
     //world.objects.push_back(&floor);
     //world.objects.push_back(&right_wall);
     //world.objects.push_back(&back_wall);
@@ -173,7 +172,7 @@ int main(int argv, char** args) {
     world.isOrtho = false;
 
     Observer observer;
-    Vec3 eye(-10, 10, -15);
+    Vec3 eye(0, 20, -15);
     world.applyWorldToCamera(eye, Vec3(0, 0, -50), Vec3(eye.x, eye.y + 10, eye.z));
     observer.paintScreen(world, &screen);
     

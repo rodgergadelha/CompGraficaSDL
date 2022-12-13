@@ -20,6 +20,7 @@ public:
         this->ke.setCoordinates(0.6, 0.6, 0.6);
         this->ka.setCoordinates(0.8, 0.8, 0.8);
         this->shininess = 10;
+        this->center = center;
 
         Cilinder *trunk = new Cilinder();
         trunk->center.setCoordinates(center.x, center.y, center.z);
@@ -56,7 +57,7 @@ public:
         top_sphere->ka = this->ka;
         top_sphere->shininess = this->shininess;
 
-        this->components = std::vector<Object*> {top_sphere, leafs, trunk};
+        this->components = std::vector<Object*> {trunk, top_sphere, leafs};
     }
     
 };

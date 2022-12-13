@@ -100,7 +100,7 @@ public:
         return bigNormal / bigNormal.getLength();
     }
 
-    void transform(Matrix m, bool rotateAxis = true) {
+    void transform(Matrix m, bool rotateAxis = true) override {
         Matrix centerMatrix = Vec3::vec3ToMatrix(this->center);
         Matrix transformedCenter = m * centerMatrix;
         this->center.setCoordinates(transformedCenter.getElementAt(0,0),

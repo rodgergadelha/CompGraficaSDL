@@ -17,6 +17,7 @@ public:
         this->ke.setCoordinates(0.6, 0.6, 0.6);
         this->ka.setCoordinates(0.8, 0.8, 0.8);
         this->shininess = 10;
+        this->center = center;
 
         double shield_connector_w = shield_w/8;
         double shield_connector_h = shield_h/8;

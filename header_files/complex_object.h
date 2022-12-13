@@ -35,10 +35,12 @@ public:
         return intersectedComponent->getNormal(intersectionPoint, d);
     }
 
-    void transform(Matrix m, bool rotateAxis = true) override {
+    virtual void transform(Matrix m, bool rotateAxis = true) override {
         for(auto component : components) {
             component->transform(m);
         }
+
+        this->center = components[0]->center;
     }
     
 

@@ -307,6 +307,15 @@ public:
                 std::cout << "1 - Mudar ka\n";
                 std::cout << "2 - Mudar ke\n";
                 std::cout << "3 - Mudar kd\n";
+                std::cout << "4 - Rotacionar pelo eixo X\n";
+                std::cout << "5 - Rotacionar pelo eixo Y\n";
+                std::cout << "6 - Rotacionar pelo eixo Z\n";
+                std::cout << "7 - Aplicar matriz de translacao\n";
+                if(o->type == "cube") {
+                    std::cout << "8 - Aplicar matriz de escala\n";
+                    std::cout << "9 - Aplicar matriz de cisalhamento\n";
+                }
+                std::cout << "10 - sair\n";
                 
                 std::string resp;
                 std::cin >> resp;
@@ -322,8 +331,7 @@ public:
                     std::cin >> z;
 
                     o->setK(Vec3(x, y, z), "ka");
-                }
-                else if(resp == "2") {
+                }else if(resp == "2") {
                     std::cout << "ke.x: "; 
                     std::cin >> x;
                     std::cout << "ke.y: "; 
@@ -332,8 +340,7 @@ public:
                     std::cin >> z;
 
                     o->setK(Vec3(x, y, z), "ke");
-                }
-                else if(resp == "3") {
+                }else if(resp == "3") {
                     std::cout << "kd.x: "; 
                     std::cin >> x;
                     std::cout << "kd.y: "; 
@@ -342,9 +349,89 @@ public:
                     std::cin >> z;
 
                     o->setK(Vec3(x, y, z), "kd");
-                }else{
+                }else if(resp == "4") {
+                    double angle;
+                    std::cout << "angulo da rotacao(em graus): "; 
+                    std::cin >> angle;
+
+                    Vec3 oldCenter(o->center.x, o->center.y, o->center.z);
+                    o->translate(-o->center.x, -o->center.y, -o->center.z);
+                    o->rotateX(angle);
+                    o->translate(oldCenter.x, oldCenter.y, oldCenter.z);
+                }else if(resp == "5") {
+                    double angle;
+                    std::cout << "angulo da rotacao(em graus): "; 
+                    std::cin >> angle;
+
+                    Vec3 oldCenter(o->center.x, o->center.y, o->center.z);
+                    o->translate(-o->center.x, -o->center.y, -o->center.z);
+                    o->rotateY(angle);
+                    o->translate(oldCenter.x, oldCenter.y, oldCenter.z);
+                }else if(resp == "6") {
+                    double angle;
+                    std::cout << "angulo da rotacao(em graus): "; 
+                    std::cin >> angle;
+
+                    Vec3 oldCenter(o->center.x, o->center.y, o->center.z);
+                    o->translate(-o->center.x, -o->center.y, -o->center.z);
+                    o->rotateZ(angle);
+                    o->translate(oldCenter.x, oldCenter.y, oldCenter.z);
+                }else if(o->type == "cube" && resp == "8") {
+                    double sx, sy, sz;
+                    std::cout << "sx: "; 
+                    std::cin >> sx;
                     
-                this->update = false;
+                    std::cout << "sy: "; 
+                    std::cin >> sy;
+                    
+                    std::cout << "sz: "; 
+                    std::cin >> sz;
+
+                    Vec3 oldCenter(o->center.x, o->center.y, o->center.z);
+                    o->translate(-o->center.x, -o->center.y, -o->center.z);
+                    o->scale(sx, sy, sz);
+                    o->translate(oldCenter.x, oldCenter.y, oldCenter.z);
+                }else if(resp == "7") {
+                    double tx, ty, tz;
+                    std::cout << "tx: "; 
+                    std::cin >> tx;
+                    
+                    std::cout << "ty: "; 
+                    std::cin >> ty;
+                    
+                    std::cout << "tz: "; 
+                    std::cin >> tz;
+
+                    o->translate(tx, ty, tz);
+                }else if(o->type == "cube" && resp == "9") {
+                    double angle;
+                    int type;
+
+                    std::cout << "tipo do cisalhamento:\n";
+                    std::cout << "1 - cisalhamento XY\n";
+                    std::cout << "2 - cisalhamento YX\n"; 
+                    std::cout << "3 - cisalhamento XZ\n"; 
+                    std::cout << "4 - cisalhamento ZX\n"; 
+                    std::cout << "5 - cisalhamento ZY\n"; 
+                    std::cout << "6 - cisalhamento YZ\n"; 
+                    std::cin >> type;
+
+                    std::cout << "angulo do cisalhamento: "; 
+                    std::cin >> angle;
+
+                    Vec3 oldCenter(o->center.x, o->center.y, o->center.z);
+                    o->translate(-o->center.x, -o->center.y, -o->center.z);
+                    
+                    if(type == 1) o->shearingXY(angle);
+                    if(type == 2) o->shearingYX(angle);
+                    if(type == 3) o->shearingXZ(angle);
+                    if(type == 4) o->shearingZX(angle);
+                    if(type == 5) o->shearingZY(angle);
+                    if(type == 6) o->shearingYZ(angle);
+
+                    o->translate(oldCenter.x, oldCenter.y, oldCenter.z);
+                }else if(resp == "10"){
+                    this->update = false;
                 }
 
             }

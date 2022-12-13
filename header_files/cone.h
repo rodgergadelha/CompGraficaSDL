@@ -48,14 +48,14 @@ public:
 
         double closestT = std::numeric_limits<double>::infinity();
 
-        if (((v - intersectionPoint1)^n) < height
-        && ((v - intersectionPoint1)^n) > 0
+        if (((v - intersectionPoint1)^n) <= height
+        && ((v - intersectionPoint1)^n) >= 0
         && (t1 > 0 && t1 < closestT)) {
             closestT = t1;
         }
         
-        if (((v - intersectionPoint2)^n) < height
-        && ((v - intersectionPoint2)^n) > 0
+        if (((v - intersectionPoint2)^n) <= height
+        && ((v - intersectionPoint2)^n) >= 0
         & (t2 > 0 && t2 < closestT)) {
             closestT = t2;
         }
@@ -74,68 +74,12 @@ public:
         return closestT;
     }
 
-    std::vector<Vec3> getTMatrixNormal(Vec3 d) {
-        Vec3 col1 = Vec3(1 - d.x * d.x,
-                        -d.y * d.x,
-                        -d.z * d.x);
-        Vec3 col2 = Vec3(-d.x * d.y,
-                        1 - d.y * d.y,
-                        -d.z * d.y);
-        Vec3 col3 = Vec3(-d.x * d.z,
-                        -d.y * d.z,
-                        1 - d.z * d.z);
-        
-        std::vector<Vec3> tMatrix;
-        tMatrix.push_back(col1);
-        tMatrix.push_back(col2);
-        tMatrix.push_back(col3);
-
-        return tMatrix;
-    }
-
     Vec3 getNormal(Vec3 intersectionPoint, Vec3 d) {
-        if(((intersectionPoint - basePlane.pPi) ^ n) < 0.0001) return basePlane.normal;
+        Vec3 w = getVertex() - intersectionPoint;
+        Vec3 n0 = w.cross(this->n);
+        Vec3 normal = n0.cross(w);
 
-        std::vector <Vec3> tMatrix = getTMatrixNormal(n);
-        Vec3 ipMinusBc = intersectionPoint - center;
-        Vec3 bigNormal = Vec3((tMatrix.at(0).x * ipMinusBc.x) + (tMatrix.at(1).x * ipMinusBc.y) + (tMatrix.at(2).x * ipMinusBc.z),
-        (tMatrix.at(0).y * ipMinusBc.x) + (tMatrix.at(1).y * ipMinusBc.y) + (tMatrix.at(2).y * ipMinusBc.z),
-        (tMatrix.at(0).z * ipMinusBc.x) + (tMatrix.at(1).z * ipMinusBc.y) + (tMatrix.at(2).z * ipMinusBc.z));
-
-        return bigNormal / bigNormal.getLength();
-    }
-
-    void rotateX(double angle) override {
-        double radianAngle = angle * (M_PI/180);
-        Matrix r = Matrix::identity(4, 4);
-        r.setElementAt(1, 1, cos(radianAngle));
-        r.setElementAt(1, 2, -sin(radianAngle));
-        r.setElementAt(2, 1, sin(radianAngle));
-        r.setElementAt(2, 2, cos(radianAngle));
-
-        transform(r, false);
-    }
-
-    void rotateY(double angle) override {
-        double radianAngle = angle * (M_PI/180);
-        Matrix r = Matrix::identity(4, 4);
-        r.setElementAt(0, 0, cos(radianAngle));
-        r.setElementAt(0, 2, sin(radianAngle));
-        r.setElementAt(2, 0, -sin(radianAngle));
-        r.setElementAt(2, 2, cos(radianAngle));
-
-        transform(r, false);
-    }
-
-    void rotateZ(double angle) override {
-        double radianAngle = angle * (M_PI/180);
-        Matrix r = Matrix::identity(4, 4);
-        r.setElementAt(0, 0, cos(radianAngle));
-        r.setElementAt(0, 1, -sin(radianAngle));
-        r.setElementAt(1, 0, sin(radianAngle));
-        r.setElementAt(1, 1, cos(radianAngle));
-
-        transform(r, false);
+        return normal / normal.getLength();
     }
 
     void transform(Matrix m, bool rotateAxis = true) override {

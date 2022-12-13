@@ -19,6 +19,7 @@ public:
         this->ke.setCoordinates(0.6, 0.6, 0.6);
         this->ka.setCoordinates(0.8, 0.8, 0.8);
         this->shininess = 10;
+        this->center = center;
         
         Cube *closet = new Cube(1, Vec3(0, 0, 0));
         closet->color = color;

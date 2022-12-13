@@ -128,6 +128,7 @@ public:
         this->cluster.center.setCoordinates(this->center.x, this->center.y, this->center.z);
     }
 
+
     void scale(double sx, double sy, double sz) override {
         Matrix s(4, 4, std::vector<double> {sx, 0, 0, 0,
                                             0, sy, 0, 0,
