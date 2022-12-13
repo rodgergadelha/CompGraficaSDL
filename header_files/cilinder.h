@@ -104,10 +104,14 @@ public:
     }
 
     Vec3 getTextureColor(Vec3 intersectionPoint) override {
-        double u1 = 0;
-        double v1 = 0;
-        int u = abs(fmod(u1 - this->image_w/2, this->image_w));
-        int v = this->image_h - abs(fmod(v1 + this->image_h/2, this->image_h));
+        double theta = atan2(intersectionPoint.x, intersectionPoint.z);
+        double raw_u = theta / (2 * M_PI);
+        double u1 = 1 - (raw_u + 0.5);
+        double v1 = fmod(intersectionPoint.y, 1);
+
+
+        int u = u1 * this->image_w;
+        int v = v1 * this->image_h;
         
         const size_t RGB = 3;
         size_t index = RGB * (v * this->image_w + u);

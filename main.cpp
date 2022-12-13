@@ -16,6 +16,7 @@
 #include "header_files/christmas_tree.h"
 #include "header_files/master_shield.h"
 #include "header_files/bed.h"
+#include "header_files/book.h"
 
 int main(int argv, char** args) {
     std::srand((unsigned) time(NULL));
@@ -73,6 +74,7 @@ int main(int argv, char** args) {
     cilinder.basePlane.normal = cilinder.u*(-1);
     cilinder.topPlane.pPi = cilinder.center + cilinder.u*cilinder.height;
     cilinder.topPlane.normal = (cilinder.topPlane.pPi - cilinder.center) / (cilinder.topPlane.pPi - cilinder.center).getLength();
+    cilinder.loadImage("textures/wood.jpg");
 
     Cone cone;
     cone.center.setCoordinates(0, 0, -50);
@@ -156,11 +158,13 @@ int main(int argv, char** args) {
 
     Bed bed(Vec3(0, 0, -50), 10, 5, 25, 0.5, 0.5);
 
+    Book book(Vec3(0, 0, -50), 10, 1.5, 15);
+
     world.window = window;
     //world.objects.push_back(&cilinder);
     //world.objects.push_back(&sphere);
     //world.objects.push_back(&table);
-    world.objects.push_back(&cilinder);
+    world.objects.push_back(&book);
     //world.objects.push_back(&floor);
     //world.objects.push_back(&right_wall);
     //world.objects.push_back(&back_wall);
