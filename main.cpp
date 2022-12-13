@@ -14,6 +14,7 @@
 #include "header_files/lamp.h"
 #include "header_files/closet.h"
 #include "header_files/christmas_tree.h"
+#include "header_files/master_shield.h"
 
 int main(int argv, char** args) {
     std::srand((unsigned) time(NULL));
@@ -149,16 +150,18 @@ int main(int argv, char** args) {
 
     ChristmasTree ct(Vec3(0, 0,-50), 0.8, 15, 8, 20, 0.75);
 
-    Lamp lamp(Vec3(0, 0, 0), &world, 20, 7, 3.5);
-    lamp.rotateY(15);
-    lamp.translate(0, 0, -50);
-    lamp.setK(Vec3(0.2, 0.2, 0.2), "kd");
+    // Lamp lamp(Vec3(0, 0, 0), &world, 20, 7, 3.5);
+    // lamp.rotateY(15);
+    // lamp.translate(0, 0, -50);
+    // lamp.setK(Vec3(0.2, 0.2, 0.2), "kd");
+
+    MasterShield ms(Vec3(0, 0, -50), 5, 5);
 
     world.window = window;
     //world.objects.push_back(&cilinder);
     //world.objects.push_back(&sphere);
     //world.objects.push_back(&table);
-    world.objects.push_back(&table);
+    world.objects.push_back(&ms);
     //world.objects.push_back(&floor);
     //world.objects.push_back(&right_wall);
     //world.objects.push_back(&back_wall);
