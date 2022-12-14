@@ -30,6 +30,10 @@ public:
         }
 
         this->components = std::vector<Object*> {book};
+
+        cluster = new Sphere();
+        cluster->center.setCoordinates(this->center.x, this->center.y, this->center.z);
+        cluster->radius = std::max(width, std::max(height, depth)) / 1.5;
     }
     
 };

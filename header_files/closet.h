@@ -54,6 +54,10 @@ public:
         }
 
         this->components = std::vector<Object*> {closet, leg1, leg2, leg3, leg4};
+
+        cluster = new Sphere();
+        cluster->center.setCoordinates(this->center.x, this->center.y, this->center.z);
+        cluster->radius = (std::max(width, std::max(height, depth)) + legHeight) / 1.5;
     }
     
 };

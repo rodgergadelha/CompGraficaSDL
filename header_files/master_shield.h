@@ -39,15 +39,21 @@ public:
 
         Cube *left_shield = new Cube(1, Vec3(0, 0, 0));
         left_shield->scale(shield_w, shield_h, 1);
-        left_shield->translate(shield_connector1->center.x - shield_connector_w/2 - shield_w/2, shield_connector1->center.y, shield_connector1->center.z);
+        left_shield->rotateY(-25);
+        left_shield->translate(shield_connector1->center.x - shield_connector_w/2 - shield_w/2, shield_connector1->center.y, shield_connector1->center.z - 1);
         left_shield->loadImageAllFaces("textures/wood.jpg");
 
         Cube *right_shield = new Cube(1, Vec3(0, 0, 0));
         right_shield->scale(shield_w, shield_h, 1);
-        right_shield->translate(shield_connector2->center.x + shield_connector_w/2 + shield_w/2, shield_connector2->center.y, shield_connector2->center.z);
+        right_shield->rotateY(25);
+        right_shield->translate(shield_connector2->center.x + shield_connector_w/2 + shield_w/2, shield_connector2->center.y, shield_connector2->center.z - 1);
         right_shield->loadImageAllFaces("textures/wood.jpg");
 
         this->components = std::vector<Object*> {mid_shield, left_shield, right_shield, shield_connector1, shield_connector2};
+    
+        cluster = new Sphere();
+        cluster->center.setCoordinates(mid_shield->center.x, mid_shield->center.y, mid_shield->center.z);
+        cluster->radius = std::max(shield_w, shield_h) * 3;
     }
     
 };

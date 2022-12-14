@@ -109,14 +109,22 @@ public:
         world->lights.push_back(this->light);
 
         this->components = std::vector<Object*> {base, head, stem1, stem2, stem_base, head_base};
+        
+        cluster = new Sphere();
+        cluster->center.setCoordinates(stem_base->center.x, stem_base->center.y, stem_base->center.z);
+        cluster->radius = 1 + (2 * stem1->height) + stem_base->radius + head_base->radius;
     }
 
     void transform(Matrix m, bool rotateAxis = true) override {
         for(auto component : components) {
             component->transform(m);
         }
-        this->light->transform(m);
-        this->center = components[0]->center;
+        
+        light->position = components[5]->center;
+        light->spotDirection = components[1]->center - light->position;
+        
+        this->center.setCoordinates(components[0]->center.x, components[0]->center.y, components[0]->center.z);
+        cluster->transform(m);
     }
     
 };

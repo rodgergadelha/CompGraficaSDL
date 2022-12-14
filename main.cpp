@@ -75,7 +75,7 @@ int main(int argv, char** args) {
     cilinder.basePlane.normal = cilinder.u*(-1);
     cilinder.topPlane.pPi = cilinder.center + cilinder.u*cilinder.height;
     cilinder.topPlane.normal = (cilinder.topPlane.pPi - cilinder.center) / (cilinder.topPlane.pPi - cilinder.center).getLength();
-    cilinder.loadImage("textures/wood.jpg");
+    //cilinder.loadImage("textures/wood.jpg");
 
     Cone cone;
     cone.center.setCoordinates(0, 0, -50);
@@ -99,7 +99,6 @@ int main(int argv, char** args) {
     floor.ke.setCoordinates(0, 0, 0);
     floor.ka.setCoordinates(0.9, 0.9, 0.9);
     floor.shininess = 1;
-    floor.loadImage("textures/bear.jpeg");
 
     Plane back_wall;
     back_wall.pPi.setCoordinates(0, 0, -200);
@@ -137,11 +136,7 @@ int main(int argv, char** args) {
     ico.ka.setCoordinates(0.8, 0.8, 0.8);
     ico.shininess = 20;
 
-    Table table(Vec3(0, 0, -100), 80, 50, 10, 1, 30, 1);
-    table.kd.setCoordinates(0.9, 0.9, 0.9);
-    table.ke.setCoordinates(0.6, 0.6, 0.6);
-    table.ka.setCoordinates(0.8, 0.8, 0.8);
-    table.setShininess(10);
+    Table table(Vec3(0, 0, -50), 80, 50, 2.5, 1, 30, 1);
 
     Chair chair(Vec3(0, 0, -50), Vec3(255, 0, 0), 20, 20, 20, 20, 1, 20, 1, 8);
     (static_cast<MeshObject*>(chair.components[0]))->loadImageAllFaces("textures/minecraft.png");
@@ -152,23 +147,23 @@ int main(int argv, char** args) {
 
     ChristmasTree ct(Vec3(0, 0,-50), 0.8, 15, 8, 20, 0.75);
 
-    // Lamp lamp(Vec3(0, 0, 0), &world, 20, 7, 3.5);
-    // lamp.translate(0, 0, -80);
+    Lamp lamp(Vec3(0, 0, -50), &world, 20, 7, 3.5);
 
-    MasterShield ms(Vec3(0, 0, -50), 5, 5);
+    MasterShield ms(Vec3(0, 0, -35), 5, 5);
 
     Bed bed(Vec3(0, 0, -50), 10, 5, 25, 0.5, 0.5);
 
     Book book(Vec3(0, 0, -50), 10, 1.5, 15);
 
-    IncandLamp icl(Vec3(0, 20, -50), &world, 10, 5, 5);
+    //IncandLamp icl(Vec3(0, 20, -50), &world, 10, 5, 5);
+
 
     world.window = window;
     //world.objects.push_back(&cilinder);
     //world.objects.push_back(&sphere);
     //world.objects.push_back(&table);
-    world.objects.push_back(&floor);
-    world.objects.push_back(&icl);
+    //world.objects.push_back(&floor);
+    world.objects.push_back(&ms);
     //world.objects.push_back(&right_wall);
     //world.objects.push_back(&back_wall);
     //world.lights.push_back(&dl);

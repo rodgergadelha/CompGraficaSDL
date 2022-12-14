@@ -54,14 +54,21 @@ public:
         world->lights.push_back(this->light);
 
         this->components = std::vector<Object*> {base, lamp};
+
+        cluster = new Sphere();
+        cluster->center.setCoordinates(this->center.x, this->center.y, this->center.z);
+        cluster->radius = (baseHeight + radius*2);
     }
 
     void transform(Matrix m, bool rotateAxis = true) override {
         for(auto component : components) {
             component->transform(m);
         }
-        this->light->transform(m);
+
+        light->position.setCoordinates(components[1]->center.x, components[1]->center.y - static_cast<Sphere*>(components[1])->radius, components[1]->center.z);
+        
         this->center = components[0]->center;
+        cluster->transform(m);
     }
     
 };

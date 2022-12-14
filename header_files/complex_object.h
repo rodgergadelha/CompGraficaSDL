@@ -11,8 +11,11 @@ class ComplexObject : public Object {
 public:
     std::vector<Object*> components;
     Object *intersectedComponent;
+    Sphere *cluster;
 
     double intersection(Vec3 observer, Vec3 d) override {
+        if(cluster->intersection(observer, d) == -1) return -1;
+
         double closestT = std::numeric_limits<double>::infinity();
 
         for(auto component : components) {
@@ -41,6 +44,7 @@ public:
         }
 
         this->center = components[0]->center;
+        cluster->transform(m);
     }
     
 

@@ -321,6 +321,11 @@ public:
                 std::cin >> resp;
                 double x, y, z;
                 this->update = true;
+                
+                Vec3 eyeCopy(world->eye.x, world->eye.y, world->eye.z);
+                Vec3 lookAtCopy(world->lookAt.x, world->lookAt.y, world->lookAt.z);
+                Vec3 viewUpCopy(world->viewUp.x, world->viewUp.y, world->viewUp.z);
+                world->applyCameraToWorld();
 
                 if(resp == "1") {
                     std::cout << "ka.x: "; 
@@ -433,6 +438,8 @@ public:
                 }else if(resp == "10"){
                     this->update = false;
                 }
+
+                world->applyWorldToCamera(eyeCopy, lookAtCopy, viewUpCopy);
 
             }
 

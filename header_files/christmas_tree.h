@@ -58,6 +58,10 @@ public:
         top_sphere->shininess = this->shininess;
 
         this->components = std::vector<Object*> {trunk, top_sphere, leafs};
+
+        cluster = new Sphere();
+        cluster->center.setCoordinates(this->center.x, this->center.y + trunk_height, this->center.z);
+        cluster->radius = (trunk_height + leafs_height + top_sphere_radius);
     }
     
 };

@@ -22,6 +22,7 @@ public:
         this->center = center;
         
         Cube *bed = new Cube(1, Vec3(0, 0, 0));
+        bed->setAllFacesColors(Vec3(0, 93, 112));
         bed->scale(width, height, depth);
         bed->translate(center.x, center.y, center.z);
 
@@ -79,6 +80,10 @@ public:
         }
 
         this->components = std::vector<Object*> {bed, head_board, leg1, leg2, leg3, leg4, pillow, left_back_cilinder, right_back_cilinder};
+    
+        cluster = new Sphere();
+        cluster->center.setCoordinates(this->center.x, this->center.y, this->center.z);
+        cluster->radius = std::max(width, std::max(height, depth))/1.5 + legHeight/2;
     }
     
 };

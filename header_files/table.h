@@ -13,6 +13,10 @@ public:
    
     Table(Vec3 center, double cover_w, double cover_h, double cover_d, double leg_w, double leg_h, double leg_d) {
         this->type = "table";
+        this->kd.setCoordinates(0.9, 0.9, 0.9);
+        this->ke.setCoordinates(0.6, 0.6, 0.6);
+        this->ka.setCoordinates(0.8, 0.8, 0.8);
+        this->shininess = 10;
         this->center = center;
         
         Cube *cover = new Cube(1, Vec3(0, 0, 0));
@@ -36,6 +40,10 @@ public:
         leg4->translate(center.x - cover_w/2 + leg_w/2, center.y - leg_h/2, center.z + cover_h/2 - leg_d/2);
 
         this->components = std::vector<Object*> {cover, leg1, leg2, leg3, leg4};
+
+        cluster = new Sphere();
+        cluster->center.setCoordinates(cover->center.x, cover->center.y, cover->center.z);
+        cluster->radius = std::max(cover_h, std::max(cover_w, cover_d)) + leg_h;
     }
     
 };

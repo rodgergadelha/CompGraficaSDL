@@ -73,6 +73,10 @@ public:
         }
 
         this->components = std::vector<Object*> {seat, backrest, seat_leg1, seat_leg2, seat_leg3, seat_leg4, backrest_leg1, backrest_leg2};
+    
+        cluster = new Sphere();
+        cluster->center.setCoordinates(this->center.x, this->center.y, this->center.z);
+        cluster->radius = (1 + backrest_leg_h + backrest_h + seat_leg_h) / 1.5;
     }
 };
 
