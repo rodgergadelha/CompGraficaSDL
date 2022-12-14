@@ -54,8 +54,8 @@ public:
         u0 = u0 / u0.getLength();
         Vec3 v0 = this->worldNormal.cross(u0);
         v0 = v0 / v0.getLength();
-        double u1 = (u0 ^ (intersectionPoint - *this->p1));
-        double v1 = (v0 ^ (intersectionPoint - *this->p1));
+        double u1 = (u0 ^ intersectionPoint);
+        double v1 = (v0 ^ intersectionPoint);
        
         int u = abs(fmod(u1 + this->image_w/2, this->image_w));
         int v = this->image_h - abs(fmod(v1 + this->image_h, this->image_h));

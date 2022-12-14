@@ -26,7 +26,8 @@ public:
         book->translate(center.x, center.y, center.z);
 
         for(int i = 0; i < 6; i++) {
-            book->setFaceColor(i, Vec3(255, 255, 255));
+            //book->setFaceColor(i, Vec3(255, 255, 255));
+            book->
         }
 
         this->components = std::vector<Object*> {book};
