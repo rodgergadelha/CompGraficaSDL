@@ -40,12 +40,12 @@ public:
         Cilinder *backrest_leg1 = new Cilinder();
         Cilinder *backrest_leg2 = new Cilinder();
         
-        seat_leg1->center.setCoordinates(center.x + seat_w/2 - 2, center.y - seat_leg_h, center.z - seat_h/2 + 2);
-        seat_leg2->center.setCoordinates(center.x - seat_w/2 + 2, center.y - seat_leg_h, center.z - seat_h/2 + 2);
-        seat_leg3->center.setCoordinates(center.x + seat_w/2 - 2, center.y - seat_leg_h, center.z + seat_h/2 - 2);
-        seat_leg4->center.setCoordinates(center.x - seat_w/2 + 2, center.y - seat_leg_h, center.z + seat_h/2 - 2);
-        backrest_leg1->center.setCoordinates(backrest->center.x + backrest_w/2 - 2, backrest->center.y - backrest_leg_h - backrest_h/2, backrest->center.z);
-        backrest_leg2->center.setCoordinates(backrest->center.x - backrest_w/2 + 2, backrest->center.y - backrest_leg_h - backrest_h/2, backrest->center.z);
+        seat_leg1->center.setCoordinates(center.x + seat_w/2 - seat_leg_radius, center.y - seat_leg_h, center.z - seat_h/2 + seat_leg_radius);
+        seat_leg2->center.setCoordinates(center.x - seat_w/2 + seat_leg_radius, center.y - seat_leg_h, center.z - seat_h/2 + seat_leg_radius);
+        seat_leg3->center.setCoordinates(center.x + seat_w/2 - seat_leg_radius, center.y - seat_leg_h, center.z + seat_h/2 - seat_leg_radius);
+        seat_leg4->center.setCoordinates(center.x - seat_w/2 + seat_leg_radius, center.y - seat_leg_h, center.z + seat_h/2 - seat_leg_radius);
+        backrest_leg1->center.setCoordinates(backrest->center.x + backrest_w/2 - backrest_leg_radius, backrest->center.y - backrest_leg_h - backrest_h/2, backrest->center.z);
+        backrest_leg2->center.setCoordinates(backrest->center.x - backrest_w/2 + backrest_leg_radius, backrest->center.y - backrest_leg_h - backrest_h/2, backrest->center.z);
 
         std::vector<Cilinder*> legs {seat_leg1, seat_leg2, seat_leg3, seat_leg4, backrest_leg1, backrest_leg2};
 

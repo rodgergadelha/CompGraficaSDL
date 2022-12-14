@@ -98,7 +98,7 @@ int main(int argv, char** args) {
     floor.ke.setCoordinates(0, 0, 0);
     floor.ka.setCoordinates(0.9, 0.9, 0.9);
     floor.shininess = 1;
-    //floor.loadImage("textures/wood.jpg");
+    floor.loadImage("textures/bear.jpeg");
 
     Plane back_wall;
     back_wall.pPi.setCoordinates(0, 0, -200);
@@ -112,7 +112,7 @@ int main(int argv, char** args) {
     back_wall.loadImage("textures/bear.jpeg");
 
     Plane right_wall;
-    right_wall.pPi.setCoordinates(80, 0, 0);
+    right_wall.pPi.setCoordinates(20, 0, 0);
     right_wall.normal.setCoordinates(-1, 0, 0);
     right_wall.worldNormal.setCoordinates(-1, 0, 0);
     right_wall.color.setCoordinates(48, 162, 255);
@@ -136,14 +136,14 @@ int main(int argv, char** args) {
     ico.ka.setCoordinates(0.8, 0.8, 0.8);
     ico.shininess = 20;
 
-    Table table(Vec3(0, 0, -100), 80, 50, 1, 30, 1);
+    Table table(Vec3(0, 0, -100), 80, 50, 10, 1, 30, 1);
     table.kd.setCoordinates(0.9, 0.9, 0.9);
     table.ke.setCoordinates(0.6, 0.6, 0.6);
     table.ka.setCoordinates(0.8, 0.8, 0.8);
     table.setShininess(10);
 
-    Chair chair(Vec3(0, 10, -50), Vec3(255, 0, 0), 20, 20, 20, 20, 1, 20, 1, 8);
-    (static_cast<MeshObject*>(chair.components[0]))->loadImageAllFaces("textures/wood.jpg");
+    Chair chair(Vec3(0, 0, -50), Vec3(255, 0, 0), 20, 20, 20, 20, 1, 20, 1, 8);
+    (static_cast<MeshObject*>(chair.components[0]))->loadImageAllFaces("textures/minecraft.png");
     (static_cast<MeshObject*>(chair.components[1]))->loadImageAllFaces("textures/wood.jpg");
 
     Closet closet(Vec3(0, 0, -50), Vec3(255, 0, 0), 10, 40, 10, 1, 2);
@@ -164,8 +164,8 @@ int main(int argv, char** args) {
     //world.objects.push_back(&cilinder);
     //world.objects.push_back(&sphere);
     //world.objects.push_back(&table);
-    world.objects.push_back(&book);
-    //world.objects.push_back(&floor);
+    //world.objects.push_back(&book);
+    world.objects.push_back(&chair);
     //world.objects.push_back(&right_wall);
     //world.objects.push_back(&back_wall);
     //world.lights.push_back(&dl);
@@ -176,7 +176,7 @@ int main(int argv, char** args) {
     world.isOrtho = false;
 
     Observer observer;
-    Vec3 eye(0, 20, -15);
+    Vec3 eye(0, 10, -15);
     world.applyWorldToCamera(eye, Vec3(0, 0, -50), Vec3(eye.x, eye.y + 10, eye.z));
     observer.paintScreen(world, &screen);
     

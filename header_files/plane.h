@@ -58,7 +58,7 @@ public:
         double v1 = v0 ^ intersectionPoint;
        
         int u = abs(fmod(u1 - this->image_w/2, this->image_w));
-        int v = this->image_h - abs(fmod(v1 + this->image_h/2, this->image_h));
+        int v = this->image_h - abs(fmod(v1 + this->image_h/8, this->image_h));
         
         const size_t RGB = 3;
         size_t index = RGB * (v * this->image_w + u);

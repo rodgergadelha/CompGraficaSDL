@@ -57,8 +57,8 @@ public:
         double u1 = (u0 ^ intersectionPoint);
         double v1 = (v0 ^ intersectionPoint);
        
-        int u = abs(fmod(u1 + this->image_w/2, this->image_w));
-        int v = this->image_h - abs(fmod(v1 + this->image_h, this->image_h));
+        int u = abs(fmod(u1 - this->image_w/2, this->image_w));
+        int v = this->image_h - abs(fmod(v1 + this->image_h/8, this->image_h));
 
         //std::cout << u << ", " << v << "\n";
         
