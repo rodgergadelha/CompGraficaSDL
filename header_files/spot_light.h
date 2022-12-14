@@ -18,7 +18,7 @@ public:
 
     std::string getType() {return "spot";}
 
-    Vec3 getIntensity(Vec3 intersectionPoint, Vec3 d, Vec3 normal, Object* object) {
+    Vec3 getIntensity(Vec3 intersectionPoint, Vec3 d, Vec3 normal, Object* object) override {
         Vec3 pf_sub_pi = this->position - intersectionPoint;
         Vec3 v = d / -d.getLength();
         Vec3 l = pf_sub_pi / pf_sub_pi.getLength();

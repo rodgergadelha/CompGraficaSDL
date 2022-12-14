@@ -104,8 +104,8 @@ public:
         head->ka = this->ka;
         head->shininess = this->shininess;
 
-        this->light = new SpotLight(head_base->center, headCenter, 5, 15);
-        light->position = headCenter * 1;
+        this->light = new SpotLight(head->center * 1, Vec3(0, 0, 0), 5, 30);
+        light->spotDirection = head->n * (-1);
         light->intensity.setCoordinates(0.7, 0.7, 0.7);
         world->lights.push_back(this->light);
 
