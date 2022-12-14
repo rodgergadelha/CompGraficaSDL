@@ -53,6 +53,7 @@ public:
         this->spotDirection.setCoordinates(transformedNormal.getElementAt(0,0),
                                     transformedNormal.getElementAt(1,0),
                                     transformedNormal.getElementAt(2,0));
+        this->spotDirection = this->spotDirection / this->spotDirection.getLength();
     }
 };
 

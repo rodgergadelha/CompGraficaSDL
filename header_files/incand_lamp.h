@@ -65,8 +65,8 @@ public:
             component->transform(m);
         }
 
-        light->position.setCoordinates(components[1]->center.x, components[1]->center.y - static_cast<Sphere*>(components[1])->radius, components[1]->center.z);
-        
+        light->transform(m);
+       
         this->center = components[0]->center;
         cluster->transform(m);
     }

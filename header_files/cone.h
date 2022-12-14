@@ -48,14 +48,14 @@ public:
 
         double closestT = std::numeric_limits<double>::infinity();
 
-        if (((v - intersectionPoint1)^n) <= height
-        && ((v - intersectionPoint1)^n) >= 0
+        if (((intersectionPoint1 - this->center)^n) < height
+        && ((intersectionPoint1 - this->center)^n) > 0
         && (t1 > 0 && t1 < closestT)) {
             closestT = t1;
         }
         
-        if (((v - intersectionPoint2)^n) <= height
-        && ((v - intersectionPoint2)^n) >= 0
+        if (((intersectionPoint2 - this->center)^n) < height
+        && ((intersectionPoint2 - this->center)^n) > 0
         & (t2 > 0 && t2 < closestT)) {
             closestT = t2;
         }

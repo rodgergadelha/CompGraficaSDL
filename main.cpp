@@ -75,7 +75,7 @@ int main(int argv, char** args) {
     cilinder.basePlane.normal = cilinder.u*(-1);
     cilinder.topPlane.pPi = cilinder.center + cilinder.u*cilinder.height;
     cilinder.topPlane.normal = (cilinder.topPlane.pPi - cilinder.center) / (cilinder.topPlane.pPi - cilinder.center).getLength();
-    //cilinder.loadImage("textures/wood.jpg");
+    cilinder.loadImage("textures/mini_cpp.png");
 
     Cone cone;
     cone.center.setCoordinates(0, 0, -50);
@@ -162,8 +162,8 @@ int main(int argv, char** args) {
     //world.objects.push_back(&cilinder);
     //world.objects.push_back(&sphere);
     //world.objects.push_back(&table);
-    //world.objects.push_back(&floor);
-    world.objects.push_back(&ms);
+    world.objects.push_back(&floor);
+    world.objects.push_back(&lamp);
     //world.objects.push_back(&right_wall);
     //world.objects.push_back(&back_wall);
     //world.lights.push_back(&dl);
@@ -174,7 +174,7 @@ int main(int argv, char** args) {
     world.isOrtho = false;
 
     Observer observer;
-    Vec3 eye(0, 10, -15);
+    Vec3 eye(0, 10, 0);
     world.applyWorldToCamera(eye, Vec3(0, 0, -50), Vec3(eye.x, eye.y + 10, eye.z));
     observer.paintScreen(world, &screen);
     

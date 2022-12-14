@@ -107,8 +107,7 @@ public:
         double theta = atan2(intersectionPoint.x, intersectionPoint.z);
         double raw_u = theta / (2 * M_PI);
         double u1 = 1 - (raw_u + 0.5);
-        double v1 = fmod(intersectionPoint.y, 1);
-
+        double v1 = abs(fmod(this->image_h/2 + intersectionPoint.y, 1));
 
         int u = u1 * this->image_w;
         int v = v1 * this->image_h;

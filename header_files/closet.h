@@ -57,7 +57,7 @@ public:
 
         cluster = new Sphere();
         cluster->center.setCoordinates(this->center.x, this->center.y, this->center.z);
-        cluster->radius = (std::max(width, std::max(height, depth)) + legHeight) / 1.5;
+        cluster->radius = std::max(width, std::max(height, depth)) / 1.5;
     }
     
 };

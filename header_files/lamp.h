@@ -104,7 +104,8 @@ public:
         head->ka = this->ka;
         head->shininess = this->shininess;
 
-        this->light = new SpotLight(head_base->center, headCenter, 5, 25);
+        this->light = new SpotLight(head_base->center, headCenter, 5, 15);
+        light->position = headCenter * 1;
         light->intensity.setCoordinates(0.7, 0.7, 0.7);
         world->lights.push_back(this->light);
 
@@ -120,8 +121,7 @@ public:
             component->transform(m);
         }
         
-        light->position = components[5]->center;
-        light->spotDirection = components[1]->center - light->position;
+        light->transform(m);
         
         this->center.setCoordinates(components[0]->center.x, components[0]->center.y, components[0]->center.z);
         cluster->transform(m);

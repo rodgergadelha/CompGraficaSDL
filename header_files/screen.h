@@ -325,7 +325,7 @@ public:
                 Vec3 eyeCopy(world->eye.x, world->eye.y, world->eye.z);
                 Vec3 lookAtCopy(world->lookAt.x, world->lookAt.y, world->lookAt.z);
                 Vec3 viewUpCopy(world->viewUp.x, world->viewUp.y, world->viewUp.z);
-                world->applyCameraToWorld();
+                if(resp != "10") world->applyCameraToWorld();
 
                 if(resp == "1") {
                     std::cout << "ka.x: "; 
@@ -439,7 +439,7 @@ public:
                     this->update = false;
                 }
 
-                world->applyWorldToCamera(eyeCopy, lookAtCopy, viewUpCopy);
+                if(resp != "10") world->applyWorldToCamera(eyeCopy, lookAtCopy, viewUpCopy);
 
             }
 
