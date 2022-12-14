@@ -121,7 +121,8 @@ public:
             component->transform(m);
         }
         
-        light->transform(m);
+        light->position = components[1]->center * 1;
+        light->spotDirection = components[1]->n * (-1);
         
         this->center.setCoordinates(components[0]->center.x, components[0]->center.y, components[0]->center.z);
         cluster->transform(m);

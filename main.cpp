@@ -185,7 +185,7 @@ int main(int argv, char** args) {
     world.isOrtho = false;
 
     Observer observer;
-    Vec3 eye(5, 30, 0);
+    Vec3 eye(15, 40, 0);
     world.applyWorldToCamera(eye, Vec3(0, 0, -50), Vec3(eye.x, eye.y + 10, eye.z));
     observer.paintScreen(world, &screen);
     
