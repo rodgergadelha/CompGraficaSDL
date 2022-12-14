@@ -2,7 +2,6 @@
 #define OBJECT_H
 
 #include "vec3.h"
-#include "light.h"
 #include <string>
 #include <vector>
 #include <iostream>
@@ -32,39 +31,6 @@ public:
     }
 
     virtual Vec3 getNormal(Vec3 intersectionPoint, Vec3 d) = 0;
-
-    virtual bool checkShadow(Vec3 position, Light* light, std::vector<Object*> objects) {
-        double closestTShadow = std::numeric_limits<double>::infinity();
-        Object* closestObjectShadow = nullptr;
-        Vec3 pf_sub_pi = light->getL(position);
-        Vec3 l = pf_sub_pi / pf_sub_pi.getLength();
-        
-        for(auto object : objects) {
-            double t = object->intersection(position, l);
-
-            if(object == this || t <= 0.001 || object->type == "plane") continue;
-
-            if(t < closestTShadow && (t < pf_sub_pi.getLength() || light->getType() == "directional")) {
-                closestTShadow = t;
-                closestObjectShadow = object;
-            }
-        }
-
-        return closestObjectShadow != nullptr;
-    }
-
-    Vec3 computeLighting(Vec3 intersectionPoint, Vec3 d, std::vector<Light*> lights, std::vector<Object*> objects) {
-        Vec3 normal = getNormal(intersectionPoint, d);
-        Vec3 totalLighting;
-
-        for(auto light : lights) {
-            if(checkShadow(intersectionPoint, light, objects)) continue;
-            
-            totalLighting = totalLighting + light->getIntensity(intersectionPoint, d, normal, this);
-        }
-        
-        return totalLighting;
-    }
 
     virtual void translate(double tx, double ty, double tz) {
         Matrix t = Matrix(4, 4, std::vector<double> {

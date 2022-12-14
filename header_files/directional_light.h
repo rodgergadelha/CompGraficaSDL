@@ -3,8 +3,6 @@
 
 #include "light.h"
 
-class Object;
-
 class DirectionalLight : public Light {
 public:
     Vec3 direction;

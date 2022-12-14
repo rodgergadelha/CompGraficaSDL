@@ -47,29 +47,6 @@ public:
         cluster->transform(m);
     }
     
-
-    bool checkShadow(Vec3 position, Light* light, std::vector<Object*> objects) override {
-        double closestTShadow = std::numeric_limits<double>::infinity();
-        Object* closestObjectShadow = nullptr;
-        Vec3 pf_sub_pi = light->getL(position);
-        Vec3 l = pf_sub_pi / pf_sub_pi.getLength();
-        Object *oldIntersectedComponent;
-        
-        for(auto object : objects) {
-            oldIntersectedComponent = &(*intersectedComponent);
-            double t = object->intersection(position, l);
-            this->intersectedComponent = &(*oldIntersectedComponent);
-
-            if(object == this || t <= 0.001 || object->type == "plane") continue;
-
-            if(t < closestTShadow && (t < pf_sub_pi.getLength() || light->getType() == "directional")) {
-                closestTShadow = t;
-                closestObjectShadow = object;
-            }
-        }
-
-        return closestObjectShadow != nullptr;
-    }
 };
 
 #endif

@@ -4,8 +4,7 @@
 #include <vector>
 #include "vec3.h"
 #include "matrix.h"
-
-class Object;
+#include "object.h"
 
 class Light {
 public:

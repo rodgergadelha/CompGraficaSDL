@@ -18,6 +18,11 @@
 #include "header_files/bed.h"
 #include "header_files/book.h"
 #include "header_files/incand_lamp.h"
+#include "header_files/positioned_directional_light.h"
+#include "header_files/window_frame.h"
+
+
+
 
 int main(int argv, char** args) {
     std::srand((unsigned) time(NULL));
@@ -52,9 +57,9 @@ int main(int argv, char** args) {
     sl2.intensity.setCoordinates(0.7, 0.7, 0.7);
 
     Sphere sphere;
-    sphere.radius = 30;
-    sphere.center.setCoordinates(0, 0, -50);
-    sphere.color.setCoordinates(255, 255, 255);
+    sphere.radius = 10;
+    sphere.center.setCoordinates(0, 20, -50);
+    sphere.color.setCoordinates(255, 0, 0);
     sphere.kd.setCoordinates(0.9, 0.9, 0.9);
     sphere.ke.setCoordinates(0.4, 0.4, 0.4);
     sphere.ka.setCoordinates(0.9, 0.9, 0.9);
@@ -147,7 +152,7 @@ int main(int argv, char** args) {
 
     ChristmasTree ct(Vec3(0, 0,-50), 0.8, 15, 8, 20, 0.75);
 
-    Lamp lamp(Vec3(0, 0, -50), &world, 20, 7, 3.5);
+    //Lamp lamp(Vec3(0, 0, -50), &world, 20, 7, 3.5);
 
     MasterShield ms(Vec3(0, 0, -35), 5, 5);
 
@@ -158,23 +163,29 @@ int main(int argv, char** args) {
     //IncandLamp icl(Vec3(0, 20, -50), &world, 10, 5, 5);
 
 
+    // PositionedDirectionalLight pdl(&sphere, Vec3(-1, 1, 0));
+    // pdl.intensity.setCoordinates(0.7, 0.7, 0.7);
+
+    Frame frame(Vec3(0, 20, -120), Vec3(0, 1, -1), &world, 15, 15, 1.5);
+
     world.window = window;
     //world.objects.push_back(&cilinder);
-    //world.objects.push_back(&sphere);
+    world.objects.push_back(&frame);
     //world.objects.push_back(&table);
     world.objects.push_back(&floor);
-    world.objects.push_back(&lamp);
+    //world.objects.push_back(&book);
     //world.objects.push_back(&right_wall);
     //world.objects.push_back(&back_wall);
     //world.lights.push_back(&dl);
     //world.lights.push_back(&dl2);
-    world.lights.push_back(&pl);
+    //world.lights.push_back(&pl);
     world.lights.push_back(&al);
+    //world.lights.push_back(&pdl);
 
     world.isOrtho = false;
 
     Observer observer;
-    Vec3 eye(0, 10, 0);
+    Vec3 eye(5, 30, 0);
     world.applyWorldToCamera(eye, Vec3(0, 0, -50), Vec3(eye.x, eye.y + 10, eye.z));
     observer.paintScreen(world, &screen);
     

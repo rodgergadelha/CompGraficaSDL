@@ -5,11 +5,53 @@
 #include "screen.h"
 #include "sphere.h"
 #include "matrix.h"
+#include "light.h"
+#include "complex_object.h"
+#include "positioned_directional_light.h"
 #include <vector>
 #include <tuple>
 
 class Observer {
 public:
+
+    bool checkShadow(Object *intersectedObject, Vec3 position, Light* light, std::vector<Object*> objects) {
+        double closestTShadow = std::numeric_limits<double>::infinity();
+        Object* closestObjectShadow = nullptr;
+        Vec3 pf_sub_pi = light->getL(position);
+        Vec3 l = pf_sub_pi / pf_sub_pi.getLength();
+        
+        for(auto object : objects) {
+            Object *oldIntersectedComponent = &(*(static_cast<ComplexObject*>(intersectedObject)->intersectedComponent));
+            double t = object->intersection(position, l);
+            static_cast<ComplexObject*>(intersectedObject)->intersectedComponent = &(*oldIntersectedComponent);
+
+            if(object == intersectedObject || t <= 0.001 || object->type == "plane") continue;
+
+            if(t < closestTShadow && (t < pf_sub_pi.getLength() || light->getType() == "directional" || light->getType() == "pos directional")) {
+                closestTShadow = t;
+                closestObjectShadow = object;
+            }
+        }
+
+        if(light->getType() == "pos directional" && static_cast<PositionedDirectionalLight*>(light)->emiter == closestObjectShadow)
+        {return false;}
+
+        return closestObjectShadow != nullptr;
+    }
+
+    Vec3 computeLighting(Object* object, Vec3 intersectionPoint, Vec3 d, std::vector<Light*> lights, std::vector<Object*> objects) {
+        Vec3 normal = object->getNormal(intersectionPoint, d);
+        Vec3 totalLighting;
+
+        for(auto light : lights) {
+            if(checkShadow(object, intersectionPoint, light, objects)) continue;
+            
+            totalLighting = totalLighting + light->getIntensity(intersectionPoint, d, normal, object);
+        }
+        
+        return totalLighting;
+    }
+
     std::tuple<Object*, Vec3> lookToWindow(Vec3 position, Vec3 d, World world) {
         Object *closestObject = nullptr;
         double closestT = std::numeric_limits<double>::infinity();
@@ -32,8 +74,7 @@ public:
         }
 
         Vec3 intersectionPoint = position + (d * closestT);
-        Vec3 lighting = closestObject->computeLighting(intersectionPoint,
-        d, world.lights, objects);
+        Vec3 lighting = computeLighting(closestObject, intersectionPoint, d, world.lights, objects);
         Vec3 objectColor = closestObject->getColor(world.applyWt(intersectionPoint, false));
 
         return std::make_tuple(closestObject, objectColor % lighting);

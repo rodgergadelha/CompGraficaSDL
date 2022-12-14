@@ -19,8 +19,6 @@ public:
         Vec3 w = observer - center;
         std::vector<double> t;
 
-        // Coeficientes da equação do segundo grau formada a partir
-        // da substituição da equação do raio na equação da esfera
         double coefA = d ^ d;
         double coefB = 2 * (w ^ d);
         double coefC = (w ^ w) - (radius * radius);
