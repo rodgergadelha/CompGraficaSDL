@@ -3,8 +3,6 @@
 
 #include "light.h"
 
-class Object;
-
 class PointLight : public Light {
 public:
 

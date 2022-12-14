@@ -60,6 +60,17 @@ public:
         cluster->center.setCoordinates(this->center.x, this->center.y, this->center.z);
         cluster->radius = std::max(width, std::max(height, depth));
     }
+
+    void transform(Matrix m, bool rotateAxis = true) override {
+        for(auto component : components) {
+            component->transform(m);
+        }
+        
+        light->transform(m);
+        
+        this->center.setCoordinates(components[0]->center.x, components[0]->center.y, components[0]->center.z);
+        cluster->transform(m);
+    }
     
 };
 

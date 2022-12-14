@@ -4,8 +4,6 @@
 #include "light.h"
 #include <cmath>
 
-class Object;
-
 class SpotLight : public Light {
 public:
     Vec3 spotDirection;
