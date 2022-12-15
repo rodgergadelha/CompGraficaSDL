@@ -1,1 +1,0 @@
-light->position = components[0]->center + static_cast<Cilinder*>(components[0])->u * (static_cast<Cilinder*>(components[0])->height + static_cast<Sphere*>(components[1])->radius * 2);

@@ -20,6 +20,7 @@
 #include "header_files/incand_lamp.h"
 #include "header_files/positioned_directional_light.h"
 #include "header_files/window_frame.h"
+#include "header_files/mage.h"
 
 
 
@@ -160,19 +161,19 @@ int main(int argv, char** args) {
 
     Book book(Vec3(0, 0, -50), 10, 1.5, 15);
 
-    IncandLamp icl(Vec3(0, 20, -50), &world, 10, 5, 5);
+    //IncandLamp icl(Vec3(0, 20, -50), &world, 10, 5, 5);
 
 
     // PositionedDirectionalLight pdl(&sphere, Vec3(-1, 1, 0));
     // pdl.intensity.setCoordinates(0.7, 0.7, 0.7);
 
-    //Frame frame(Vec3(0, 20, -120), Vec3(0, 1, -1), &world, 15, 15, 1.5);
+    Mage mage(Vec3(0, 50, -50), 10, 4, 7, 12, 3);
 
     world.window = window;
     //world.objects.push_back(&cilinder);
-    world.objects.push_back(&icl);
+    world.objects.push_back(&mage);
     //world.objects.push_back(&table);
-    world.objects.push_back(&floor);
+    //world.objects.push_back(&floor);
     //world.objects.push_back(&book);
     //world.objects.push_back(&right_wall);
     //world.objects.push_back(&back_wall);
@@ -184,8 +185,8 @@ int main(int argv, char** args) {
     world.isOrtho = false;
 
     Observer observer;
-    Vec3 eye(15, 40, 0);
-    world.applyWorldToCamera(eye, Vec3(0, 0, -50), Vec3(eye.x, eye.y + 10, eye.z));
+    Vec3 eye(0, 40, 0);
+    world.applyWorldToCamera(eye, Vec3(0, 50, -50), Vec3(eye.x, eye.y + 10, eye.z));
     observer.paintScreen(world, &screen);
     
 
