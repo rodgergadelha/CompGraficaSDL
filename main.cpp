@@ -152,7 +152,7 @@ int main(int argv, char** args) {
 
     ChristmasTree ct(Vec3(0, 0,-50), 0.8, 15, 8, 20, 0.75);
 
-    Lamp lamp(Vec3(0, 0, -50), &world, 20, 7, 3.5);
+    //Lamp lamp(Vec3(0, 0, -50), &world, 20, 7, 3.5);
 
     MasterShield ms(Vec3(0, 0, -35), 5, 5);
 
@@ -160,7 +160,7 @@ int main(int argv, char** args) {
 
     Book book(Vec3(0, 0, -50), 10, 1.5, 15);
 
-    //IncandLamp icl(Vec3(0, 20, -50), &world, 10, 5, 5);
+    IncandLamp icl(Vec3(0, 20, -50), &world, 10, 5, 5);
 
 
     // PositionedDirectionalLight pdl(&sphere, Vec3(-1, 1, 0));
@@ -170,7 +170,7 @@ int main(int argv, char** args) {
 
     world.window = window;
     //world.objects.push_back(&cilinder);
-    world.objects.push_back(&lamp);
+    world.objects.push_back(&icl);
     //world.objects.push_back(&table);
     world.objects.push_back(&floor);
     //world.objects.push_back(&book);

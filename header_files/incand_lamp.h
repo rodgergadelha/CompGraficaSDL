@@ -66,7 +66,7 @@ public:
         }
 
         light->transform(m);
-       
+        
         this->center = components[0]->center;
         cluster->transform(m);
     }

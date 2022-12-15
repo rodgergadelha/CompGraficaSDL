@@ -8,6 +8,7 @@
 #include "light.h"
 #include "complex_object.h"
 #include "positioned_directional_light.h"
+#include "incand_lamp.h"
 #include <vector>
 #include <tuple>
 
@@ -34,6 +35,9 @@ public:
         }
 
         if(light->getType() == "pos directional" && static_cast<PositionedDirectionalLight*>(light)->emiter == closestObjectShadow)
+        {return false;}
+
+        if( closestObjectShadow != nullptr && light->getType() == "point" && static_cast<IncandLamp*>(closestObjectShadow)->light == light)
         {return false;}
 
         return closestObjectShadow != nullptr;
