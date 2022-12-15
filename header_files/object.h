@@ -158,8 +158,20 @@ public:
         else if(k_type == "ke") this->ke.setCoordinates(k.x, k.y, k.z);
     }
 
+    virtual Vec3 getK(std::string k_type) {
+        if(k_type == "ka") return this->ka;
+        else if(k_type == "kd") return this->kd;
+        else if(k_type == "ke") return this->ke;
+        
+        return Vec3(0, 0, 0);
+    }
+
     virtual void setShininess(double s) {
         this->shininess = s;
+    }
+
+    virtual double getShininess() {
+        return this->shininess;
     }
 
 };

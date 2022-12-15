@@ -28,8 +28,8 @@ public:
         double fd = std::max(0.0, normal ^ l);
         double fe = std::max(0.0, r ^ v);
 
-        Vec3 iD = (this->intensity % object->kd) * fd;
-        Vec3 iE = (this->intensity % object->ke) * pow(fe, object->shininess);
+        Vec3 iD = (this->intensity % object->getK("kd")) * fd;
+        Vec3 iE = (this->intensity % object->getK("ke")) * pow(fe, object->getShininess());
         
         return (iE + iD);
     }

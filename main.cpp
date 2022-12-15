@@ -179,7 +179,7 @@ int main(int argv, char** args) {
     //world.objects.push_back(&back_wall);
     //world.lights.push_back(&dl);
     //world.lights.push_back(&dl2);
-    //world.lights.push_back(&pl);
+    world.lights.push_back(&pl);
     world.lights.push_back(&al);
 
     world.isOrtho = false;

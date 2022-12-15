@@ -46,6 +46,10 @@ public:
         this->center = components[0]->center;
         cluster->transform(m);
     }
+
+    Vec3 getK(std::string type) override {
+        return intersectedComponent->getK(type);
+    }
     
 };
 

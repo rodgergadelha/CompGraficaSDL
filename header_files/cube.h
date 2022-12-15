@@ -23,6 +23,10 @@ public:
         this->type = "cube";
         this->size = size;
         this->center = center;
+        this->kd.setCoordinates(0.9, 0.9, 0.9);
+        this->ke.setCoordinates(0.6, 0.6, 0.6);
+        this->ka.setCoordinates(0.8, 0.8, 0.8);
+        this->shininess = 10;
 
         this->vertices = {  
             new Vec3(center.x - size/2, center.y - size/2, center.z + size/2),

@@ -12,7 +12,7 @@ public:
     Vec3 getL(Vec3 intersectionPoint) override {return Vec3();}
 
     Vec3 getIntensity(Vec3 intersectionPoint, Vec3 d, Vec3 normal, Object* object) { 
-        return this->intensity % object->ka;
+        return this->intensity % object->getK("ka");
     }
 
     void transform(Matrix m) {return;}
