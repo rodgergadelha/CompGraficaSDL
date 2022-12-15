@@ -43,10 +43,10 @@ public:
         lamp->radius = radius;
         lamp->center.setCoordinates(base->center.x, base->center.y - radius, base->center.z);
         lamp->color.setCoordinates(255, 255, 255);
-        lamp->kd = this->kd;
-        lamp->ke = this->ke;
-        lamp->ka = this->ka;
-        lamp->shininess = this->shininess;
+        lamp->kd = Vec3(1, 1, 1);
+        lamp->ke = Vec3(0, 0, 0);
+        lamp->ka = Vec3(1, 1, 1);
+        lamp->shininess = 10;
 
         this->light = new PointLight();
         light->position.setCoordinates(lamp->center.x, lamp->center.y - radius, lamp->center.z);
