@@ -54,7 +54,7 @@ public:
 
         this->light = new PositionedDirectionalLight(this, Vec3(0, 1, -1));
         light->intensity.setCoordinates(0.7, 0.7, 0.7);
-        world->lights.push_back(this->light);
+        world->complex_objects_lights.push_back(this->light);
 
         cluster = new Sphere();
         cluster->center.setCoordinates(this->center.x, this->center.y, this->center.z);

@@ -51,7 +51,7 @@ public:
         this->light = new PointLight();
         light->position.setCoordinates(lamp->center.x, lamp->center.y - radius, lamp->center.z);
         light->intensity.setCoordinates(0.7, 0.7, 0.7);
-        world->lights.push_back(this->light);
+        world->complex_objects_lights.push_back(this->light);
 
         this->components = std::vector<Object*> {base, lamp};
 

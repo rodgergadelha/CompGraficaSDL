@@ -107,7 +107,7 @@ public:
         this->light = new SpotLight(head->center * 1, Vec3(0, 0, 0), 5, 30);
         light->spotDirection = head->n * (-1);
         light->intensity.setCoordinates(0.7, 0.7, 0.7);
-        world->lights.push_back(this->light);
+        world->complex_objects_lights.push_back(this->light);
 
         this->components = std::vector<Object*> {base, head, stem1, stem2, stem_base, head_base};
         
@@ -121,9 +121,8 @@ public:
             component->transform(m);
         }
         
-        light->position = components[1]->center * 1;
-        light->spotDirection = components[1]->n * (-1);
-        
+        light->transform(m);
+
         this->center.setCoordinates(components[0]->center.x, components[0]->center.y, components[0]->center.z);
         cluster->transform(m);
     }

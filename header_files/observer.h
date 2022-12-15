@@ -39,11 +39,17 @@ public:
         return closestObjectShadow != nullptr;
     }
 
-    Vec3 computeLighting(Object* object, Vec3 intersectionPoint, Vec3 d, std::vector<Light*> lights, std::vector<Object*> objects) {
+    Vec3 computeLighting(Object* object, Vec3 intersectionPoint, Vec3 d, World world, std::vector<Object*> objects) {
         Vec3 normal = object->getNormal(intersectionPoint, d);
         Vec3 totalLighting;
 
-        for(auto light : lights) {
+        for(auto light : world.lights) {
+            if(checkShadow(object, intersectionPoint, light, objects)) continue;
+            
+            totalLighting = totalLighting + light->getIntensity(intersectionPoint, d, normal, object);
+        }
+
+        for(auto light : world.complex_objects_lights) {
             if(checkShadow(object, intersectionPoint, light, objects)) continue;
             
             totalLighting = totalLighting + light->getIntensity(intersectionPoint, d, normal, object);
@@ -74,7 +80,7 @@ public:
         }
 
         Vec3 intersectionPoint = position + (d * closestT);
-        Vec3 lighting = computeLighting(closestObject, intersectionPoint, d, world.lights, objects);
+        Vec3 lighting = computeLighting(closestObject, intersectionPoint, d, world, objects);
         Vec3 objectColor = closestObject->getColor(world.applyWt(intersectionPoint, false));
 
         return std::make_tuple(closestObject, objectColor % lighting);

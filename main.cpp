@@ -180,7 +180,6 @@ int main(int argv, char** args) {
     //world.lights.push_back(&dl2);
     //world.lights.push_back(&pl);
     world.lights.push_back(&al);
-    //world.lights.push_back(&pdl);
 
     world.isOrtho = false;
 

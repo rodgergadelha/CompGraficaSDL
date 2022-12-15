@@ -13,6 +13,7 @@ public:
     Window window;
     std::vector<Object*> objects;
     std::vector<Light*> lights;
+    std::vector<Light*> complex_objects_lights;
     Vec3 eye, lookAt, viewUp;
     bool isOrtho;
     bool isTransformed;
