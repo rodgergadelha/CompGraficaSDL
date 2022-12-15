@@ -21,7 +21,7 @@
 #include "header_files/positioned_directional_light.h"
 #include "header_files/window_frame.h"
 #include "header_files/mage.h"
-
+#include "header_files/snow_man.h"
 
 
 
@@ -169,9 +169,11 @@ int main(int argv, char** args) {
 
     Mage mage(Vec3(0, 50, -50), 10, 4, 7, 12, 3);
 
+    Snowman sm(Vec3(0, 0, -50), 5, 10, 0.7, 0.7, 2.5, 2.5);
+
     world.window = window;
     //world.objects.push_back(&cilinder);
-    world.objects.push_back(&mage);
+    world.objects.push_back(&sm);
     //world.objects.push_back(&table);
     //world.objects.push_back(&floor);
     //world.objects.push_back(&book);
@@ -185,8 +187,8 @@ int main(int argv, char** args) {
     world.isOrtho = false;
 
     Observer observer;
-    Vec3 eye(0, 40, 0);
-    world.applyWorldToCamera(eye, Vec3(0, 50, -50), Vec3(eye.x, eye.y + 10, eye.z));
+    Vec3 eye(0, 10, 0);
+    world.applyWorldToCamera(eye, Vec3(0, 0, -50), Vec3(eye.x, eye.y + 10, eye.z));
     observer.paintScreen(world, &screen);
     
 

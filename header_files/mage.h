@@ -103,7 +103,7 @@ public:
         hat->ka = this->ka;
         hat->shininess = this->shininess;
        
-        this->components = std::vector<Object*> {hat, head, body, arm1, arm2, leg1, leg2, staff, staff_top};
+        this->components = std::vector<Object*> {body, hat, head, arm1, arm2, leg1, leg2, staff, staff_top};
     
         cluster = new Sphere();
         cluster->center.setCoordinates(center.x, center.y, center.z);
