@@ -22,6 +22,7 @@
 #include "header_files/window_frame.h"
 #include "header_files/mage.h"
 #include "header_files/snow_man.h"
+#include "header_files/jar.h"
 
 
 
@@ -39,7 +40,7 @@ int main(int argv, char** args) {
     window.center.setCoordinates(0, 0, -window.distanceFromObserver);
 
     PointLight pl;
-    pl.position.setCoordinates(0, 80, -30);
+    pl.position.setCoordinates(0, 60, -40);
     pl.intensity.setCoordinates(0.7, 0.7, 0.7);
 
     AmbientLight al;
@@ -59,7 +60,7 @@ int main(int argv, char** args) {
 
     Sphere sphere;
     sphere.radius = 10;
-    sphere.center.setCoordinates(0, 20, -50);
+    sphere.center.setCoordinates(0, 25, -50);
     sphere.color.setCoordinates(255, 0, 0);
     sphere.kd.setCoordinates(0.9, 0.9, 0.9);
     sphere.ke.setCoordinates(0.4, 0.4, 0.4);
@@ -164,17 +165,19 @@ int main(int argv, char** args) {
     //IncandLamp icl(Vec3(0, 20, -50), &world, 10, 5, 5);
 
 
-    // PositionedDirectionalLight pdl(&sphere, Vec3(-1, 1, 0));
-    // pdl.intensity.setCoordinates(0.7, 0.7, 0.7);
+    PositionedDirectionalLight pdl(&sphere, Vec3(0, 1, -1));
+    pdl.intensity.setCoordinates(0.7, 0.7, 0.7);
 
     Mage mage(Vec3(0, 50, -50), 10, 4, 7, 12, 3);
 
     Snowman sm(Vec3(0, 0, -50), 5, 10, 0.7, 0.7, 2.5, 2.5);
 
+    Jar jar(Vec3(0, 0, -50), 6, 6, 6, 15);
+
     world.window = window;
     //world.objects.push_back(&cilinder);
-    world.objects.push_back(&sm);
-    //world.objects.push_back(&table);
+    //world.objects.push_back(&cone);
+    world.objects.push_back(&jar);
     //world.objects.push_back(&floor);
     //world.objects.push_back(&book);
     //world.objects.push_back(&right_wall);

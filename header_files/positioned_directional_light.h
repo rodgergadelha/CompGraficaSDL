@@ -19,7 +19,7 @@ public:
         
         double t = emiter->intersection(intersectionPoint, this->direction);
         double inf = std::numeric_limits<double>::infinity();
-        if(t < 0 || t == inf) return Vec3(0, 0, 0);
+        if(t <= 0.001 || t == inf) return Vec3(0, 0, 0);
 
         Vec3 v = d / -d.getLength();
         Vec3 l = this->direction;
