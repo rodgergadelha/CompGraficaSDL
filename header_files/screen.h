@@ -6,11 +6,13 @@
 #include "vec3.h"
 #include "world.h"
 #include "object.h"
+#include "complex_object.h"
 #include "spot_light.h"
 #include "point_light.h"
 #include "directional_light.h"
 #include "light.h"
 #include <iostream>
+#include <tuple>
 
 class Screen {
 public:
@@ -19,7 +21,7 @@ public:
     SDL_Renderer* renderer;
     std::vector<SDL_FPoint> points;
     std::vector<Vec3> colors;
-    std::vector<std::vector<Object*>> canvas_objects;
+    std::vector<std::vector<std::tuple<Object*, ComplexObject*>>> canvas_objects;
     const Uint8* state;
     int width, height;
     int mouseX, mouseY;
@@ -31,14 +33,20 @@ public:
         SDL_Init(SDL_INIT_VIDEO);
         SDL_CreateWindowAndRenderer(width, height, 0, &window, &renderer);
         SDL_RenderSetScale(renderer, 1, 1);
-        canvas_objects.resize(height, std::vector<Object*>(width));
+        canvas_objects.resize(height, std::vector<std::tuple<Object*, ComplexObject*>>(width));
         this->state = SDL_GetKeyboardState(nullptr);
     }
 
     void pixel(Object* object, Vec3 color, float x, float y) {
         points.emplace_back(x, y);
         colors.push_back(color);
-        canvas_objects[x][y] = object;
+
+        if(object != nullptr && object->isComplex()) {
+            canvas_objects[x][y] = std::make_tuple((static_cast<ComplexObject*>(object)->intersectedComponent), static_cast<ComplexObject*>(object));
+        }else{
+            canvas_objects[x][y] = std::make_tuple(object, nullptr);
+        }
+
     }
 
     void show() {
@@ -64,7 +72,7 @@ public:
         SDL_UpdateWindowSurface(window);
     }
 
-    Object* picking(int row, int column) {
+    std::tuple<Object*, ComplexObject*> picking(int row, int column) {
         return canvas_objects[row][column];
     }
 
@@ -120,16 +128,16 @@ public:
 
     void menuLuzes(World* world) {
         std::cout << "---------------------- MODIFICAR LUZES ----------------------\n";
-        std::cout << "1 - Point light\n";
-        std::cout << "2 - Spot light\n";
-        std::cout << "3 - Directional light\n";
+        std::cout << "1 - Luz da janela (Directional Light)\n";
+        std::cout << "2 - Luminária (Spot light)\n";
+        std::cout << "3 - Lâmpada incandescente (Point light)\n";
         std::cout << "4 - Voltar ao menu principal\n";
         
         std::string resp;
         std::cin >> resp;
 
-        if(resp == "1") {
-            PointLight* pl = static_cast<PointLight*>(world->lights[0]);
+        if(resp == "3") {
+            PointLight* pl = static_cast<PointLight*>(world->complex_objects_lights[2]);
             std::cout << "1 - Modificar intensidade\n";
             std::cout << "2 - Modificar posicao\n"; 
             std::cin >> resp;
@@ -159,7 +167,7 @@ public:
 
         }
         else if(resp == "2") {
-            SpotLight* sl = static_cast<SpotLight*>(world->lights[1]);
+            SpotLight* sl = static_cast<SpotLight*>(world->complex_objects_lights[1]);
             std::cout << "1 - Modificar intensidade\n";
             std::cout << "2 - Modificar direcao\n";
             std::cout << "3 - Modificar angulo de abertura\n"; 
@@ -206,8 +214,8 @@ public:
                 sl->cutoff = cutoff;
             }
         }
-        else if(resp == "3") {
-            DirectionalLight* dl = static_cast<DirectionalLight*>(world->lights[2]);
+        else if(resp == "1") {
+            DirectionalLight* dl = static_cast<DirectionalLight*>(world->complex_objects_lights[0]);
             std::cout << "1 - Modificar intensidade\n";
             std::cout << "2 - Modificar direcao\n";
             std::cin >> resp;
@@ -299,9 +307,15 @@ public:
 
             if(e.type == SDL_MOUSEBUTTONDOWN) {
                 SDL_GetMouseState(&mouseX, &mouseY);
-                Object* o = picking(mouseX, mouseY);
+                std::tuple<Object*, ComplexObject*> oc = picking(mouseX, mouseY);
+                Object *o;
+                ComplexObject *complex_o;
+                Object *component;
                 
-                if(o == nullptr) {std::cout << "Nenhum objeto selecionado."; return false;}
+                if(get<0>(oc) == nullptr) {std::cout << "Nenhum objeto selecionado."; return false;}
+                
+                if(get<1>(oc) != nullptr) {o = get<1>(oc); component = get<0>(oc);}
+                else{o = get<0>(oc); component = get<0>(oc);}
                 
                 std::cout << "Objeto selecionado: " << o->type << "\n";
                 std::cout << "1 - Mudar ka\n";
@@ -335,7 +349,7 @@ public:
                     std::cout << "ka.z: "; 
                     std::cin >> z;
 
-                    o->setK(Vec3(x, y, z), "ka");
+                    component->setK(Vec3(x, y, z), "ka");
                 }else if(resp == "2") {
                     std::cout << "ke.x: "; 
                     std::cin >> x;
@@ -344,7 +358,7 @@ public:
                     std::cout << "ke.z: "; 
                     std::cin >> z;
 
-                    o->setK(Vec3(x, y, z), "ke");
+                    component->setK(Vec3(x, y, z), "ke");
                 }else if(resp == "3") {
                     std::cout << "kd.x: "; 
                     std::cin >> x;
@@ -353,7 +367,7 @@ public:
                     std::cout << "kd.z: "; 
                     std::cin >> z;
 
-                    o->setK(Vec3(x, y, z), "kd");
+                    component->setK(Vec3(x, y, z), "kd");
                 }else if(resp == "4") {
                     double angle;
                     std::cout << "angulo da rotacao(em graus): "; 

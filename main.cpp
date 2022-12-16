@@ -165,13 +165,6 @@ int main(int argv, char** args) {
     //IncandLamp icl(Vec3(0, 20, -50), &world, 10, 5, 5);
 
 
-    PositionedDirectionalLight pdl(&sphere, Vec3(0, 1, -1));
-    pdl.intensity.setCoordinates(0.7, 0.7, 0.7);
-
-    Mage mage(Vec3(0, 50, -50), 10, 4, 7, 12, 3);
-
-    Snowman sm(Vec3(0, 0, -50), 5, 10, 0.7, 0.7, 2.5, 2.5);
-
     Jar jar(Vec3(0, 0, -50), 6, 6, 6, 15);
 
     world.window = window;

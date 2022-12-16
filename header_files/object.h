@@ -21,6 +21,8 @@ public:
     std::vector<unsigned char> image;
     int image_w, image_h;
 
+    virtual bool isComplex() {return false;}
+
     virtual double intersection(Vec3 observer, Vec3 d) = 0;
 
     virtual Vec3 getTextureColor(Vec3 intersectionPoint) {return Vec3(0, 0, 0);}

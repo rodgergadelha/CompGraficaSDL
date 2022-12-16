@@ -4,6 +4,7 @@
 #include "vec3.h"
 #include "matrix.h"
 #include "object.h"
+#include "sphere.h"
 #include <vector>
 #include <iostream>
 
@@ -12,6 +13,8 @@ public:
     std::vector<Object*> components;
     Object *intersectedComponent;
     Sphere *cluster;
+
+    bool isComplex() override {return true;}
 
     double intersection(Vec3 observer, Vec3 d) override {
         if(cluster->intersection(observer, d) == -1) return -1;
