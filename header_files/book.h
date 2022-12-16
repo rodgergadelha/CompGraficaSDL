@@ -15,9 +15,9 @@ public:
     
     Book(Vec3 center, double width, double height, double depth) {
         this->type = "book";
-        this->kd.setCoordinates(0.9, 0.9, 0.9);
-        this->ke.setCoordinates(0.6, 0.6, 0.6);
-        this->ka.setCoordinates(0.8, 0.8, 0.8);
+        this->kd.setCoordinates(0.5, 0.5, 0.5);
+        this->ke.setCoordinates(0.3, 0.3, 0.3);
+        this->ka.setCoordinates(0.4, 0.4, 0.4);
         this->shininess = 10;
         this->center = center;
         
@@ -26,7 +26,7 @@ public:
         book->translate(center.x, center.y, center.z);
 
         for(int i = 0; i < 6; i++) {
-            book->setFaceColor(i, Vec3(255, 255, 255));
+            book->loadImageAllFaces("textures/ded5.png");
         }
 
         this->components = std::vector<Object*> {book};

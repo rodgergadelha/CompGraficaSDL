@@ -18,9 +18,9 @@ public:
    
     IncandLamp(Vec3 center, World *world, double radius, double baseRadius, double baseHeight) {
         this->type = "incandescent lamp";
-        this->kd.setCoordinates(0.9, 0.9, 0.9);
+        this->kd.setCoordinates(0.5, 0.5, 0.5);
         this->ke.setCoordinates(0.6, 0.6, 0.6);
-        this->ka.setCoordinates(0.8, 0.8, 0.8);
+        this->ka.setCoordinates(0.7, 0.7, 0.7);
         this->shininess = 10;
         this->center = center;
 

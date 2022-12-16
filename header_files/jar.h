@@ -16,8 +16,8 @@ public:
 
         this->type = "jar";
         this->kd.setCoordinates(0.9, 0.9, 0.9);
-        this->ke.setCoordinates(0.6, 0.6, 0.6);
-        this->ka.setCoordinates(0.8, 0.8, 0.8);
+        this->ke.setCoordinates(0.4, 0.4, 0.4);
+        this->ka.setCoordinates(0.7, 0.7, 0.7);
         this->shininess = 10;
         this->center = center;
 
@@ -26,7 +26,7 @@ public:
         jar->height = jar_height;
         jar->baseRadius = jar_radius;
         jar->u.setCoordinates(0, 1, 0);
-        jar->color.setCoordinates(235, 53, 21);
+        jar->color.setCoordinates(107, 107, 107);
         jar->kd = this->kd;
         jar->ke = this->ke;
         jar->ka = this->ka;
@@ -41,7 +41,7 @@ public:
         jar_top->height = jar_height * 0.5;
         jar_top->baseRadius = jar_radius * 1.2;
         jar_top->u.setCoordinates(0, 1, 0);
-        jar_top->color.setCoordinates(235, 53, 21);
+        jar_top->color.setCoordinates(93, 93, 93);
         jar_top->kd = this->kd;
         jar_top->ke = this->ke;
         jar_top->ka = this->ka;
@@ -86,27 +86,27 @@ public:
         plant1->radius = plant_radius;
         plant1->center.setCoordinates(trunk->topPlane.pPi.x, trunk->topPlane.pPi.y + plant_radius/2, trunk->topPlane.pPi.z);
         plant1->color.setCoordinates(0, 128, 0);
-        plant1->kd = this->kd;
-        plant1->ke = this->ke;
-        plant1->ka = this->ka;
+        plant1->kd.setCoordinates(0.9, 0.9, 0.9);
+        plant1->ke.setCoordinates(0.2, 0.2, 0.2);
+        plant1->ka.setCoordinates(0.9, 0.9, 0.9);
         plant1->shininess = this->shininess;
 
         Sphere *plant2 = new Sphere();
         plant2->radius = plant_radius / 3;
         plant2->center.setCoordinates(trunk->topPlane.pPi.x, trunk->topPlane.pPi.y - trunk_height + plant2->radius, trunk->topPlane.pPi.z + plant2->radius/2);
         plant2->color.setCoordinates(0, 128, 0);
-        plant2->kd = this->kd;
-        plant2->ke = this->ke;
-        plant2->ka = this->ka;
+        plant2->kd.setCoordinates(0.9, 0.9, 0.9);
+        plant2->ke.setCoordinates(0.2, 0.2, 0.2);
+        plant2->ka.setCoordinates(0.9, 0.9, 0.9);
         plant2->shininess = this->shininess;
         
         Sphere *plant3 = new Sphere();
         plant3->radius = plant_radius / 2.5;
         plant3->center.setCoordinates(trunk->topPlane.pPi.x + plant3->radius, trunk->topPlane.pPi.y - trunk_height/2, trunk->topPlane.pPi.z);
         plant3->color.setCoordinates(0, 128, 0);
-        plant3->kd = this->kd;
-        plant3->ke = this->ke;
-        plant3->ka = this->ka;
+        plant3->kd.setCoordinates(0.9, 0.9, 0.9);
+        plant3->ke.setCoordinates(0.2, 0.2, 0.2);
+        plant3->ka.setCoordinates(0.9, 0.9, 0.9);
         plant3->shininess = this->shininess;
 
 

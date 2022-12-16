@@ -52,6 +52,8 @@ public:
             new Face(  vertices[8],  vertices[9],  vertices[6] ),
             new Face(  vertices[8],  vertices[6],  vertices[2] )
         };
+        
+        this->setAllFacesColors(Vec3(9, 152, 195));
 
         this->scale(size, size, size);
         this->translate(center.x, center.y, center.z);

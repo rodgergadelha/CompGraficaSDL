@@ -16,9 +16,9 @@ public:
     double leafs_radius, double leafs_height, double top_sphere_radius) {
 
         this->type = "christmas tree";
-        this->kd.setCoordinates(0.9, 0.9, 0.9);
-        this->ke.setCoordinates(0.6, 0.6, 0.6);
-        this->ka.setCoordinates(0.8, 0.8, 0.8);
+        this->kd.setCoordinates(0.4, 0.4, 0.4);
+        this->ke.setCoordinates(0.1, 0.1, 0.1);
+        this->ka.setCoordinates(0.5, 0.5, 0.5);
         this->shininess = 10;
         this->center = center;
 
@@ -52,10 +52,10 @@ public:
         top_sphere->radius = top_sphere_radius;
         top_sphere->center.setCoordinates(leafs->center.x, leafs->center.y + leafs_height + top_sphere_radius, leafs->center.z);
         top_sphere->color.setCoordinates(255, 255, 0);
-        top_sphere->kd = this->kd;
-        top_sphere->ke = this->ke;
-        top_sphere->ka = this->ka;
-        top_sphere->shininess = this->shininess;
+        top_sphere->kd.setCoordinates(0.9, 0.9, 0.9);
+        top_sphere->ke.setCoordinates(0.9, 0.9, 0.9);
+        top_sphere->ka.setCoordinates(0.9, 0.9, 0.9);
+        top_sphere->shininess = 10;
 
         this->components = std::vector<Object*> {trunk, top_sphere, leafs};
 

@@ -18,7 +18,7 @@ public:
     
         this->type = "mage";
         this->kd.setCoordinates(0.9, 0.9, 0.9);
-        this->ke.setCoordinates(0.6, 0.6, 0.6);
+        this->ke.setCoordinates(0.5, 0.5, 0.5);
         this->ka.setCoordinates(0.8, 0.8, 0.8);
         this->shininess = 10;
         this->center = center;

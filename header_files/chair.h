@@ -18,7 +18,7 @@ public:
         this->type = "chair";
         this->color = color;
         this->kd.setCoordinates(0.9, 0.9, 0.9);
-        this->ke.setCoordinates(0.6, 0.6, 0.6);
+        this->ke.setCoordinates(0.5, 0.5, 0.5);
         this->ka.setCoordinates(0.8, 0.8, 0.8);
         this->shininess = 10;
         this->center = center;
@@ -71,6 +71,9 @@ public:
             leg->topPlane.pPi = leg->center + (leg->u)*(leg->height);
             leg->topPlane.normal = (leg->u)*(leg->height);
         }
+
+        seat->loadImageAllFaces("textures/wood3.jpg");
+        backrest->loadImageAllFaces("textures/wood3.jpg");
 
         this->components = std::vector<Object*> {seat, backrest, seat_leg1, seat_leg2, seat_leg3, seat_leg4, backrest_leg1, backrest_leg2};
     

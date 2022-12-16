@@ -13,9 +13,9 @@ public:
    
     Table(Vec3 center, double cover_w, double cover_h, double cover_d, double leg_w, double leg_h, double leg_d) {
         this->type = "table";
-        this->kd.setCoordinates(0.9, 0.9, 0.9);
-        this->ke.setCoordinates(0.6, 0.6, 0.6);
-        this->ka.setCoordinates(0.8, 0.8, 0.8);
+        this->kd.setCoordinates(0.4, 0.4, 0.4);
+        this->ke.setCoordinates(0.1, 0.1, 0.1);
+        this->ka.setCoordinates(0.4, 0.4, 0.4);
         this->shininess = 10;
         this->center = center;
         
@@ -38,6 +38,12 @@ public:
         Cube *leg4 = new Cube(1, Vec3(0, 0, 0));
         leg4->scale(leg_w, leg_h, leg_d);
         leg4->translate(center.x - cover_w/2 + leg_w/2, center.y - leg_h/2, center.z + cover_h/2 - leg_d/2);
+
+        cover->loadImageAllFaces("textures/wood3.jpg");
+        leg1->loadImageAllFaces("textures/wood3.jpg");
+        leg2->loadImageAllFaces("textures/wood3.jpg");
+        leg3->loadImageAllFaces("textures/wood3.jpg");
+        leg4->loadImageAllFaces("textures/wood3.jpg");
 
         this->components = std::vector<Object*> {cover, leg1, leg2, leg3, leg4};
 

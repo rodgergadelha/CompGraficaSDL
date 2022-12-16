@@ -129,8 +129,8 @@ public:
     void menuLuzes(World* world) {
         std::cout << "---------------------- MODIFICAR LUZES ----------------------\n";
         std::cout << "1 - Luz da janela (Directional Light)\n";
-        std::cout << "2 - Luminária (Spot light)\n";
-        std::cout << "3 - Lâmpada incandescente (Point light)\n";
+        std::cout << "2 - Luminaria (Spot light)\n";
+        std::cout << "3 - Lampada incandescente (Point light)\n";
         std::cout << "4 - Voltar ao menu principal\n";
         
         std::string resp;

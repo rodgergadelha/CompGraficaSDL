@@ -24,36 +24,37 @@ public:
         Cube *window = new Cube(1, Vec3(0, 0, 0));
         window->scale(width, height, depth);
         window->translate(center.x, center.y, center.z);
+        window->loadImageAllFaces("textures/sky3.png");
 
         Cube *frame_baixo = new Cube(1, Vec3(0, 0, 0));
         frame_baixo->scale(width + 7, 3.5, depth + 2);
         frame_baixo->translate(center.x, center.y - height/2, center.z + 1.5);
-        frame_baixo->setAllFacesColors(Vec3(128, 128, 128));
+        frame_baixo->setAllFacesColors(Vec3(65, 65, 65));
 
         Cube *frame_cima= new Cube(1, Vec3(0, 0, 0));
         frame_cima->scale(width + 7, 3.5, depth + 2);
         frame_cima->translate(center.x, center.y + height/2, center.z + 1.5);
-        frame_cima->setAllFacesColors(Vec3(128, 128, 128));
+        frame_cima->setAllFacesColors(Vec3(65, 65, 65));
 
         Cube *frame_direita= new Cube(1, Vec3(0, 0, 0));
         frame_direita->scale(3.5, height, depth + 2);
         frame_direita->translate(center.x + width/2 + 1.75, center.y, center.z + 1.5);
-        frame_direita->setAllFacesColors(Vec3(128, 128, 128));
+        frame_direita->setAllFacesColors(Vec3(65, 65, 65));
 
         Cube *frame_meio= new Cube(1, Vec3(0, 0, 0));
-        frame_meio->scale(2, height, depth + 2);
+        frame_meio->scale(4, height, depth + 2);
         frame_meio->translate(center.x, center.y, center.z + 1.5);
-        frame_meio->setAllFacesColors(Vec3(128, 128, 128));
+        frame_meio->setAllFacesColors(Vec3(65, 65, 65));
 
         Cube *frame_esquerda= new Cube(1, Vec3(0, 0, 0));
         frame_esquerda->scale(3.5, height, depth + 2);
         frame_esquerda->translate(center.x - width/2 - 1.75, center.y, center.z + 1.5);
-        frame_esquerda->setAllFacesColors(Vec3(128, 128, 128));
+        frame_esquerda->setAllFacesColors(Vec3(65, 65, 65));
 
         this->components = std::vector<Object*> {window, frame_baixo, frame_cima, frame_direita, frame_esquerda, frame_meio};
 
         this->light = new PositionedDirectionalLight(this, Vec3(0, 1, -1));
-        light->intensity.setCoordinates(0.7, 0.7, 0.7);
+        light->intensity.setCoordinates(0.9, 0.9, 0.9);
         world->complex_objects_lights.push_back(this->light);
 
         cluster = new Sphere();

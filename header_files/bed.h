@@ -15,9 +15,9 @@ public:
     
     Bed(Vec3 center, double width, double height, double depth, double legRadius, double legHeight) {
         this->type = "bed";
-        this->kd.setCoordinates(0.9, 0.9, 0.9);
-        this->ke.setCoordinates(0.6, 0.6, 0.6);
-        this->ka.setCoordinates(0.8, 0.8, 0.8);
+        this->kd.setCoordinates(0.1, 0.1, 0.1);
+        this->ke.setCoordinates(0.1, 0.1, 0.1);
+        this->ka.setCoordinates(0.1, 0.1, 0.1);
         this->shininess = 10;
         this->center = center;
         
@@ -41,7 +41,7 @@ public:
         right_back_cilinder->center.setCoordinates(center.x - width/2 + legRadius, center.y + height/2, center.z - depth/2 + legRadius);
 
         Cube *head_board = new Cube(1, Vec3(0, 0, 0));
-        head_board->setAllFacesColors(Vec3(0, 0, 0));
+        head_board->loadImageAllFaces("textures/wood6.png");
         head_board->scale(width - 2*back_cilinder_radius, back_cilinder_height, 2*back_cilinder_radius);
         head_board->translate(center.x, center.y + height/2 + back_cilinder_height/2, center.z - depth/2 + 0.5);
 
@@ -68,7 +68,7 @@ public:
 
             
             leg->u.setCoordinates(0, 1, 0);
-            leg->color.setCoordinates(0, 0, 0);
+            leg->loadImage("textures/wood6.png");
             leg->kd = this->kd;
             leg->ke = this->ke;
             leg->ka = this->ka;
